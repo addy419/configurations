@@ -1,3 +1,3 @@
-#+TITLE Configuration
+#+TITLE: Configuration
 
 Moving to NixOS requires a change in how I configure my system. This will be the new/temporary place for my dotfiles.
