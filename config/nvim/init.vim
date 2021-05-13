@@ -1,7 +1,7 @@
 " Leader
 let mapleader = ";"
 
-" Load plugins
+" Load Plugins
 source ~/.config/nvim/plugins.vim
 
 " Mouse Controls
@@ -29,6 +29,9 @@ set nofixendofline
 set tabstop=2
 set shiftwidth=2
 set expandtab
+
+" Italic Comments
+highlight Comment gui=italic
 
 " Ranger
 let g:ranger_map_keys = 0

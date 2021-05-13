@@ -7,8 +7,9 @@ from pathlib import Path
 apps = {
     "alacritty": ["./config/alacritty", "~/.config/alacritty"],
     "doom-emacs": ["./config/doom-emacs", "~/.doom.d"],
-    "nvim": ["./config/nvim", "~/.config/nvim"]
+    "nvim": ["./config/nvim", "~/.config/nvim"],
 }
+
 
 def link(app_name, unlink=False):
     source, destination = apps[app_name]
@@ -23,12 +24,11 @@ def link(app_name, unlink=False):
     # Create parent directories
     Path(destination).mkdir(parents=True, exist_ok=True)
 
-
     for file in [x for x in Path(source).iterdir()]:
         # Get absolute paths
         src = Path(file).resolve()
-        target = Path(destination, os.path.relpath(file,source))
-        
+        target = Path(destination, os.path.relpath(file, source))
+
         if not unlink:
             print(f"created symlink {src} -> {target}")
             os.symlink(src, target)
@@ -42,8 +42,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # Adding optional argument
-    parser.add_argument("-l",nargs="+",choices=apps.keys())
-    parser.add_argument("-u",nargs="+",choices=apps.keys())
+    parser.add_argument("-l", nargs="+", choices=apps.keys())
+    parser.add_argument("-u", nargs="+", choices=apps.keys())
 
     # Read arguments from command line
     args = parser.parse_args()
@@ -63,6 +63,7 @@ def main():
     else:
         for app in args.u:
             link(app, unlink=True)
+
 
 if __name__ == "__main__":
     main()
