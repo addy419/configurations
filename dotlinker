@@ -8,6 +8,7 @@ apps = {
     "alacritty": ["./config/alacritty", "~/.config/alacritty"],
     "doom-emacs": ["./config/doom-emacs", "~/.doom.d"],
     "nvim": ["./config/nvim", "~/.config/nvim"],
+    "font-recmono-code": ["./fonts/RecMonoCode", "~/.local/share/fonts/RecMonoCode"]
 }
 
 
