@@ -1,2 +1,68 @@
 #!/usr/bin/env python3
 
+import argparse
+import os
+from pathlib import Path
+
+apps = {
+    "alacritty": ["./config/alacritty", "~/.config/alacritty"],
+    "doom-emacs": ["./config/doom-emacs", "~/.doom.d"],
+    "nvim": ["./config/nvim", "~/.config/nvim"]
+}
+
+def link(app_name, unlink=False):
+    source, destination = apps[app_name]
+
+    # Print operation
+    print(f"* {app_name}:")
+
+    # Remove ~ from path
+    source = os.path.expanduser(source)
+    destination = os.path.expanduser(destination)
+
+    # Create parent directories
+    Path(destination).mkdir(parents=True, exist_ok=True)
+
+
+    for file in [x for x in Path(source).iterdir()]:
+        # Get absolute paths
+        src = Path(file).resolve()
+        target = Path(destination, os.path.relpath(file,source))
+        
+        if not unlink:
+            print(f"created symlink {src} -> {target}")
+            os.symlink(src, target)
+        else:
+            print(f"deleted symlink {target}")
+            os.unlink(target)
+
+
+def parse_args():
+    # Initialize parser
+    parser = argparse.ArgumentParser()
+
+    # Adding optional argument
+    parser.add_argument("-l",nargs="+",choices=apps.keys())
+    parser.add_argument("-u",nargs="+",choices=apps.keys())
+
+    # Read arguments from command line
+    args = parser.parse_args()
+
+    if args.l is None and args.u is None or args.l and args.u:
+        parser.print_help()
+        exit()
+
+    return args
+
+
+def main():
+    args = parse_args()
+    if args.l:
+        for app in args.l:
+            link(app)
+    else:
+        for app in args.u:
+            link(app, unlink=True)
+
+if __name__ == "__main__":
+    main()
