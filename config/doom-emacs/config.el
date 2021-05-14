@@ -79,27 +79,31 @@
        (lsp-workspace-restart workspace)))
    (lsp--session-workspaces (lsp-session))))
 
+;; NixOS
+(when (string= (system-name) "nixos")
+  (setq lsp-clients-lua-lsp-server-install-dir "/run/current-system/sw/bin/lua-lsp"))
+
 ;; Sync directory
-(setq sync-directory "~/Sync/org")
+;; (setq sync-directory "~/Sync/org")
 
 ;; Convert org files [from org directory] to markdown on save and move them to sync directory
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook 'org-to-markdown nil t)))
-(defun org-to-markdown ()
-  (if (string-prefix-p (file-truename org-directory) default-directory)
-      (progn
-        (org-md-export-to-markdown)
-        (let ((new-org-directory (concat sync-directory
-                                         "/"
-                                         (substring default-directory
-                                                    (length (file-truename org-directory))))))
-          (make-directory new-org-directory t)
-          (rename-file
-           (concat default-directory
-                   (concat (file-name-sans-extension
-                            (file-name-nondirectory buffer-file-name)) ".md"))
-           (concat new-org-directory) t)))))
+;; (add-hook 'org-mode-hook
+;;           (lambda ()
+;;             (add-hook 'after-save-hook 'org-to-markdown nil t)))
+;; (defun org-to-markdown ()
+;;   (if (string-prefix-p (file-truename org-directory) default-directory)
+;;       (progn
+;;         (org-md-export-to-markdown)
+;;         (let ((new-org-directory (concat sync-directory
+;;                                          "/"
+;;                                          (substring default-directory
+;;                                                     (length (file-truename org-directory))))))
+;;           (make-directory new-org-directory t)
+;;           (rename-file
+;;            (concat default-directory
+;;                    (concat (file-name-sans-extension
+;;                             (file-name-nondirectory buffer-file-name)) ".md"))
+;;            (concat new-org-directory) t)))))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
