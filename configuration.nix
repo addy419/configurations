@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      ./packages.nix
+      ./modules/packages.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -43,11 +43,11 @@
   # Configure XServer
   services.xserver = {
     enable = true;
-    displayManager.defaultSession = "none+xmonad";
+    displayManager.defaultSession = "none+awesome";
     displayManager.lightdm = {
       enable = true;
     };
-    windowManager.bspwm = {
+    windowManager.awesome = {
       enable = true;
     };
     windowManager.xmonad = {
