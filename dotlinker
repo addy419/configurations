@@ -32,6 +32,8 @@ def link(app_name, unlink=False):
 
         if not unlink:
             print(f"created symlink {src} -> {target}")
+            # Prevent errors when linking already symlinked files
+            os.unlink(target)
             os.symlink(src, target)
         else:
             print(f"deleted symlink {target}")
