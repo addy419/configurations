@@ -6,6 +6,3 @@ git clone https://github.com/addy419/configurations.git ~/.configurations
 cd ~/.configurations
 ./dotlinker -h
 #+END_SRC
-
-** For NixOS
-TODO
