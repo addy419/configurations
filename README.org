@@ -1,7 +1,7 @@
 #+TITLE: Configuration
 
 ** Usage
-#+BEGIN_SRC
+#+BEGIN_SRC sh
 git clone https://github.com/addy419/configurations.git ~/.configurations
 cd ~/.configurations
 ./dotlinker -h
