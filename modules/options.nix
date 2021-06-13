@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.aditya = {
@@ -10,5 +12,6 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.aditya = import ../home.nix;
+    extraSpecialArgs = { inherit inputs; };
   };
 }
