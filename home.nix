@@ -35,7 +35,7 @@
 
   services.emacs = {
     enable = true;
-    package = config.programs.emacs.package;  # use programs.emacs.package instead if using home-manager
+    package = config.programs.emacs.package;
   };
 
   programs.git = {
