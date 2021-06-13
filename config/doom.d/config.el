@@ -83,9 +83,8 @@
    (lsp--session-workspaces (lsp-session))))
 
 ;; NixOS
-;; Lua Language Server not available in 20.09
 (when (string= (system-name) "nixos")
-  (setq lsp-clients-lua-lsp-server-install-dir "/run/current-system/sw/bin/lua-lsp"))
+  (setq lsp-clients-lua-language-server-bin "/etc/profiles/per-user/aditya/bin/lua-language-server"))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

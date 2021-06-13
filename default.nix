@@ -26,7 +26,7 @@
   };
 
   # Define your hostname.
-  # networking.hostName = settings.hostName;
+  networking.hostName = "nixos";
 
   # Enables wireless support via wpa_supplicant.
   # networking.wireless = {

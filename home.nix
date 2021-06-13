@@ -7,25 +7,35 @@
     # Systray
     stalonetray
     # Preffered
-    alacritty neovim htop ripgrep
+    alacritty
+    neovim
+    htop
+    ripgrep
     # Python
-    (python3.withPackages(ps: with ps; [ requests ]))
+    (python3.withPackages (ps: with ps; [ requests ]))
     # Lua
-    (lua.withPackages(ps: with ps; [ lua-lsp ]))
+    sumneko-lua-language-server
     # Nix
     nixfmt
     # Desktop
-    dmenu rofi picom
+    dmenu
+    rofi
+    picom
     # K
     libsForQt5.kdeconnect-kde
     # QT theme
     libsForQt5.qtstyleplugin-kvantum
     # GTK theme
-    papirus-icon-theme xdg-desktop-portal numix-icon-theme
+    papirus-icon-theme
+    xdg-desktop-portal
+    numix-icon-theme
     # Applets
-    cbatticon gvolicon nm-tray
+    cbatticon
+    gvolicon
+    nm-tray
     # Applications
-    neomutt mail-notification
+    neomutt
+    mail-notification
   ];
 
   programs.doom-emacs = {
