@@ -4,15 +4,11 @@
 
 { config, pkgs, ... }:
 
-let settings = import ./settings.nix;
-
-in {
-#  imports = [
-    # Include the results of the hardware scan.
-#    ./hardware-configuration.nix
-#    ./modules/packages.nix
- #   ./home.nix
-#  ];
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./modules/options.nix
+  ];
 
   # Enable flakes
   nix = {
@@ -28,7 +24,9 @@ in {
     efi.canTouchEfiVariables = true;
   };
 
-  networking.hostName = settings.hostName; # Define your hostname.
+  # Define your hostname.
+  # networking.hostName = settings.hostName;
+
   # Enables wireless support via wpa_supplicant.
   # networking.wireless = {
   #   enable = true;
@@ -79,11 +77,14 @@ in {
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${settings.wheelUser} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  };
+  # Just the bear necessities...
+  environment.systemPackages = with pkgs; [
+    coreutils
+    git
+    killall
+    unzip
+    wget
+  ];
 
   # Environment Variables
   environment.variables = {
@@ -118,7 +119,6 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
-
+  system.stateVersion = "21.05"; # Did you read the comment?
 }
 
