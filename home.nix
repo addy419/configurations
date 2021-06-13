@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
+  imports = [ inputs.nix-doom-emacs.hmModule ];
+
   home.packages = with pkgs; [
     # Systray
     stalonetray
@@ -23,8 +25,18 @@
     # Applets
     cbatticon gvolicon nm-tray
     # Applications
-    emacs neomutt mail-notification
+    neomutt mail-notification
   ];
+
+  programs.doom-emacs = {
+    enable = true;
+    doomPrivateDir = ./config/doom.d;
+  };
+
+  services.emacs = {
+    enable = true;
+    package = config.programs.emacs.package;  # use programs.emacs.package instead if using home-manager
+  };
 
   programs.git = {
     enable = true;
