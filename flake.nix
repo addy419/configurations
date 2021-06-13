@@ -4,16 +4,18 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-21.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    nix-doom-emacs.url = "github:vlaci/nix-doom-emacs";
-    nix-doom-emacs.inputs.emacs-overlay.follows = "emacs-overlay";
+    nix-doom-emacs = {
+      url = "github:vlaci/nix-doom-emacs";
+      inputs.emacs-overlay.follows = "emacs-overlay";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, ... }: {
+  outputs = { self, nixpkgs, ... } @ inputs: {
 
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
