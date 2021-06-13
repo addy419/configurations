@@ -4,12 +4,23 @@
 
 { config, pkgs, ... }:
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-      ./modules/packages.nix
-    ];
+let settings = import ./settings.nix;
+
+in {
+#  imports = [
+    # Include the results of the hardware scan.
+#    ./hardware-configuration.nix
+#    ./modules/packages.nix
+ #   ./home.nix
+#  ];
+
+  # Enable flakes
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+   };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -17,8 +28,12 @@
     efi.canTouchEfiVariables = true;
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = settings.hostName; # Define your hostname.
+  # Enables wireless support via wpa_supplicant.
+  # networking.wireless = {
+  #   enable = true;
+  #   userControlled.enable = true;
+  # };
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -44,15 +59,9 @@
   services.xserver = {
     enable = true;
     displayManager.defaultSession = "none+awesome";
-    displayManager.lightdm = {
-      enable = true;
-    };
+    displayManager.lightdm = { enable = true; };
     windowManager.awesome = {
       enable = true;
-    };
-    windowManager.xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
     };
   };
 
@@ -71,23 +80,17 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.aditya = {
+  users.users.${settings.wheelUser} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
-
-  fonts.fonts = with pkgs; [
-    mononoki
-  ];
 
   # Environment Variables
   environment.variables = {
     GTK_USE_PORTAL = "1";
     XDG_CURRENT_DESKTOP = "GNOME";
-#    QT_QPA_PLATFORMTHEME= "qt5ct";
-    QT_STYLE_OVERRIDE = "kvantum";
-    DESKTOP_SESSION = "bspwm";
-    QT_SELECT = "5";
+    QT_STYLE_OVERRIDE = "KVANTUM";
+    QT_SELECT = "QT5";
   };
 
   # Some programs need SUID wrappers, can be configured further or are

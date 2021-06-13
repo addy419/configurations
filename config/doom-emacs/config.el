@@ -13,7 +13,10 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
-(setq doom-font (font-spec :family "Rec Mono Code" :size 16 :weight 'regular))
+(setq doom-font (font-spec :family "Rec Mono Code" :size 16))
+(custom-set-faces!
+ '(font-lock-comment-face :slant italic))
+
 
 ;; Theme
 (setq doom-theme 'doom-dracula)

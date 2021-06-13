@@ -4,23 +4,27 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget git unzip killall
+    # Systray
+    stalonetray
     # Preffered
-    alacritty neovim htop
+    alacritty neovim htop ripgrep
     # Python
     (python3.withPackages(ps: with ps; [ requests ]))
     # Lua
     (lua.withPackages(ps: with ps; [ lua-lsp ]))
+    # Nix
+    nixfmt
     # Desktop
-    polybar dmenu rofi picom feh
+    dmenu rofi picom
     # K
-    kdeApplications.kdeconnect-kde
+    libsForQt5.kdeconnect-kde
     # QT theme
-    libsForQt5.qtstyleplugin-kvantum xdg-desktop-portal-kde
+    libsForQt5.qtstyleplugin-kvantum
     # GTK theme
-    papirus-icon-theme xdg-desktop-portal
+    papirus-icon-theme xdg-desktop-portal numix-icon-theme
     # Applets
-    cbatticon gvolicon gnome3.networkmanagerapplet
+    cbatticon gvolicon nm-tray
     # Applications
-    emacs
+    emacs neomutt mail-notification
   ];
 }
