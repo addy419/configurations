@@ -1,8 +1,6 @@
 { inputs, pkgs, config, ... }:
 
 {
-  imports = [ inputs.nix-doom-emacs.hmModule ];
-
   home.packages = with pkgs; [
     # Systray
     stalonetray
@@ -19,6 +17,7 @@
     nixfmt
     # Desktop
     dmenu
+    ranger
     rofi
     picom
     # K
@@ -36,16 +35,12 @@
     # Applications
     neomutt
     mail-notification
+    emacs
   ];
-
-  programs.doom-emacs = {
-    enable = true;
-    doomPrivateDir = ./config/doom.d;
-  };
 
   services.emacs = {
     enable = true;
-    package = config.programs.emacs.package;
+    package = pkgs.emacs;
   };
 
   programs.git = {

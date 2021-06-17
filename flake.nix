@@ -9,19 +9,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    nix-doom-emacs = {
-      url = "github:vlaci/nix-doom-emacs";
-      inputs.emacs-overlay.follows = "emacs-overlay";
-    };
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs: {
-
+  outputs = { self, nixpkgs, ... } @ inputs:
+  {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules =
         [ 
           ./default.nix
+          ./overlays/overrides.nix
           {
             # Let 'nixos-version --json' know about the Git revision
             # of this flake.
@@ -29,6 +26,6 @@
           }
         ];
         specialArgs = { inherit inputs; };
-    };
+      };
   };
 }

@@ -14,6 +14,7 @@
   # Enable flakes
   nix = {
     package = pkgs.nixUnstable;
+    autoOptimiseStore = true;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -57,8 +58,10 @@
   # Configure XServer
   services.xserver = {
     enable = true;
-    displayManager.defaultSession = "none+awesome";
-    displayManager.lightdm = { enable = true; };
+    displayManager = {
+      defaultSession = "none+awesome";
+      lightdm = { enable = true; };
+    };
     windowManager.awesome = {
       enable = true;
     };
@@ -81,7 +84,6 @@
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     coreutils
-    git
     killall
     unzip
     wget
