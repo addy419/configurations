@@ -39,13 +39,21 @@
 
   xdg.enable = true;
 
-  xdg.configFile."lxqt" = {
-    source = config.lib.file.mkOutOfStoreSymlink ./config/dracula/lxqt;
-    recursive = true;
-  };
+  #xdg.configFile."lxqt" = {
+  #  source = config.lib.file.mkOutOfStoreSymlink ./config/dracula/lxqt;
+  #  recursive = true;
+  #};
 
   xdg.dataFile."themes/Dracula" = {
     source = inputs.dracula;
+  };
+
+  xdg.configFile."lxqt" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/lxqt";
+  };
+
+  home.file.".config/gtk-3.0/settings.ini" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/gtk-3.0/settings.ini";
   };
 
   services.emacs = {
