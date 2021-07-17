@@ -39,22 +39,17 @@
 
   xdg.enable = true;
 
-  #xdg.configFile."lxqt" = {
-  #  source = config.lib.file.mkOutOfStoreSymlink ./config/dracula/lxqt;
-  #  recursive = true;
-  #};
+  xdg.dataFile."themes/Dracula".source = inputs.dracula;
 
-  xdg.dataFile."themes/Dracula" = {
-    source = inputs.dracula;
-  };
+  xdg.configFile."Kvantum/Dracula/Dracula.kvconfig".source = "${inputs.dracula}/kde/kvantum/Dracula-purple-solid/Dracula-purple-solid.kvconfig";
 
-  xdg.configFile."lxqt" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/lxqt";
-  };
+  xdg.configFile."Kvantum/Dracula/Dracula.svg".source = "${inputs.dracula}/kde/kvantum/Dracula-purple-solid/Dracula-purple-solid.svg";
 
-  home.file.".config/gtk-3.0/settings.ini" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/gtk-3.0/settings.ini";
-  };
+  xdg.configFile."Kvantum/kvantum.kvconfig".text = "[General]\ntheme=Dracula";
+
+  xdg.configFile."lxqt".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/lxqt";
+
+  xdg.configFile."gtk-3.0/settings.ini".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/gtk-3.0/settings.ini";
 
   services.emacs = {
     enable = true;
