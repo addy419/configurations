@@ -2,8 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    # Systray
-    stalonetray
     # Preffered
     alacritty
     neovim
@@ -16,27 +14,39 @@
     # Nix
     nixfmt
     # Desktop
-    dmenu
     ranger
-    rofi
     picom
-    # K
-    libsForQt5.kdeconnect-kde
-    # QT theme
+    # Themes
+    lxqt.lxqt-config
+    lxqt.lxqt-qtplugin
     libsForQt5.qtstyleplugin-kvantum
-    # GTK theme
-    papirus-icon-theme
     xdg-desktop-portal
-    numix-icon-theme
+    glib
+    xsettingsd
+    papirus-icon-theme
+    # Fonts
+    roboto
     # Applets
     cbatticon
     gvolicon
     nm-tray
     # Applications
+    libsForQt5.kdeconnect-kde
     neomutt
     mail-notification
     emacs
   ];
+
+  xdg.enable = true;
+
+  xdg.configFile."lxqt" = {
+    source = config.lib.file.mkOutOfStoreSymlink ./config/dracula/lxqt;
+    recursive = true;
+  };
+
+  xdg.dataFile."themes/Dracula" = {
+    source = inputs.dracula;
+  };
 
   services.emacs = {
     enable = true;

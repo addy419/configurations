@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "dracula": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1626292046,
+        "narHash": "sha256-Mr1CJrPWhP9gq3FvKVutXJiVhXLhtnrk1ptXFfSVX1A=",
+        "owner": "dracula",
+        "repo": "gtk",
+        "rev": "3d616f51a1df406734023e0a26542f70a22ce0d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dracula",
+        "repo": "gtk",
+        "type": "github"
+      }
+    },
     "emacs-overlay": {
       "locked": {
         "lastModified": 1623925547,
@@ -67,6 +83,7 @@
     },
     "root": {
       "inputs": {
+        "dracula": "dracula",
         "emacs-overlay": "emacs-overlay",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",

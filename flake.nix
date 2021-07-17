@@ -9,6 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    dracula = {
+      url = "github:dracula/gtk";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:

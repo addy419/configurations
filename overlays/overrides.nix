@@ -2,6 +2,6 @@
 {
   nixpkgs.overlays = [
     inputs.emacs-overlay.overlay
-    (final: prev: { unstable = inputs.nixpkgs-unstable; })
+    (final: prev: { unstable = inputs.nixpkgs-unstable.legacyPackages.${prev.system}; })
   ];
 }
