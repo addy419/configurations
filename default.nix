@@ -110,7 +110,6 @@
   environment.variables = {
     GTK_USE_PORTAL = "1";
     QT_QPA_PLATFORMTHEME = "lxqt";
-    DOTFILES = "${toString ./.}";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
