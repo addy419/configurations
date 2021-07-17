@@ -59,11 +59,27 @@
   services.xserver = {
     enable = true;
     displayManager = {
-      defaultSession = "none+awesome";
+      defaultSession = "none+i3";
       lightdm = { enable = true; };
     };
-    windowManager.awesome = {
-      enable = true;
+    desktopManager = {
+      xterm.enable = false;
+    };
+    windowManager = {
+      awesome = {
+        enable = true;
+      };
+      i3 = {
+        enable = true;
+        package = pkgs.i3-gaps;
+        extraPackages = with pkgs; [
+          dmenu #application launcher most people use
+#          i3status # gives you the default i3 status bar
+#          i3status-rust
+          polybar
+          i3lock #default i3 screen locker
+        ];
+      };
     };
   };
 
@@ -89,12 +105,11 @@
     wget
   ];
 
-  # Environment Variables
+  fonts.fontconfig.enable = true;
+
   environment.variables = {
     GTK_USE_PORTAL = "1";
-    XDG_CURRENT_DESKTOP = "GNOME";
-    QT_STYLE_OVERRIDE = "KVANTUM";
-    QT_SELECT = "QT5";
+    QT_QPA_PLATFORMTHEME = "lxqt";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
