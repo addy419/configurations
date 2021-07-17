@@ -51,6 +51,8 @@
 
   xdg.configFile."gtk-3.0/settings.ini".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/gtk-3.0/settings.ini";
 
+  xdg.configFile."fontconfig/fonts.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/fontconfig/fonts.conf";
+
   services.emacs = {
     enable = true;
     package = pkgs.emacs;
