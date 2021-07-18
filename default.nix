@@ -59,27 +59,12 @@
   services.xserver = {
     enable = true;
     displayManager = {
-      defaultSession = "none+i3";
-      lightdm = { enable = true; };
+      defaultSession = "none+awesome";
+      lightdm.enable = true;
     };
-    desktopManager = {
-      xterm.enable = false;
-    };
+    desktopManager.xterm.enable = false;
     windowManager = {
-      awesome = {
-        enable = true;
-      };
-      i3 = {
-        enable = true;
-        package = pkgs.i3-gaps;
-        extraPackages = with pkgs; [
-          dmenu #application launcher most people use
-#          i3status # gives you the default i3 status bar
-#          i3status-rust
-          polybar
-          i3lock #default i3 screen locker
-        ];
-      };
+      awesome.enable = true;
     };
   };
 
