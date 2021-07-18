@@ -39,6 +39,7 @@
 
   xdg.enable = true;
 
+  # Gtk and Qt Themes
   xdg.dataFile."themes/Dracula".source = inputs.dracula;
 
   xdg.configFile."Kvantum/Dracula/Dracula.kvconfig".source = "${inputs.dracula}/kde/kvantum/Dracula-purple-solid/Dracula-purple-solid.kvconfig";
@@ -52,6 +53,9 @@
   xdg.configFile."gtk-3.0/settings.ini".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/gtk-3.0/settings.ini";
 
   xdg.configFile."fontconfig/fonts.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/dracula/fontconfig/fonts.conf";
+
+  # Awesome Window Manager (Will move to another file)
+  xdg.configFile."awesome".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.configurations/config/awesome";
 
   services.emacs = {
     enable = true;
