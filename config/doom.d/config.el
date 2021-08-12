@@ -13,10 +13,9 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
-(setq doom-font (font-spec :family "Rec Mono Code" :size 16))
+(setq doom-font (font-spec :family "Courier Prime Code" :size 16 :slant 'normal :weight 'normal))
 (custom-set-faces!
  '(font-lock-comment-face :slant italic))
-
 
 ;; Theme
 (setq doom-theme 'doom-dracula)
@@ -26,6 +25,9 @@
 
 ;; Line numbers
 (setq display-line-numbers-type 'relative)
+
+;; Fix for tiling window managers
+(setq frame-resize-pixelwise t)
 
 ;; Maximize every windows on startup
 ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -81,10 +83,6 @@
                    '(mspyls pyls))
        (lsp-workspace-restart workspace)))
    (lsp--session-workspaces (lsp-session))))
-
-;; NixOS
-(when (string= (system-name) "nixos")
-  (setq lsp-clients-lua-language-server-bin "/etc/profiles/per-user/aditya/bin/lua-language-server"))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

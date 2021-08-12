@@ -6,7 +6,6 @@
 
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ./modules/options.nix
   ];
@@ -18,7 +17,13 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-   };
+  };
+
+  # Overlays
+  nixpkgs.overlays = [
+    inputs.emacs-overlay.overlay
+    (final: prev: { unstable = inputs.nixpkgs-unstable.legacyPackages.${prev.system}; })
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -58,14 +63,7 @@
   # Configure XServer
   services.xserver = {
     enable = true;
-    displayManager = {
-      defaultSession = "none+awesome";
-      lightdm.enable = true;
-    };
-    desktopManager.xterm.enable = false;
-    windowManager = {
-      awesome.enable = true;
-    };
+    desktopManager.xterm.enable = true;
   };
 
   # Configure keymap in X11
@@ -90,8 +88,6 @@
     wget
   ];
 
-  fonts.fontconfig.enable = true;
-
   environment.variables = {
     GTK_USE_PORTAL = "1";
     QT_QPA_PLATFORMTHEME = "lxqt";
@@ -115,6 +111,10 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Let 'nixos-version --json' know about the Git revision
+  # of this flake.
+  system.configurationRevision = inputs.nixpkgs.lib.mkIf (inputs.self ? rev) inputs.self.rev;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
