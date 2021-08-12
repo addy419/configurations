@@ -1,20 +1,20 @@
 { pkgs, ... }: 
 
-#let wcwidth-icons = with pkgs; stdenv.mkDerivation rec {
-#      src = fetchurl {
-#            url = "https://github.com/powerman/wcwidth-icons/archive/refs/tags/v${version}.tar.gz";
-#            sha256 = "1j87159859mwsdvi12gal6l81jivy4pjk62f4h016wmv866ybphf";
-#      };
-#      version = "0.2.2";
-#      installFlags = [ "DESTDIR=$(out)" ];
-##      buildInputs = [ gnumake ];
-#};
-#
-#in {
-{
+let wcwidth-icons = with pkgs; stdenv.mkDerivation rec {
+      src = fetchurl {
+            url = "https://github.com/powerman/wcwidth-icons/archive/refs/tags/v${version}.tar.gz";
+            sha256 = "1j87159859mwsdvi12gal6l81jivy4pjk62f4h016wmv866ybphf";
+      };
+      version = "0.2.2";
+      installFlags = [ "LIBDIR=$(out)/lib" ];
+#      buildInputs = [ gnumake ];
+};
+
+in {
+#{
       home.packages = with pkgs; [
             alacritty
-#            wcwidth-icons
+            wcwidth-icons
       ];
 
       programs.urxvt = {
