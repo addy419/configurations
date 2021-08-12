@@ -4,7 +4,8 @@
   home.packages = with pkgs; [
     binutils
     git
-    emacsPgtkGcc
+    emacs
+ #   emacsPgtkGcc
     (ripgrep.override {withPCRE2 = true;})
     gnutls
     fd
@@ -35,6 +36,6 @@
 
   services.emacs = {
     enable = true;
-    package = pkgs.emacsPgtkGcc;
+#    package = pkgs.emacsPgtkGcc;
   };
 }
