@@ -12,7 +12,7 @@
   {
     nixosConfigurations.orca = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./default.nix ];
+      modules = [ ./. { networking.hostName = "orca"; } ];
       specialArgs = { inherit inputs; };
     };
   };
