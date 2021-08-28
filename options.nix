@@ -11,9 +11,8 @@
 
   # Home manager
   home-manager = {
-    useGlobalPkgs = true;
     useUserPackages = true;
-    users.aditya = import ../home.nix;
+    users.aditya = import ./home.nix;
     extraSpecialArgs = { inherit inputs; };
   };
 }

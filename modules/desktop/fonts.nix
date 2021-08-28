@@ -8,7 +8,7 @@ let
     sha256 = "0rdnnx2pdxgf3gg95wahmr7ixl09nbgngcflbplddgawa0in5fva";
   };
   poppins = pkgs.fetchzip {
-    url = "https://github.com/itfoundry/Poppins/raw/master/products/Poppins-4.003-GoogleFonts-OTF.zip";
+    url = "https://github.com/itfoundry/Poppins/raw/67ac6b8777c31c3c6a2c1141d512b9c4a1e6ea5f/products/Poppins-4.003-GoogleFonts-OTF.zip";
     sha256 = "0kyiy2dapn85sllcz4gzajr3mg1w0agagcxc0p75i5cjr1661z3h";
     stripRoot = false;
   };

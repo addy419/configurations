@@ -4,11 +4,6 @@
   services.sxhkd = {
     enable = true;
     keybindings = {
-      # terminal emulator
-      "super + Return" = "urxvt";
-      "super + t" = "alacritty";
-      # connect to emacs daemon
-      "super + e" = "emacsclient -c";
       # make sxhkd reload its configuration files:
       "super + Escape" = "pkill -USR1 -x sxhkd";
     };

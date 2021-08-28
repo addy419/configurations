@@ -3,7 +3,7 @@
 {
   imports = [
     ./modules/dev/git.nix
-    ./modules/desktop/bspwm.nix
+    ./modules/desktop/xmonad.nix
     ./modules/desktop/sxhkd.nix
     ./modules/desktop/notification.nix
     ./modules/desktop/dracula.nix
@@ -11,16 +11,24 @@
     ./modules/desktop/fonts.nix
     ./modules/desktop/terminal.nix
     ./modules/editors/emacs.nix
+    ./modules/editors/neovim.nix
   ];
 
+  nixpkgs.overlays = [
+    (final: prev: { unstable = inputs.nixpkgs-unstable.legacyPackages.${prev.system}; })
+  ];
+
+  # broken packages
+  nixpkgs.config.allowBroken = false;
+
   home.packages = with pkgs; [
-    neovim
     htop
     neofetch
+    # in case on no wm keybindings
+    xorg.xkill
     # Python
     (python3.withPackages (ps: with ps; [ requests ]))
     # Desktop
-    ranger
     feh
     # Applets
     cbatticon
@@ -30,10 +38,10 @@
     libsForQt5.kdeconnect-kde
     neomutt
     mail-notification
-    gnome.nautilus
-    unstable.wezterm
-    gnumake
+    pcmanfm
   ];
 
   fonts.fontconfig.enable = true;
+
+  home.stateVersion = "21.05";
 }

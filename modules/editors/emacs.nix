@@ -1,6 +1,10 @@
 { config, inputs, lib, pkgs, ... } :
 
 {
+  nixpkgs.overlays = [
+    inputs.emacs-overlay.overlay
+  ];
+
   home.packages = with pkgs; [
     binutils
     git
@@ -37,5 +41,12 @@
   services.emacs = {
     enable = true;
 #    package = pkgs.emacsPgtkGcc;
+  };
+
+  services.sxhkd = {
+    enable = true;
+    keybindings = {
+      "super + e" = "emacsclient -c";
+    };
   };
 }

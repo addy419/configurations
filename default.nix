@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./modules/options.nix
+    ./options.nix
   ];
 
   # Enable flakes
@@ -19,20 +19,11 @@
     '';
   };
 
-  # Overlays
-  nixpkgs.overlays = [
-    inputs.emacs-overlay.overlay
-    (final: prev: { unstable = inputs.nixpkgs-unstable.legacyPackages.${prev.system}; })
-  ];
-
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
-
-  # Define your hostname.
-  networking.hostName = "nixos";
 
   # Enables wireless support via wpa_supplicant.
   # networking.wireless = {
