@@ -5,10 +5,7 @@
 { inputs, config, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./options.nix
-  ];
+  imports = [ ./hosts/user.nix ];
 
   # Enable flakes
   nix = {

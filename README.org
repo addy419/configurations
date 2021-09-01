@@ -2,3 +2,5 @@
 
 ** For NixOS
 This is an experimental repo to transition towards NixOS. This will be updated on a regular basis with more and more configs.
+
+TODO: The home manager is getting flake support in the next release. Currently the config for HM is a bit cluttered. Hope the next update makes it simpler.

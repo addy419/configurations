@@ -9,11 +9,14 @@
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:
-  {
-    nixosConfigurations.orca = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ ./. { networking.hostName = "orca"; } ];
+
+  let hosts = { orca = "x86_64-linux"; };
+
+  in {
+    nixosConfigurations = nixpkgs.lib.mapAttrs (host: system: nixpkgs.lib.nixosSystem {
+      system = system;
+      modules = [ (./hosts/. + "/${host}") { networking.hostName = host; } ];
       specialArgs = { inherit inputs; };
-    };
+    }) hosts;
   };
 }

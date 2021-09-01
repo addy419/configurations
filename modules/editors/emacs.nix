@@ -44,7 +44,6 @@
   };
 
   services.sxhkd = {
-    enable = true;
     keybindings = {
       "super + e" = "emacsclient -c";
     };
