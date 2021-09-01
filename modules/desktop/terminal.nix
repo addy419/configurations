@@ -39,10 +39,18 @@ in {
   };
 
   services.sxhkd = {
-    enable = true;
 	  keybindings = {
   	  # terminal emulator
   	  "super + Return" = "LD_PRELOAD=${wcwidth-icons}/lib/libwcwidth-icons.so urxvt";
 	  };
+  };
+
+  xsession = {
+    windowManager.qtile = {
+      terminal = "urxvt";
+      keybindings = {
+        "mod + Return" = "lazy.spawn(terminal)";
+      };
+    };
   };
 }

@@ -30,7 +30,6 @@
   };
 
   services.sxhkd = {
-    enable = true;
     keybindings = {
       # quit/restart bspwm
       "super + alt + {q,r}" = "bspc {quit,wm -r}";

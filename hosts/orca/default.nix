@@ -1,15 +1,16 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 
 {
-  #nixosConfigurations.kraken = nixpkgs.lib.nixosSystem {
-  #  system = "x86_64-linux";
-  #  modules = [ { networking.hostName = "orca"; } ];
-  #  specialArgs = { inherit inputs; };
-  #};
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+    ./hardware-configuration.nix
+    ../..
+  ];
 
-  nixosConfigurations.orca = inputs.nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ ./default.nix { networking.hostName = "orca"; } ];
-      specialArgs = { inherit inputs; };
+  # Home manager
+  home-manager = {
+    useUserPackages = true;
+    users.${config.private.user.name} = import ../home.nix;
+    extraSpecialArgs = { inherit inputs; };
   };
 }
