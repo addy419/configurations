@@ -12,7 +12,6 @@ let wcwidth-icons = with pkgs; stdenv.mkDerivation rec {
 
 in {
   home.packages = with pkgs; [
-    alacritty
     wcwidth-icons
   ];
 
@@ -44,7 +43,6 @@ in {
 	  keybindings = {
   	  # terminal emulator
   	  "super + Return" = "LD_PRELOAD=${wcwidth-icons}/lib/libwcwidth-icons.so urxvt";
-  	  "super + t" = "alacritty";
 	  };
   };
 }
