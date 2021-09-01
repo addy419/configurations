@@ -3,7 +3,8 @@
 {
   imports = [
     ./modules/dev/git.nix
-    ./modules/desktop/xmonad.nix
+    #./modules/desktop/xmonad.nix
+    ./modules/desktop/qtile.nix
     ./modules/desktop/sxhkd.nix
     ./modules/desktop/notification.nix
     ./modules/desktop/dracula.nix
