@@ -3,4 +3,8 @@
 ** For NixOS
 This is an experimental repo to transition towards NixOS. This will be updated on a regular basis with more and more configs.
 
-TODO: The home manager is getting flake support in the next release. Currently the config for HM is a bit cluttered. Hope the next update makes it simpler.
+** To Install
+1. set $USER to create user.
+2. home manager does not work with nixos-install for now, you have to comment it out and then uncomment it after installation finishes.
+3. host specific configs {your machine name like yourname@hostname} are present in hosts/{hostname}. default.nix and home.nix are expected here.
+4. main config is default.nix and hosts/home.nix, I might have to change home.nix location maybe.
