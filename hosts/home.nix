@@ -1,7 +1,11 @@
-{ inputs, pkgs, config, lib, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
   imports = [
+    # home manager
+    ../hm-modules/qtile.nix
+
+    # my
     ../modules/dev/git.nix
     #../modules/desktop/xmonad.nix
     ../modules/desktop/qtile.nix
@@ -40,23 +44,8 @@
     neomutt
     mail-notification
     pcmanfm
+    qtile
   ];
 
   fonts.fontconfig.enable = true;
-
-  xsession = {
-    enable = true;
-    windowManager.qtile = {
-      enable = true;
-      keybindings = {
-        "mod + mod1 + r" = "lazy.restart()";
-        "mod + control + j" = "lazy.layout.shrink()";
-        "mod + control + k" = "lazy.layout.grow()";
-      };
-      groups = (lib.genList (i: toString(i + 1)) 9);
-      layouts = [ "MonadTall()" ];
-    };
-  };
-
-  home.stateVersion = "21.05";
 }

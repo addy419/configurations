@@ -13,6 +13,7 @@
   let hosts = { orca = "x86_64-linux"; };
 
   in {
+    # expects default config in hosts/{hostName}/default.nix
     nixosConfigurations = nixpkgs.lib.mapAttrs (host: system: nixpkgs.lib.nixosSystem {
       system = system;
       modules = [ (./hosts/. + "/${host}") { networking.hostName = host; } ];
