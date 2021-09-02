@@ -1,6 +1,7 @@
 { inputs, pkgs, config, ... }:
 
 {
+  # Yes home.nix, your refactoring time will arrive soon
   imports = [
     # home manager
     ../hm-modules/qtile.nix
