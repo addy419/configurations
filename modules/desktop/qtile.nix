@@ -24,7 +24,7 @@
         "mod + r" = {
           "h" = "lazy.function(shrink_master)";
           "l" = "lazy.function(grow_master)";
-          "mode" = "resize";
+          mode = "resize";
         };
       };
       groups = (lib.genList (i: toString(i + 1)) 9);
