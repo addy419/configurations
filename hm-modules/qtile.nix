@@ -5,9 +5,12 @@ let
   cfg = config.xsession.windowManager.qtile;
   indent = (t: concatStrings (genList (i: "    ") t));
   parseKey = (k: "[${concatStringsSep ", " (map (s: if s == "mod" then s else "\"${s}\"") (sublist 0 ((length k) - 1) k))}], \"${elemAt k ((length k) - 1)}\"");
-  parseKeybindings = (keys: sep:
-    concatStringsSep sep (map (k:
-      "Key(${parseKey (splitString "+" (replaceStrings [" "] [""] k))}, ${getAttr k keys})") (attrNames keys)));
+  parseKeybindings = (keys: ind:
+    concatStringsSep ",\n${indent ind}" (map (k:
+      if k == "mode" then "" else "Key(${parseKey (splitString "+" (replaceStrings [" "] [""] k))}, ${getAttr k keys})") (attrNames keys)));
+  parseChords = (keys: ind:
+    concatStringsSep ",\n${indent ind}" (map (k:
+      "KeyChord(${parseKey (splitString "+" (replaceStrings [" "] [""] k))}, [\n${indent (ind + 1)}${parseKeybindings (getAttr k keys) (ind + 1)}],\n${indent (ind + 1)}${if (hasAttr "mode" (getAttr k keys)) then "mode = \"${getAttr "mode" (getAttr k keys)}\"" else ""}\n${indent ind})") (attrNames keys)));
   generateGroupKeybindings = (groups: listToAttrs (flatten (map (g:
     [{name = "mod + ${g}"; value = "lazy.group[\"${g}\"].toscreen()";}{name = "mod + shift + ${g}"; value = "lazy.window.togroup(\"${g}\", switch_group=True)";}]) groups)));
 
@@ -22,12 +25,26 @@ in {
       type = types.package;
       default = pkgs.qtile;
     };
+    extraConfig = mkOption {
+      type = types.str;
+      default = ''
+        from typing import List  # noqa: F401
+        from libqtile import bar, layout, widget
+        from libqtile.config import Click, Drag, Group, Key, Screen
+        from libqtile.lazy import lazy
+        from libqtile.utils import guess_terminal
+      '';
+    };
     terminal = mkOption {
       type = types.str;
       default = "{guess_terminal()}";
     };
     keybindings = mkOption {
       type = types.attrsOf types.str;
+      default = {};
+    };
+    keychords = mkOption {
+      type = types.attrsOf (types.attrsOf types.str);
       default = {};
     };
     groups = mkOption {
@@ -83,7 +100,7 @@ in {
       type = types.int;
       default = 1;
     };
-    extraConfig = mkOption {
+    append = mkOption {
       type = types.str;
       default = "";
     };
@@ -124,27 +141,22 @@ in {
         # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
         # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         # SOFTWARE.
-        
-        from typing import List  # noqa: F401
-        
-        from libqtile import bar, layout, widget
-        from libqtile.config import Click, Drag, Group, Key, Screen
-        from libqtile.lazy import lazy
-        from libqtile.utils import guess_terminal
+
+        ${cfg.extraConfig}
 
         mod = "${cfg.mod}"
         terminal = f"${cfg.terminal}"
 
-
         # keybindings
         keys = [
-            ${parseKeybindings cfg.keybindings (",\n" + (indent 1))}
+            ${parseKeybindings cfg.keybindings 1}
+            ${parseChords cfg.keychords 1}
         ]
 
         groups = [${concatStringsSep ", " (map (g: "Group(\"${g}\")") cfg.groups)}]
 
         keys.extend([
-            ${parseKeybindings (generateGroupKeybindings cfg.groups) (",\n" + (indent 1))}
+            ${parseKeybindings (generateGroupKeybindings cfg.groups) 1}
         ])
 
         # layouts
@@ -204,7 +216,9 @@ in {
         # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
         # java that happens to be on java's whitelist.
         wmname = "LG3D"
-        ${cfg.extraConfig}
+
+        # append config
+        ${cfg.append}
       '';
     };
   };
