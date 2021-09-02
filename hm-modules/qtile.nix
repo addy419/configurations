@@ -4,15 +4,41 @@ with lib;
 let
   cfg = config.xsession.windowManager.qtile;
   indent = (t: concatStrings (genList (i: "    ") t));
-  parseKey = (k: "[${concatStringsSep ", " (map (s: if s == "mod" then s else "\"${s}\"") (sublist 0 ((length k) - 1) k))}], \"${elemAt k ((length k) - 1)}\"");
+  printAttr =
+    (k: set: if (hasAttr k set) then ''${k} = "${getAttr k set}"'' else "");
+  parseKey = (key:
+    (k:
+      ''
+        [${
+          concatStringsSep ", " (map (s: if s == "mod" then s else ''"${s}"'')
+            (sublist 0 ((length k) - 1) k))
+        }], "${elemAt k ((length k) - 1)}"'')
+    (splitString "+" (replaceStrings [ " " ] [ "" ] key)));
   parseKeybindings = (keys: ind:
-    concatStringsSep ",\n${indent ind}" (map (k:
-      if k == "mode" then "" else "Key(${parseKey (splitString "+" (replaceStrings [" "] [""] k))}, ${getAttr k keys})") (attrNames keys)));
+    concatStringsSep ''
+      ,
+      ${indent ind}'' (map
+        (k: if k == "mode" then "" else "Key(${parseKey k}, ${getAttr k keys})")
+        (attrNames keys)));
   parseChords = (keys: ind:
-    concatStringsSep ",\n${indent ind}" (map (k:
-      "KeyChord(${parseKey (splitString "+" (replaceStrings [" "] [""] k))}, [\n${indent (ind + 1)}${parseKeybindings (getAttr k keys) (ind + 1)}],\n${indent (ind + 1)}${if (hasAttr "mode" (getAttr k keys)) then "mode = \"${getAttr "mode" (getAttr k keys)}\"" else ""}\n${indent ind})") (attrNames keys)));
-  generateGroupKeybindings = (groups: listToAttrs (flatten (map (g:
-    [{name = "mod + ${g}"; value = "lazy.group[\"${g}\"].toscreen()";}{name = "mod + shift + ${g}"; value = "lazy.window.togroup(\"${g}\", switch_group=True)";}]) groups)));
+    concatStringsSep ''
+      ,
+      ${indent ind}'' (map (k: ''
+        KeyChord(${parseKey k}, [
+        ${indent (ind + 1)}${parseKeybindings (getAttr k keys) (ind + 1)}],
+        ${indent (ind + 1)}${printAttr "mode" (getAttr k keys)}
+        ${indent ind})'') (attrNames keys)));
+  generateGroupKeybindings = (groups:
+    listToAttrs (flatten (map (g: [
+      {
+        name = "mod + ${g}";
+        value = ''lazy.group["${g}"].toscreen()'';
+      }
+      {
+        name = "mod + shift + ${g}";
+        value = ''lazy.window.togroup("${g}", switch_group=True)'';
+      }
+    ]) groups)));
 
 in {
   options.xsession.windowManager.qtile = {
@@ -30,7 +56,7 @@ in {
       default = ''
         from typing import List  # noqa: F401
         from libqtile import bar, layout, widget
-        from libqtile.config import Click, Drag, Group, Key, Screen
+        from libqtile.config import Click, Drag, Group, Key, Screen, KeyChord
         from libqtile.lazy import lazy
         from libqtile.utils import guess_terminal
       '';
@@ -41,11 +67,11 @@ in {
     };
     keybindings = mkOption {
       type = types.attrsOf types.str;
-      default = {};
+      default = { };
     };
     keychords = mkOption {
       type = types.attrsOf (types.attrsOf types.str);
-      default = {};
+      default = { };
     };
     groups = mkOption {
       type = types.listOf types.str;
@@ -67,32 +93,32 @@ in {
       config = mkOption {
         type = types.str;
         default = ''
-        widget_defaults = dict(
-            font='sans',
-            fontsize=12,
-            padding=3,
-        )
-        extension_defaults = widget_defaults.copy()
-        statusbar = bar.Bar(
-          [
-              widget.CurrentLayout(),
-              widget.GroupBox(),
-              widget.Prompt(),
-              widget.WindowName(),
-              widget.Chord(
-                  chords_colors={
-                      'launch': ("#ff0000", "#ffffff"),
-                  },
-                  name_transform=lambda name: name.upper(),
-              ),
-              widget.TextBox("default config", name="default"),
-              widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-              widget.Systray(),
-              widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-              widget.QuickExit(),
-          ],
-          24,
-        )
+          widget_defaults = dict(
+              font='sans',
+              fontsize=12,
+              padding=3,
+          )
+          extension_defaults = widget_defaults.copy()
+          statusbar = bar.Bar(
+            [
+                widget.CurrentLayout(),
+                widget.GroupBox(),
+                widget.Prompt(),
+                widget.WindowName(),
+                widget.Chord(
+                    chords_colors={
+                        'launch': ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                widget.TextBox("default config", name="default"),
+                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.Systray(),
+                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+                widget.QuickExit(),
+            ],
+            24,
+          )
         '';
       };
     };
@@ -105,7 +131,7 @@ in {
       default = "";
     };
   };
-  
+
   # manage qtile config
   config = mkIf cfg.enable {
     xsession = {
@@ -147,29 +173,45 @@ in {
         mod = "${cfg.mod}"
         terminal = f"${cfg.terminal}"
 
+        groups = [${
+          concatStringsSep ", " (map (g: ''Group("${g}")'') cfg.groups)
+        }]
+
         # keybindings
         keys = [
-            ${parseKeybindings cfg.keybindings 1}
-            ${parseChords cfg.keychords 1}
-        ]
-
-        groups = [${concatStringsSep ", " (map (g: "Group(\"${g}\")") cfg.groups)}]
-
-        keys.extend([
+            # keybindings
+            ${parseKeybindings cfg.keybindings 1},
+            # key chords
+            ${parseChords cfg.keychords 1},
+            # group keybindings
             ${parseKeybindings (generateGroupKeybindings cfg.groups) 1}
-        ])
+        ]
 
         # layouts
         layouts = [
-            ${concatStringsSep (",\n" + (indent 1)) (map (l: "layout.${l}") cfg.layouts)}
+            ${
+              concatStringsSep (''
+                ,
+              '' + (indent 1)) (map (l: "layout.${l}") cfg.layouts)
+            }
         ]
-        
+
         # statusbar
         ${if cfg.bar.enable then cfg.bar.config else ""}
 
         # screens
         screens = [
-            ${concatStringsSep (",\n" + (indent 1)) (genList (i: "Screen(${if cfg.bar.enable then "${cfg.bar.position} = statusbar" else ""})") cfg.maxScreens)}
+            ${
+              concatStringsSep (''
+                ,
+              '' + (indent 1)) (genList (i:
+                "Screen(${
+                  if cfg.bar.enable then
+                    "${cfg.bar.position} = statusbar"
+                  else
+                    ""
+                })") cfg.maxScreens)
+            }
         ]
 
         # Drag floating layouts.
@@ -206,7 +248,7 @@ in {
         ])
         auto_fullscreen = True
         focus_on_window_activation = "smart"
-        
+
         # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
         # string besides java UI toolkits; you can see several discussions on the
         # mailing lists, GitHub issues, and other WM documentation that suggest setting
