@@ -23,11 +23,12 @@ let
   parseChords = (keys: ind:
     concatStringsSep ''
       ,
-      ${indent ind}'' (map (k: ''
-        KeyChord(${parseKey k}, [
-        ${indent (ind + 1)}${parseKeybindings (getAttr k keys) (ind + 1)}],
-        ${indent (ind + 1)}${printAttr "mode" (getAttr k keys)}
-        ${indent ind})'') (attrNames keys)));
+      ${indent ind}'' (map (key:
+        (k: val: ''
+          KeyChord(${parseKey k}, [
+          ${indent (ind + 1)}${parseKeybindings val (ind + 1)}],
+          ${indent (ind + 1)}${printAttr "mode" val}
+          ${indent ind})'') key (getAttr key keys)) (attrNames keys)));
   generateGroupKeybindings = (groups:
     listToAttrs (flatten (map (g: [
       {
