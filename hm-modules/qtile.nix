@@ -4,24 +4,24 @@ with lib;
 let
   cfg = config.xsession.windowManager.qtile;
   indent = (t: concatStrings (genList (i: "    ") t));
-  parseKey = (key:
-    let
-      k = splitString "+" (replaceStrings [ " " ] [ "" ] key);
-      last = (length k) - 1;
-    in ''
-      [${
-        concatStringsSep ", "
-        (map (s: if s == "mod" then s else ''"${s}"'') (sublist 0 last k))
-      }], "${elemAt k last}"'');
-  parseChord = (key: val: ind:
-    let mode = if val.mode == null then "" else ''mode = "${val.mode}"'';
-    in ''
-      KeyChord(${parseKey key}, [
-      ${indent (ind + 1)}${
-        parseKeybindings val.keybindings (ind + 1)
-      }], ${mode})'');
   parseKeybindings = (keys: ind:
-    concatStringsSep ''
+    let
+      parseKey = (key:
+        let
+          k = splitString "+" (replaceStrings [ " " ] [ "" ] key);
+          last = (length k) - 1;
+        in ''
+          [${
+            concatStringsSep ", "
+            (map (s: if s == "mod" then s else ''"${s}"'') (sublist 0 last k))
+          }], "${elemAt k last}"'');
+      parseChord = (key: val: ind:
+        let mode = if val.mode == null then "" else ''mode = "${val.mode}"'';
+        in ''
+          KeyChord(${parseKey key}, [
+          ${indent (ind + 1)}${parseKeybindings val.keybindings (ind + 1)}],
+          ${indent ind}${mode})'');
+    in concatStringsSep ''
       ,
       ${indent ind}'' (map (k:
         let val = getAttr k keys;
