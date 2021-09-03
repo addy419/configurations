@@ -5,27 +5,30 @@ let
   cfg = config.xsession.windowManager.qtile;
   indent = (t: concatStrings (genList (i: "    ") t));
   parseKey = (key:
-    (k:
-      ''
-        [${
-          concatStringsSep ", " (map (s: if s == "mod" then s else ''"${s}"'')
-            (sublist 0 ((length k) - 1) k))
-        }], "${elemAt k ((length k) - 1)}"'')
-    (splitString "+" (replaceStrings [ " " ] [ "" ] key)));
-  parseChord = (k: val: ind: ''
-    KeyChord(${parseKey k}, [
-    ${indent (ind + 1)}${parseKeybindings val.keybindings (ind + 1)}], ${
-      if val.mode == null then "" else ''mode = "${val.mode}"''
-    })'');
+    let
+      k = splitString "+" (replaceStrings [ " " ] [ "" ] key);
+      last = (length k) - 1;
+    in ''
+      [${
+        concatStringsSep ", "
+        (map (s: if s == "mod" then s else ''"${s}"'') (sublist 0 last k))
+      }], "${elemAt k last}"'');
+  parseChord = (key: val: ind:
+    let mode = if val.mode == null then "" else ''mode = "${val.mode}"'';
+    in ''
+      KeyChord(${parseKey key}, [
+      ${indent (ind + 1)}${
+        parseKeybindings val.keybindings (ind + 1)
+      }], ${mode})'');
   parseKeybindings = (keys: ind:
     concatStringsSep ''
       ,
       ${indent ind}'' (map (k:
-        if (isAttrs (getAttr k keys)) then
-          (parseChord k (getAttr k keys) ind)
+        let val = getAttr k keys;
+        in if (isAttrs val) then
+          (parseChord k val ind)
         else
-          (if k == "mode" then "" else "Key(${parseKey k}, ${getAttr k keys})"))
-        (attrNames keys)));
+          "Key(${parseKey k}, ${val})") (attrNames keys)));
   generateGroupKeybindings = (groups:
     listToAttrs (flatten (map (g: [
       {
@@ -51,13 +54,7 @@ in {
     };
     extraConfig = mkOption {
       type = types.str;
-      default = ''
-        from typing import List  # noqa: F401
-        from libqtile import bar, layout, widget
-        from libqtile.config import Click, Drag, Group, Key, Screen, KeyChord
-        from libqtile.lazy import lazy
-        from libqtile.utils import guess_terminal
-      '';
+      default = "";
     };
     terminal = mkOption {
       type = types.str;
@@ -176,6 +173,13 @@ in {
         # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         # SOFTWARE.
 
+        from typing import List  # noqa: F401
+        from libqtile import bar, layout, widget
+        from libqtile.config import Click, Drag, Group, Key, Screen, KeyChord
+        from libqtile.lazy import lazy
+        from libqtile.utils import guess_terminal
+
+        # user config
         ${cfg.extraConfig}
 
         mod = "${cfg.mod}"

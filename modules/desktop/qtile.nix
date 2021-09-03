@@ -28,6 +28,7 @@
                 "h" = "lazy.function(shrink_master)";
                 "l" = "lazy.function(grow_master)";
               };
+              mode = "resize_nested";
             };
           };
           mode = "resize";
@@ -36,11 +37,7 @@
       groups = (lib.genList (i: toString(i + 1)) 9);
       layouts = [ "MonadTall()" ];
       extraConfig = ''
-        from typing import List  # noqa: F401
-        from libqtile import bar, layout, widget, hook
-        from libqtile.config import Click, Drag, Group, Key, Screen, KeyChord
-        from libqtile.lazy import lazy
-        from libqtile.utils import guess_terminal
+        from libqtile import hook
 
         def monad_stack_size(qtile):
             info = qtile.current_layout.info()
