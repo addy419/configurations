@@ -19,14 +19,17 @@
         "mod + control + j" = "lazy.function(shrink_window)";
         "mod + control + k" = "lazy.function(grow_window)";
         "mod + control + l" = "lazy.function(grow_master)";
-        "mod + z" = {
-          "mod + k" = "func()";
-        };
-      };
-      keychords = {
         "mod + r" = {
-          "h" = "lazy.function(shrink_master)";
-          "l" = "lazy.function(grow_master)";
+          keybindings = {
+            "h" = "lazy.function(shrink_master)";
+            "l" = "lazy.function(grow_master)";
+            "mod + r" = {
+              keybindings = {
+                "h" = "lazy.function(shrink_master)";
+                "l" = "lazy.function(grow_master)";
+              };
+            };
+          };
           mode = "resize";
         };
       };
