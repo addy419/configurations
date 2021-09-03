@@ -4,8 +4,6 @@ with lib;
 let
   cfg = config.xsession.windowManager.qtile;
   indent = (t: concatStrings (genList (i: "    ") t));
-  printAttr =
-    (k: set: if (hasAttr k set) then ''${k} = "${getAttr k set}"'' else "");
   parseKey = (key:
     (k:
       ''
@@ -14,21 +12,20 @@ let
             (sublist 0 ((length k) - 1) k))
         }], "${elemAt k ((length k) - 1)}"'')
     (splitString "+" (replaceStrings [ " " ] [ "" ] key)));
+  parseChord = (k: val: ind: ''
+    KeyChord(${parseKey k}, [
+    ${indent (ind + 1)}${parseKeybindings val.keybindings (ind + 1)}], ${
+      if val.mode == null then "" else ''mode = "${val.mode}"''
+    })'');
   parseKeybindings = (keys: ind:
     concatStringsSep ''
       ,
-      ${indent ind}'' (map
-        (k: if k == "mode" then "" else "Key(${parseKey k}, ${getAttr k keys})")
+      ${indent ind}'' (map (k:
+        if (isAttrs (getAttr k keys)) then
+          (parseChord k (getAttr k keys) ind)
+        else
+          (if k == "mode" then "" else "Key(${parseKey k}, ${getAttr k keys})"))
         (attrNames keys)));
-  parseChords = (keys: ind:
-    concatStringsSep ''
-      ,
-      ${indent ind}'' (map (key:
-        (k: val: ''
-          KeyChord(${parseKey k}, [
-          ${indent (ind + 1)}${parseKeybindings val (ind + 1)}],
-          ${indent (ind + 1)}${printAttr "mode" val}
-          ${indent ind})'') key (getAttr key keys)) (attrNames keys)));
   generateGroupKeybindings = (groups:
     listToAttrs (flatten (map (g: [
       {
@@ -66,17 +63,27 @@ in {
       type = types.str;
       default = "{guess_terminal()}";
     };
-    keybindings = mkOption {
-      type = types.attrsOf types.str;
-      default = { };
-    };
-    keychords = mkOption {
-      type = types.attrsOf (types.attrsOf types.str);
+    keybindings = let
+      keytype = types.attrsOf (types.either types.str chordtype);
+      chordtype = types.submodule {
+        options = {
+          keybindings = mkOption {
+            type = keytype;
+            default = { };
+          };
+          mode = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+          };
+        };
+      };
+    in mkOption {
+      type = keytype;
       default = { };
     };
     groups = mkOption {
       type = types.listOf types.str;
-      default = [ "a" "s" "d" "f" "u" "i" "o" "p" ];
+      default = [ ];
     };
     layouts = mkOption {
       type = types.listOf types.str;
@@ -182,8 +189,6 @@ in {
         keys = [
             # keybindings
             ${parseKeybindings cfg.keybindings 1},
-            # key chords
-            ${parseChords cfg.keychords 1},
             # group keybindings
             ${parseKeybindings (generateGroupKeybindings cfg.groups) 1}
         ]
