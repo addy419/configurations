@@ -1,10 +1,11 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 {
   xsession = {
     enable = true;
     windowManager.qtile = {
       enable = true;
+      package = pkgs.unstable.qtile;
       keybindings = {
         "mod + mod1 + r" = "lazy.restart()";
         "mod + h" = "lazy.layout.left()";
@@ -19,25 +20,34 @@
         "mod + control + j" = "lazy.function(shrink_window)";
         "mod + control + k" = "lazy.function(grow_window)";
         "mod + control + l" = "lazy.function(grow_master)";
-        "mod + r" = {
-          keybindings = {
-            "h" = "lazy.function(shrink_master)";
-            "l" = "lazy.function(grow_master)";
-            "mod + r" = {
-              keybindings = {
-                "h" = "lazy.function(shrink_master)";
-                "l" = "lazy.function(grow_master)";
-              };
-              mode = "resize_nested";
-            };
-          };
-          mode = "resize";
-        };
       };
-      groups = (lib.genList (i: toString(i + 1)) 9);
-      layouts = [ "MonadTall()" ];
       extraConfig = ''
         from libqtile import hook
+        
+        # groups
+        groups = [Group(str(i+1),label="") for i in range(9)]
+        for i in groups:
+            keys.extend([
+                Key([mod], i.name, lazy.group[i.name].toscreen(toggle=False),
+                    desc="Switch to group {}".format(i.name)),
+                Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
+                    desc="Switch to & move focused window to group {}".format(i.name)),
+            ])
+
+        # layouts
+        layouts = [layout.MonadTall()]
+
+        # bar
+        widget_defaults = dict(font="Iosevka Nerdfont",fontsize=12,padding=3)
+        extension_defaults = widget_defaults.copy()
+
+        workspace = widget.GroupBox(font="Font Awesome 5 Free Regular",fontsize=16,highlight_method="text")
+        status_bar = bar.Bar([workspace],32)
+
+        # screens
+        maxScreens = 1
+        screens = [Screen(bottom=status_bar) for i in range(maxScreens)]
+        #screens = [Screen() for i in range(maxScreens)]
 
         def monad_stack_size(qtile):
             info = qtile.current_layout.info()
@@ -64,6 +74,40 @@
         # def on_client_kill(window):
         #     if monad_stack_size(qtile) == 0:
       '';
+    };
+  };
+
+  services.polybar = {
+    settings = {
+      "colors" = {
+        urgent = "\${xrdb:color1}";
+        empty = "#44475a";
+      };
+      "bar/main" = {
+        override-redirect = false;
+      };
+      "module/ewmh" = {
+        type = "internal/xworkspaces";
+        pin-workspaces = false;
+        enable-click = true;
+        enable-scroll = true;
+        label = {
+          active = "";
+          active-font = 3;
+          active-padding = 1;
+          occupied = "";
+          occupied-font = 2;
+          occupied-padding = 1;
+          urgent = "";
+          urgent-font = 2;
+          urgent-padding = 1;
+          urgent-foreground = "\${colors.urgent}";
+          empty = "";
+          empty-font = 2;
+          empty-padding = 1;
+          empty-foreground = "\${colors.empty}";
+        };
+      };
     };
   };
 }

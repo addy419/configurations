@@ -7,7 +7,8 @@
 
   services.polybar = {
     enable = true;
-    script = "polybar main &";
+    script = "";
+    #script = "polybar main 2>/home/aditya/.polybar.log &";
     settings = {
       "colors" = {
         # Colors are provided through Xresources. see: github.com/dracula/xresources
@@ -25,7 +26,6 @@
         radius = 0;
         background = "\${colors.background}";
         foreground = "\${colors.foreground}";
-        override-redirect = false;
         bottom = true;
         modules = {
           left = "i3 bspwm ewmh";
