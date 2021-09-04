@@ -45,7 +45,7 @@
     neomutt
     mail-notification
     pcmanfm
-    qtile
+    wmctrl
   ];
 
   fonts.fontconfig.enable = true;

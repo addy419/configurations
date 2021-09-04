@@ -29,17 +29,6 @@ let
           (parseChord k val ind)
         else
           "Key(${parseKey k}, ${val})") (attrNames keys)));
-  generateGroupKeybindings = (groups:
-    listToAttrs (flatten (map (g: [
-      {
-        name = "mod + ${g}";
-        value = ''lazy.group["${g}"].toscreen()'';
-      }
-      {
-        name = "mod + shift + ${g}";
-        value = ''lazy.window.togroup("${g}", switch_group=True)'';
-      }
-    ]) groups)));
 
 in {
   options.xsession.windowManager.qtile = {
@@ -48,6 +37,10 @@ in {
       type = types.str;
       default = "mod4";
     };
+    terminal = mkOption {
+      type = types.str;
+      default = "{guess_terminal()}";
+    };
     package = mkOption {
       type = types.package;
       default = pkgs.qtile;
@@ -55,10 +48,6 @@ in {
     extraConfig = mkOption {
       type = types.str;
       default = "";
-    };
-    terminal = mkOption {
-      type = types.str;
-      default = "{guess_terminal()}";
     };
     keybindings = let
       keytype = types.attrsOf (types.either types.str chordtype);
@@ -78,70 +67,13 @@ in {
       type = keytype;
       default = { };
     };
-    groups = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-    };
-    layouts = mkOption {
-      type = types.listOf types.str;
-      default = [ "Max()" "Stack(num_stacks=2)" ];
-    };
-    bar = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-      };
-      position = mkOption {
-        type = types.str;
-        default = "bottom";
-      };
-      config = mkOption {
-        type = types.str;
-        default = ''
-          widget_defaults = dict(
-              font='sans',
-              fontsize=12,
-              padding=3,
-          )
-          extension_defaults = widget_defaults.copy()
-          statusbar = bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                widget.Systray(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-                widget.QuickExit(),
-            ],
-            24,
-          )
-        '';
-      };
-    };
-    maxScreens = mkOption {
-      type = types.int;
-      default = 1;
-    };
-    append = mkOption {
-      type = types.str;
-      default = "";
-    };
   };
 
   # manage qtile config
   config = mkIf cfg.enable {
     xsession = {
       windowManager.command = ''
-        "${cfg.package}/bin/qtile"
+        exec ${cfg.package}/bin/qtile start
       '';
     };
 
@@ -175,54 +107,15 @@ in {
 
         from typing import List  # noqa: F401
         from libqtile import bar, layout, widget
-        from libqtile.config import Click, Drag, Group, Key, Screen, KeyChord
+        from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
         from libqtile.lazy import lazy
         from libqtile.utils import guess_terminal
 
-        # user config
-        ${cfg.extraConfig}
 
         mod = "${cfg.mod}"
         terminal = f"${cfg.terminal}"
 
-        groups = [${
-          concatStringsSep ", " (map (g: ''Group("${g}")'') cfg.groups)
-        }]
-
-        # keybindings
-        keys = [
-            # keybindings
-            ${parseKeybindings cfg.keybindings 1},
-            # group keybindings
-            ${parseKeybindings (generateGroupKeybindings cfg.groups) 1}
-        ]
-
-        # layouts
-        layouts = [
-            ${
-              concatStringsSep (''
-                ,
-              '' + (indent 1)) (map (l: "layout.${l}") cfg.layouts)
-            }
-        ]
-
-        # statusbar
-        ${if cfg.bar.enable then cfg.bar.config else ""}
-
-        # screens
-        screens = [
-            ${
-              concatStringsSep (''
-                ,
-              '' + (indent 1)) (genList (i:
-                "Screen(${
-                  if cfg.bar.enable then
-                    "${cfg.bar.position} = statusbar"
-                  else
-                    ""
-                })") cfg.maxScreens)
-            }
-        ]
+        keys = []
 
         # Drag floating layouts.
         mouse = [
@@ -235,29 +128,27 @@ in {
 
         dgroups_key_binder = None
         dgroups_app_rules = []  # type: List
-        main = None
         follow_mouse_focus = True
         bring_front_click = False
         cursor_warp = False
         floating_layout = layout.Floating(float_rules=[
             # Run the utility of `xprop` to see the wm class and name of an X client.
-            {'wmclass': 'confirm'},
-            {'wmclass': 'dialog'},
-            {'wmclass': 'download'},
-            {'wmclass': 'error'},
-            {'wmclass': 'file_progress'},
-            {'wmclass': 'notification'},
-            {'wmclass': 'splash'},
-            {'wmclass': 'toolbar'},
-            {'wmclass': 'confirmreset'},  # gitk
-            {'wmclass': 'makebranch'},  # gitk
-            {'wmclass': 'maketag'},  # gitk
-            {'wname': 'branchdialog'},  # gitk
-            {'wname': 'pinentry'},  # GPG key password entry
-            {'wmclass': 'ssh-askpass'},  # ssh-askpass
+            *layout.Floating.default_float_rules,
+            Match(wm_class='confirmreset'),  # gitk
+            Match(wm_class='makebranch'),  # gitk
+            Match(wm_class='maketag'),  # gitk
+            Match(wm_class='ssh-askpass'),  # ssh-askpass
+            Match(title='branchdialog'),  # gitk
+            Match(title='pinentry'),  # GPG key password entry
         ])
+
         auto_fullscreen = True
         focus_on_window_activation = "smart"
+        reconfigure_screens = True
+
+        # If things like steam games want to auto-minimize themselves when losing
+        # focus, should we respect this or not?
+        auto_minimize = True
 
         # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
         # string besides java UI toolkits; you can see several discussions on the
@@ -269,8 +160,13 @@ in {
         # java that happens to be on java's whitelist.
         wmname = "LG3D"
 
-        # append config
-        ${cfg.append}
+        # extra config
+        ${cfg.extraConfig}
+        # keybindings
+        keys.extend([
+            # keybindings
+            ${parseKeybindings cfg.keybindings 1},
+        ])
       '';
     };
   };

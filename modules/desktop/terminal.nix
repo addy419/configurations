@@ -48,8 +48,10 @@ in {
   xsession = {
     windowManager.qtile = {
       terminal = "urxvt";
+      # TODO: 0.18.0 has support for spawncmd which can LD_PRELOAD
       keybindings = {
         "mod + Return" = "lazy.spawn(terminal)";
+        "mod + t" = ''lazy.spawn("LD_PRELOAD=${wcwidth-icons}/lib/libwcwidth-icons.so urxvt",shell=True)'';
       };
     };
   };
