@@ -15,7 +15,8 @@ let
 
 in {
   home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "Iosevka" ]; })
+    font-awesome
+    (nerdfonts.override { fonts = [ "Iosevka" "JetBrainsMono" ]; })
   ];
 
   home.file = {

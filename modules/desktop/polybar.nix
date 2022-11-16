@@ -1,14 +1,11 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    font-awesome
-  ];
-
   services.polybar = {
     enable = true;
-    script = "";
+    #script = "";
     #script = "polybar main 2>/home/aditya/.polybar.log &";
+    script = "polybar main &";
     settings = {
       "colors" = {
         # Colors are provided through Xresources. see: github.com/dracula/xresources
