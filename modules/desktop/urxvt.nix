@@ -22,7 +22,7 @@ in {
     extraConfig = {
       intensityStyles = false;
       cursorBlink = true;
-      perl-ext-common = "default,font-size";
+      perl-ext-common = "default,font-size,searchable-scrollback";
       perl-lib = "${pkgs.rxvt-unicode}/lib/urxvt/perl";
     };
     keybindings = {
@@ -31,27 +31,28 @@ in {
       "Control-0" = "font-size:reset";
       "Shift-Control-C" = "eval:selection_to_clipboard";
       "Shift-Control-V" = "eval:paste_clipboard";
+      "Shift-Control-F" = "searchable-scrollback:start";
     };
     scroll.bar = {
-      enable = true;
-      position = "right";
+      enable = false;
     };
+  };
+
+  home.sessionVariables = {
+    LD_PRELOAD = "${wcwidth-icons}/lib/libwcwidth-icons.so";
   };
 
   services.sxhkd = {
 	  keybindings = {
-  	  # terminal emulator
-  	  "super + Return" = "LD_PRELOAD=${wcwidth-icons}/lib/libwcwidth-icons.so urxvt";
+  	  "super + Return" = "urxvt";
 	  };
   };
 
   xsession = {
     windowManager.qtile = {
       terminal = "urxvt";
-      # TODO: 0.18.0 has support for spawncmd which can LD_PRELOAD
       keybindings = {
         "mod + Return" = "lazy.spawn(terminal)";
-        "mod + t" = ''lazy.spawn("LD_PRELOAD=${wcwidth-icons}/lib/libwcwidth-icons.so urxvt",shell=True)'';
       };
     };
   };

@@ -1,11 +1,13 @@
-{ config, inputs, pkgs, ... }:
+{ lib, config, inputs, pkgs, ... }:
+with lib;
 
 let
+  cfg = config.colorscheme.dracula;
   dracula-gtk = pkgs.fetchFromGitHub {
     owner = "dracula";
     repo = "gtk";
-    rev = "502f212d83bc67e8f0499574546b99ec6c8e16f9";
-    sha256 = "1wx9nzq7cqyvpaq4j60bs8g7gh4jk8qg4016yi4c331l4iw1ymsa";
+    rev = "58b8cf7f5d4099a644df322942549b26474faa04";
+    sha256 = "1ga1d79fpdciaf0zqalfgb9704y5q0w2wfd6jj5d1q65qrikmj6q";
   };
   dracula-xresources = pkgs.fetchFromGitHub {
     owner = "dracula";
@@ -15,21 +17,47 @@ let
   };
 
 in {
-  home.packages = with pkgs; [
+  options.colorscheme.dracula = {
+    enable = mkEnableOption "dracula colorscheme"; 
+    colors = mkOption {
+      type = types.attrsOf types.str;
+      default = {};
+    };
+  };
+
+  config.colorscheme.dracula.colors = {
+    background = "#282a36";
+    currentline = "#44475a";
+    foreground = "#f8f8f2";
+    comment = "#6272a4";
+    cyan = "#8be9fd";
+    green = "#50fa7b";
+    orange = "#ffb86c";
+    pink = "#ff79c6";
+    purple = "#bd93f9";
+    red = "#ff5555";
+    yellow = "#f1fa8c";
+  };
+
+  config.home.packages = with pkgs; [
     lxqt.lxqt-qtplugin
     libsForQt5.qtstyleplugin-kvantum
     xdg-desktop-portal
     papirus-icon-theme
+
+    # for theme modification
+    lxqt.lxqt-config
+    xsettingsd
   ];
 
-  home.sessionVariables = {
+  config.home.sessionVariables = {
     GTK_USE_PORTAL = "1";
     QT_QPA_PLATFORMTHEME = "lxqt";
   };
 
-  xresources.extraConfig = builtins.readFile("${dracula-xresources}/Xresources");
+  config.xresources.extraConfig = builtins.readFile("${dracula-xresources}/Xresources");
 
-  xdg = {
+  config.xdg = {
     dataFile = {
       "themes/Dracula".source = dracula-gtk;
     };
@@ -43,7 +71,7 @@ in {
     };
   };
 
-  home.file = {
+  config.home.file = {
     ".gtkrc-2.0".source = ../../config/dracula/gtk-2.0/gtkrc-2.0;
   };
 }

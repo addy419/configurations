@@ -15,7 +15,7 @@ let
             concatStringsSep ", "
             (map (s: if s == "mod" then s else ''"${s}"'') (sublist 0 last k))
           }], "${elemAt k last}"'');
-      parseChord = (key: val: ind:
+      parseChord = (key: val:
         let mode = if val.mode == null then "" else ''mode = "${val.mode}"'';
         in ''
           KeyChord(${parseKey key}, [
@@ -26,7 +26,7 @@ let
       ${indent ind}'' (map (k:
         let val = getAttr k keys;
         in if (isAttrs val) then
-          (parseChord k val ind)
+          (parseChord k val)
         else
           "Key(${parseKey k}, ${val})") (attrNames keys)));
 
@@ -73,7 +73,7 @@ in {
   config = mkIf cfg.enable {
     xsession = {
       windowManager.command = ''
-        exec ${cfg.package}/bin/qtile start
+        ${cfg.package}/bin/qtile start
       '';
     };
 

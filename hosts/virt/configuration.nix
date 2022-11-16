@@ -2,10 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
-  imports = [ ./modules/options.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../users.nix
+    ../home-manager.nix
+  ];
 
   # Enable flakes
   nix = {
@@ -52,7 +56,21 @@
   services.xserver = {
     enable = true;
     desktopManager.xterm.enable = true;
+    displayManager.lightdm = {
+      enable = true;
+    };
   };
+  
+  # Wayland
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_session = {
+  #       command = "${lib.makeBinPath [pkgs.greetd.tuigreet] }/tuigreet --time --cmd startx /home/aditya/.xsession";
+  #       user = "greeter";
+  #     };
+  #   };
+  # };
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -74,6 +92,7 @@
     killall
     unzip
     wget
+    libsForQt5.qt5.qtgraphicaleffects
   ];
 
   environment.variables = {
