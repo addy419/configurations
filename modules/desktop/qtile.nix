@@ -86,10 +86,10 @@ in {
         wallpaper_color = "#ecbfbd"
         wallpaper_color_alt = "${colors.background}"
 
-        status_notifier = widget.StatusNotifier(
-            icon_theme="papirus-icon-theme",
-            icon_size=16
-            )
+        #status_notifier = widget.StatusNotifier(
+        #    icon_theme="papirus-icon-theme",
+        #    icon_size=16
+        #    )
 
         chord = widget.Chord(
             foreground = "${colors.foreground}"
@@ -122,9 +122,7 @@ in {
                 groupbox,
                 chord,
                 widget.Spacer(),
-                #status_notifier
-                #widget.Systray()
-                status_notifier
+                widget.Systray()
                 ]
 
             return Screen(

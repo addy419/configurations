@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     binutils
     git
-    emacs
+    emacsNativeComp
  #   emacsPgtkGcc
     (ripgrep.override {withPCRE2 = true;})
     gnutls
@@ -38,9 +38,11 @@
   #  '';
   #};
 
+  home.sessionPath = [ "${config.home.homeDirectory}/.emacs.d/bin" ];
+
   services.emacs = {
     enable = true;
-#    package = pkgs.emacsPgtkGcc;
+    package = pkgs.emacsNativeComp;
   };
 
   services.sxhkd = {

@@ -42,7 +42,7 @@ in {
   config.home.packages = with pkgs; [
     lxqt.lxqt-qtplugin
     libsForQt5.qtstyleplugin-kvantum
-    xdg-desktop-portal
+    # xdg-desktop-portal
     papirus-icon-theme
 
     # for theme modification
@@ -51,7 +51,6 @@ in {
   ];
 
   config.home.sessionVariables = {
-    GTK_USE_PORTAL = "1";
     QT_QPA_PLATFORMTHEME = "lxqt";
   };
 
