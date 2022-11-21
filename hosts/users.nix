@@ -16,7 +16,7 @@ in {
   config = {
     user = {
       inherit name;
-      extraGroups = [ "wheel" ]; # sudo
+      extraGroups = [ "wheel" "networkmanager" "input" "video" ]; # sudo
       isNormalUser = true;
     };
     # Define a user account. Don't forget to set a password with ‘passwd’.

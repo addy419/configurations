@@ -24,6 +24,8 @@ in {
     ".local/share/fonts/poppins".source = poppins;
   };
 
+  fonts.fontconfig.enable = true;
+
 #  xdg.configFile."fontconfig/fonts.conf".text = ''
 #    <?xml version="1.0"?>
 #    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
