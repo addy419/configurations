@@ -3,50 +3,51 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    # nixpkgs.url = "nixpkgs/nixos-22.05";
-    # nixpkgsUnstable.url = "nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     homeManager = {
-      # url = "github:nix-community/home-manager/release-22.05";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacsOverlay.url = "github:nix-community/emacs-overlay";
+    flake-utils.url = "github:numtide/flake-utils";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nur.url = "github:nix-community/NUR";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+    };
+    mozilla-addons-to-nix = {
+      url = "sourcehut:~rycee/mozilla-addons-to-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+    hardened-firefox = {
+      url = "github:arkenfox/user.js";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgsUnstable, emacsOverlay, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
 
     let
-      hosts = {
-        orca = "x86_64-linux";
-        virt = "x86_64-linux";
-      };
-      allowUnfree = true; # *gasps* richard senpai, are you watching this?
-      # unstableOverlay = final: prev: {
-      #   unstable = import nixpkgsUnstable {
-      #     system = prev.system;
-      #     config = { inherit allowUnfree; };
-      #   };
-      # };
-      # overlays = [ unstableOverlay emacsOverlay.overlay ];
-      overlays = [ emacsOverlay.overlay ];
+      lib = nixpkgs.lib;
 
+      currentSystem = builtins.getEnv "SYSTEM";
+      system = if currentSystem == "" then "x86_64-linux" else currentSystem;
+      currentUser = builtins.getEnv "USER";
+      user = if lib.elem currentUser [ "" "root" ] then "aditya" else currentUser;
+
+      discordOverlay = self: prev: {
+        discord = prev.discord.override { withOpenASAR = true; };
+      };
+      #overlays = [ discordOverlay ];
+      overlays = [  ];
     in {
       # expects default config in hosts/{hostName}/configuration.nix
-      nixosConfigurations = nixpkgs.lib.mapAttrs (host: system:
-        nixpkgs.lib.nixosSystem {
+      nixosConfigurations = lib.mapAttrs (hostName: system:
+        lib.nixosSystem {
           inherit system;
-          modules = [
-            (./hosts/. + "/${host}/configuration.nix")
-            {
-              networking.hostName = host;
-              nixpkgs = { 
-                inherit overlays;
-                config = { inherit allowUnfree; };
-              };
-            }
-          ];
-          specialArgs = { inherit inputs; };
-        }) hosts;
+          modules = [ (./hosts/. + "/${hostName}/configuration.nix") ];
+          specialArgs = {
+            inherit inputs;
+            current = { inherit hostName; inherit user; inherit overlays; }; };
+        }) (lib.mapAttrs (path: type: system) (lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./hosts)));
     };
 }

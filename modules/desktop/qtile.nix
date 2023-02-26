@@ -9,7 +9,7 @@ in {
     enable = true;
     windowManager.qtile = {
       enable = true;
-      package = pkgs.unstable.qtile;
+      package = pkgs.qtile;
       keybindings = {
         "mod + mod1 + r" = "lazy.reload_config()";
         "mod + 0" = {

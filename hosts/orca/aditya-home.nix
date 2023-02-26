@@ -3,18 +3,22 @@
 {
   # Yes home.nix, your refactoring time will arrive soon
   imports = [
+    ../../modules/essential/spell.nix
     ../../modules/dev/git.nix
+    ../../modules/dev/latex.nix
+    ../../modules/dev/java.nix
     ../../modules/colorschemes/dracula.nix
-    ../../modules/desktop/qtile.nix
-    #../../modules/desktop/bspwm.nix
-    #../../modules/desktop/sxhkd.nix
-    #../../modules/desktop/polybar.nix
+    #../../modules/desktop/qtile.nix
+    ../../modules/desktop/office.nix
     ../../modules/desktop/notification.nix
     ../../modules/desktop/fonts.nix
-    ../../modules/desktop/urxvt.nix
+    #../../modules/desktop/urxvt.nix
     ../../modules/desktop/rofi.nix
     ../../modules/editors/emacs.nix
     ../../modules/editors/neovim.nix
+    ../../modules/desktop/hyprland.nix
+    ../../modules/desktop/firefox
+#    ../../external-modules/nwg-look.nix
   ];
 
   home.packages = with pkgs; [
@@ -23,42 +27,102 @@
     # in case on no wm keybindings
     xorg.xkill
     # Python
-    #(python3.withPackages (ps: with ps; [ requests ]))
-    # Desktop
-    #feh
-    #cinnamon.pix
+    (python3.withPackages (ps: with ps; [
+      requests
+      numpy
+      matplotlib
+      scipy
+    ]))
     # Applets
-    cbatticon
-    gvolicon
-    #nm-tray
     networkmanagerapplet
     # Applications
-    libsForQt5.kdeconnect-kde
+    (libsForQt5.kdeconnect-kde.overrideAttrs (oldAttrs: {
+      buildInputs = oldAttrs.buildInputs ++ [ libsForQt5.qtconnectivity ];
+      cmakeFlags = (oldAttrs.cmakeFlags or []) ++ [ "-DBLUETOOTH_ENABLED=ON" ];
+    }))
     #neomutt
     lxqt.pcmanfm-qt
     lxqt.lxqt-archiver
     # wayland
-    foot
-    #dconf
-    font-manager
 #    phinger-cursors
+    brightnessctl
+    pavucontrol
     glib
-    dmenu-wayland
     discord
     tigervnc
     alacritty
     libsForQt5.okular
     bitwarden
-    ksnip
-    steam
-    texlive.combined.scheme-full
+    pulseaudio
+    grim
+    slurp
+    #steam
+    #steam
+    #gamescope
+    wl-clipboard
+    wev
+    dmenu-wayland
+    #rofi-wayland
+    zip
+    zotero
+    sqlite
+    chromium
+    swaylock
+    swaynotificationcenter
+    virt-manager
+    signal-desktop
+    qt6.qtwayland
+    mpv
+    swayimg
+    # for SMAPI
+    glxinfo
   ];
 
-  services.kdeconnect = {
+  programs.waybar = {
     enable = true;
-    indicator = true;
+    package = pkgs.waybar.overrideAttrs (oldAttrs: {
+      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+      patchPhase = ''
+        substituteInPlace src/modules/wlr/workspace_manager.cpp --replace "zext_workspace_handle_v1_activate(workspace_handle_);" "const std::string command = \"${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch workspace \" + name_; system(command.c_str());"
+      '';
+    });
   };
-  
+
+  #services.kdeconnect = {
+  #  enable = true;
+  #  indicator = true;
+  #};
+
+  services.swayidle = {
+    enable = true;
+    systemdTarget = "hyprland-session.target";
+    events = [
+      {
+        event = "before-sleep";
+        command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py suspend & ${pkgs.swaylock}/bin/swaylock";
+      }
+      {
+        event = "after-resume";
+        command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py resume";
+      }
+      {
+        event = "lock";
+        command = "${pkgs.swaylock}/bin/swaylock";
+      }
+    ];
+    timeouts = [
+      {
+        timeout = 120;
+        command = "${pkgs.brightnessctl}/bin/brightnessctl -sc backlight set 10%";
+        resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl -rc backlight";
+      }
+      { 
+        timeout = 300;
+        command = "${pkgs.systemd}/bin/systemctl suspend";
+      }
+    ];
+  };
+
   programs.bash = {
     enable = true;
     shellAliases.wdcs = "${pkgs.sshpass}/bin/sshpass -f ${config.home.homeDirectory}/.dcs-vnc ssh dcs-vnc";
@@ -71,20 +135,11 @@
     Install.WantedBy = [ "default.target" ];
   };
 
-  # Home Manager programs.firefox style
-  programs.firefox = {
+  programs.obs-studio = {
     enable = true;
-  #  package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-  #    forceWayland = true;
-  #    extraPolicies = {
-  #      ExtensionSettings = {};
-  #    };
-  #  };
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-vkcapture
+    ];
   };
-  
-  #home.sessionVariables = {
-  #  MOZ_ENABLE_WAYLAND = "1";
-  #  MOZ_USE_XINPUT2 = "1";
-  #  XDG_CURRENT_DESKTOP = "river";
-  #};
 }
