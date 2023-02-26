@@ -13,9 +13,10 @@ let
 
 in {
   home.packages = with pkgs; [
-    (rofi.override { 
-      plugins = with pkgs; [ rofi-emoji ];
-    })
+    rofi-wayland
+    #(rofi.override { 
+    #  plugins = with pkgs; [ rofi-emoji ];
+    #})
   ];
 
   xdg.configFile = {
@@ -27,13 +28,13 @@ in {
     '';
   };
 
-  xsession = {
-    windowManager.qtile = {
-      keybindings = {
-        "mod1 + Tab" = "lazy.spawn(\"rofi -modi window -show window\")";
-        "mod + d" = "lazy.spawn(\"rofi -modi drun -show drun\")";
-        "mod + period" = "lazy.spawn(\"rofi -modi emoji -show emoji -config ${config.xdg.configHome}/rofi/config-no-icons.rasi\")";
-      };
-    };
-  };
+  #xsession = {
+  #  windowManager.qtile = {
+  #    keybindings = {
+  #      "mod1 + Tab" = "lazy.spawn(\"rofi -modi window -show window\")";
+  #      "mod + d" = "lazy.spawn(\"rofi -modi drun -show drun\")";
+  #      "mod + period" = "lazy.spawn(\"rofi -modi emoji -show emoji -config ${config.xdg.configHome}/rofi/config-no-icons.rasi\")";
+  #    };
+  #  };
+  #};
 }

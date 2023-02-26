@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, current, config, ... }:
 
 {
   imports = [ inputs.homeManager.nixosModules.home-manager ];
@@ -7,10 +7,10 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${config.user.name} =  {
-      imports = [ (./. + "/${config.networking.hostName}/${config.user.name}-home.nix") ];
+    users.${current.user} =  {
+      imports = [ (./. + "/${current.hostName}/${current.user}-home.nix") ];
       home.stateVersion = config.system.stateVersion;
     };
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs; inherit current; };
   };
 }

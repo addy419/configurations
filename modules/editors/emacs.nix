@@ -4,8 +4,7 @@
   home.packages = with pkgs; [
     binutils
     git
-    emacsNativeComp
- #   emacsPgtkGcc
+    emacs-gtk
     (ripgrep.override {withPCRE2 = true;})
     gnutls
     fd
@@ -42,7 +41,7 @@
 
   services.emacs = {
     enable = true;
-    package = pkgs.emacsNativeComp;
+    package = pkgs.emacs-gtk;
   };
 
   services.sxhkd = {

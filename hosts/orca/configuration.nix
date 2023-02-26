@@ -2,23 +2,36 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, lib, ... }:
+{ inputs, current, config, pkgs, lib, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../users.nix
       ../home-manager.nix
     ];
 
   # Enable flakes
   nix = {
     package = pkgs.nixUnstable;
-    autoOptimiseStore = true;
+    settings = {
+      auto-optimise-store = true;
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+  };
+
+  nixpkgs = { 
+    overlays = current.overlays;
+    config = { allowUnfree = true; };
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -27,11 +40,17 @@
     efi.canTouchEfiVariables = true;
   };
 
+  # Set host name
+  networking.hostName = current.hostName;
+  
   # Enables wireless support
   networking.networkmanager.enable = true;
 
   # Enable bluetooth support
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluezFull;
+  };
   services.blueman.enable = true;
 
   # Set your time zone.
@@ -44,31 +63,35 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
+  # font = "Lat2-Terminus16";
+  # keyMap = "us";
      useXkbConfig = true; # use xkbOptions in tty.
   };
 
   # Configure XServer
   services.xserver = {
-    enable = true;
-    desktopManager.xterm.enable = true;
-    displayManager.lightdm.enable = true;
+    #enable = true;
+    #desktopManager.xterm.enable = true;
+    #displayManager.lightdm.enable = true;
     layout = "us";
     xkbVariant = "altgr-intl";
     xkbOptions = "caps:escape";
     gdk-pixbuf.modulePackages = [ pkgs.librsvg ]; # tray bugfix 
   };
 
-  #services.greetd = {
-  #  enable = true;
-  #  settings = {
-  #    default_session = {
-  #      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd river";
-  #      user = "greeter";
-  #    };
-  #  };
-  #};
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        user = "greeter";
+        vt = "next";
+      };
+    };
+  };
+
+  # AMD GPU driver issue temporary workaround
+  # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -80,8 +103,8 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
+    wireplumber.enable = true;
     media-session.config.bluez-monitor.rules = [
       {
         # Matches all cards
@@ -119,49 +142,103 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.touchpad.naturalScrolling = true;
+  # services.xserver.libinput.touchpad.naturalScrolling = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${current.user} = {
+    extraGroups = [ "wheel" "networkmanager" "input" "video" "libvirtd" "vboxusers" ];
+    isNormalUser = true;
+  };
 
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     coreutils
+    pciutils
+    dmidecode
     killall
     unzip
     wget
-    river
+#    tailscale
     #libsForQt5.qt5.qtgraphicaleffects
   ];
 
-  # River dependencies
-  hardware.opengl.enable = true;
-  programs.xwayland.enable = true;
-
   # Wayland
-  services.dbus.enable = true;
-
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
-      ];
-      wlr.enable = true;
-      #gtkUsePortal = true;
-    };
+  qt = {
+    enable = true;
+    platformTheme = "lxqt";
   };
 
-  programs.light.enable = true;
+  services.dbus.enable = true;
 
-  #----=[ Fonts ]=----#
+  #xdg = {
+  #  portal = {
+  #    enable = true;
+  #    extraPortals = with pkgs; [
+  #      xdg-desktop-portal-wlr
+  #      xdg-desktop-portal-gtk
+  #      xdg-desktop-portal-kde
+  #    ];
+  #    wlr.enable = true;
+  #  };
+  #};
+
+  # Fonts
   fonts = {
     enableDefaultFonts = true;
     fontconfig = {
       defaultFonts = {
-        serif = [ "Poppins" ];
-        sansSerif = [ "Poppins" ];
+        serif = [ "Noto Sans Display" ];
+        sansSerif = [ "Noto Sans Display" ];
         monospace = [ "Courier Prime Code" ];
       };
     };
+  };
+
+  # VM
+  programs.dconf.enable = true;
+  virtualisation.libvirtd.enable = true;
+  #virtualisation = {
+    #virtualbox.host = {
+    #  enable = true;
+    #};
+  #};
+
+  # Security
+  services.logind.extraConfig = ''
+    HandlePowerKey=suspend
+  '';
+  
+  security.pam.services.swaylock.text = ''
+    # Account management.
+    account required pam_unix.so
+
+    # Authentication management.
+    auth sufficient pam_unix.so   likeauth try_first_pass
+    auth required pam_deny.so
+
+    # Password management.
+    password sufficient pam_unix.so nullok sha512
+
+    # Session management.
+    session required pam_env.so conffile=/etc/pam/environment readenv=0
+    session required pam_unix.so
+  '';
+
+  # List services that you want to enable:
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
+  services.fprintd.enable = true;
+  # services.tailscale.enable = true;
+  # services.zerotierone = {
+  #   enable = true;
+  #   joinNetworks = [ "abfd31bd47b97518" ];
+  # };
+  
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -178,10 +255,12 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+  #  checkReversePath = "loose";
+  #  trustedInterfaces = [ "tailscale0" ];
+  #  allowedUDPPorts = [ config.services.tailscale.port ];
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
