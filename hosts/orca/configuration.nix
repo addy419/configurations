@@ -16,8 +16,11 @@
     package = pkgs.nixUnstable;
     settings = {
       auto-optimise-store = true;
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      substituters = [ "https://hyprland.cachix.org" "https://webcord.cachix.org" ];
+      trusted-public-keys = [
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
+      ];
     };
     gc = {
       automatic = true;
@@ -69,15 +72,26 @@
   };
 
   # Configure XServer
-  services.xserver = {
-    #enable = true;
-    #desktopManager.xterm.enable = true;
-    #displayManager.lightdm.enable = true;
-    layout = "us";
-    xkbVariant = "altgr-intl";
-    xkbOptions = "caps:escape";
-    gdk-pixbuf.modulePackages = [ pkgs.librsvg ]; # tray bugfix 
-  };
+  # services.xserver = {
+  #   enable = true;
+  #   #desktopManager.xterm.enable = true;
+  #   desktopManager.session = [{
+  #     manage = "window";
+  #     name = "Hyprland";
+  #     start = ''
+  #       Hyprland &
+  #       waitPID=$!
+  #     '';
+  #   }];
+  #   displayManager = {
+  #     defaultSession = "Hyprland";
+  #     lightdm.enable = true;
+  #   };
+  #   layout = "us";
+  #   xkbVariant = "altgr-intl";
+  #   xkbOptions = "caps:escape";
+  #   gdk-pixbuf.modulePackages = [ pkgs.librsvg ]; # tray bugfix 
+  # };
 
   services.greetd = {
     enable = true;

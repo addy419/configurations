@@ -66,6 +66,9 @@ in {
     lxqt.lxqt-qtplugin
     libsForQt5.qtstyleplugin-kvantum
     papirus-icon-theme
+    (dracula-theme.overrideAttrs (oldAttrs: {
+      src = dracula-gtk;
+    }))
 
     # for wayland
     configure-gtk
@@ -78,10 +81,10 @@ in {
     builtins.readFile ("${dracula-xresources}/Xresources");
 
   config.xdg = {
-    dataFile = {
-      "themes/Dracula".source = dracula-gtk;
-      "icons/Dracula-cursors".source = "${dracula-gtk}/kde/cursors/Dracula-cursors";
-    };
+    #dataFile = {
+      #"themes/Dracula".source = dracula-gtk;
+      #"icons/Dracula-cursors".source = "${dracula-gtk}/kde/cursors/Dracula-cursors";
+    #};
     configFile = {
       "Kvantum/Dracula/Dracula.kvconfig".source =
         "${dracula-gtk}/kde/kvantum/Dracula-purple-solid/Dracula-purple-solid.kvconfig";

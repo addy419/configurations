@@ -1,5 +1,6 @@
 {
-  description = "The work of a arch lunatic *scratch that* chronic distro hopper";
+  description =
+    "The work of a arch lunatic *scratch that* chronic distro hopper";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
@@ -7,12 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    devenv.url = "github:cachix/devenv";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nur.url = "github:nix-community/NUR";
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-    };
+    hyprland = { url = "github:hyprwm/Hyprland"; };
     mozilla-addons-to-nix = {
       url = "sourcehut:~rycee/mozilla-addons-to-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,32 +22,59 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
+    webcord.url = "github:fufexan/webcord-flake";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, devenv, ... }@inputs:
 
     let
       lib = nixpkgs.lib;
-
       currentSystem = builtins.getEnv "SYSTEM";
       system = if currentSystem == "" then "x86_64-linux" else currentSystem;
       currentUser = builtins.getEnv "USER";
       user = if lib.elem currentUser [ "" "root" ] then "aditya" else currentUser;
-
-      discordOverlay = self: prev: {
-        discord = prev.discord.override { withOpenASAR = true; };
-      };
-      #overlays = [ discordOverlay ];
-      overlays = [  ];
+      pkgs = import nixpkgs { inherit system; };
+      overlays = [ ];
     in {
-      # expects default config in hosts/{hostName}/configuration.nix
+      # Develpment environment shells
+      devShells.${pkgs.system}.py = devenv.lib.mkShell {
+        inherit inputs pkgs;
+        modules = [{
+          languages.python.enable = true;
+          languages.python.venv.enable = true;
+          packages = with pkgs;
+            [
+              (python3.withPackages (ps:
+                with ps; [
+                  wheel
+                  jupyter
+                  numpy
+                  pandas
+                  scikit-learn
+                  nltk
+                  scipy
+                  matplotlib
+                ]))
+            ];
+        }];
+      };
+
+      # NixOS Configuration
+      # Expects default config in hosts/{hostName}/configuration.nix
       nixosConfigurations = lib.mapAttrs (hostName: system:
         lib.nixosSystem {
           inherit system;
           modules = [ (./hosts/. + "/${hostName}/configuration.nix") ];
           specialArgs = {
             inherit inputs;
-            current = { inherit hostName; inherit user; inherit overlays; }; };
-        }) (lib.mapAttrs (path: type: system) (lib.filterAttrs (path: type: type == "directory") (builtins.readDir ./hosts)));
+            current = {
+              inherit hostName;
+              inherit user;
+              inherit overlays;
+            };
+          };
+        }) (lib.mapAttrs (path: type: system)
+          (lib.filterAttrs (path: type: type == "directory")
+            (builtins.readDir ./hosts)));
     };
 }
