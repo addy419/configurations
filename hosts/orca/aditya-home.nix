@@ -4,6 +4,7 @@
   # Yes home.nix, your refactoring time will arrive soon
   imports = [
     ../../modules/essential/spell.nix
+    ../../modules/essential/shell.nix
     ../../modules/dev/git.nix
     ../../modules/dev/latex.nix
     ../../modules/dev/java.nix
@@ -17,6 +18,7 @@
     ../../modules/editors/emacs.nix
     ../../modules/editors/neovim.nix
     ../../modules/desktop/hyprland.nix
+    ../../modules/desktop/discord.nix
     ../../modules/desktop/firefox
 #    ../../external-modules/nwg-look.nix
   ];
@@ -24,15 +26,8 @@
   home.packages = with pkgs; [
     htop
     neofetch
-    # in case on no wm keybindings
-    xorg.xkill
     # Python
-    (python3.withPackages (ps: with ps; [
-      requests
-      numpy
-      matplotlib
-      scipy
-    ]))
+    (python3.withPackages (ps: with ps; []))
     # Applets
     networkmanagerapplet
     # Applications
@@ -48,7 +43,6 @@
     brightnessctl
     pavucontrol
     glib
-    discord
     tigervnc
     alacritty
     libsForQt5.okular
@@ -61,7 +55,6 @@
     #gamescope
     wl-clipboard
     wev
-    dmenu-wayland
     #rofi-wayland
     zip
     zotero
@@ -74,8 +67,6 @@
     qt6.qtwayland
     mpv
     swayimg
-    # for SMAPI
-    glxinfo
   ];
 
   programs.waybar = {
@@ -121,11 +112,6 @@
         command = "${pkgs.systemd}/bin/systemctl suspend";
       }
     ];
-  };
-
-  programs.bash = {
-    enable = true;
-    shellAliases.wdcs = "${pkgs.sshpass}/bin/sshpass -f ${config.home.homeDirectory}/.dcs-vnc ssh dcs-vnc";
   };
 
   systemd.user.services.mpris-proxy = {
