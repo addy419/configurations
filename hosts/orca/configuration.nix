@@ -97,12 +97,43 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.cage}/bin/cage -s -- ${pkgs.greetd.regreet}/bin/regreet";
+        #command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         user = "greeter";
-        vt = "next";
+        #vt = "next";
       };
     };
   };
+
+  environment.etc."greetd/regreet.toml".text = ''
+  #background = "/usr/share/backgrounds/greeter.jpg"
+  #background_fit = "Contain"
+  
+  [GTK]
+  # Whether to use the dark theme
+  application_prefer_dark_theme = true
+  
+  # Cursor theme name
+  cursor_theme_name = "Dracula-cursors"
+  
+  # Font name and size
+  font_name = "Noto Sans Display 16"
+  
+  # Icon theme name
+  icon_theme_name = "Papirus"
+  
+  # GTK theme name
+  theme_name = "Dracula"
+  '';
+
+  #environment.etc."greetd/environments".text = ''
+  #  Hyprland
+  #'';
+
+  systemd.tmpfiles.rules = [
+    "d /var/log/regreet 0755 greeter greeter - -"
+    "d /var/cache/regreet 0755 greeter greeter - -"
+  ];
 
   # AMD GPU driver issue temporary workaround
   # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
@@ -119,29 +150,6 @@
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
-    media-session.config.bluez-monitor.rules = [
-      {
-        # Matches all cards
-        matches = [ { "device.name" = "~bluez_card.*"; } ];
-        actions = {
-          "update-props" = {
-            "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-            # mSBC is not expected to work on all headset + adapter combinations.
-            "bluez5.msbc-support" = true;
-            # SBC-XQ is not expected to work on all headset + adapter combinations.
-            "bluez5.sbc-xq-support" = true;
-          };
-        };
-      }
-      {
-        matches = [
-          # Matches all sources
-          { "node.name" = "~bluez_input.*"; }
-          # Matches all outputs
-          { "node.name" = "~bluez_output.*"; }
-        ];
-      }
-    ];
   };
 
   environment.etc = {
@@ -154,9 +162,6 @@
   		}
   	'';
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.touchpad.naturalScrolling = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${current.user} = {
@@ -254,6 +259,8 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  programs.gamemode.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -2,10 +2,8 @@
 
 {
   home.packages = with pkgs; [
+    swaynotificationcenter
     libnotify
-    lxqt.lxqt-notificationd
-    picom
-    #dunst
   ];
 
   #systemd.user.services.lxqt-notificationd = {

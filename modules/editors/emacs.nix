@@ -37,7 +37,7 @@
   #  '';
   #};
 
-  home.sessionPath = [ "${config.home.homeDirectory}/.emacs.d/bin" ];
+  home.sessionPath = [ "${config.home.homeDirectory}/.config/emacs/bin" ];
 
   services.emacs = {
     enable = true;
