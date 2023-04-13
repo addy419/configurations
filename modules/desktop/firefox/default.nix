@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, current, buildFirefoxXpiAddon, ... }:
+{ inputs, config, pkgs, lib, buildFirefoxXpiAddon, ... }:
 
 let
   myconfig = ''
@@ -12,6 +12,10 @@ let
     user_pref("media.rdd-vpx.enabled", false);
     user_pref("media.navigator.mediadatadecoder_vpx_enabled", true);
   '';
+  firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+    extraNativeMessagingHosts = [ (pkgs.callPackage ./firefox-profile-switcher-connector.nix { }) ];
+    extraPolicies = { ExtensionSettings = { }; };
+  };
   addons = builtins.removeAttrs (pkgs.callPackage ./addons.nix {
     inherit (config.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
   }) [ "override" "overrideDerivation" ];
@@ -23,10 +27,7 @@ in {
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      extraPolicies = { ExtensionSettings = { }; };
-    };
-    extensions = builtins.attrValues addons;
+    package = firefox-package;
     profiles = {
       hardened = {
         isDefault = true;
@@ -34,6 +35,7 @@ in {
           default = "DuckDuckGo";
           force = true;
         };
+        extensions = builtins.attrValues addons;
         extraConfig = builtins.readFile "${inputs.hardened-firefox}/user.js"
           + myconfig;
       };
@@ -44,8 +46,15 @@ in {
           default = "DuckDuckGo";
           force = true;
         };
+        extensions = builtins.attrValues addons;
       };
     };
+  };
+
+  xdg.configFile = {
+    "firefoxprofileswitcher/config.json".text = ''
+      {"browser_binary": "${firefox-package}/bin/firefox"}
+    '';
   };
 
   home.sessionVariables = {

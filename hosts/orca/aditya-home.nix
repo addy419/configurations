@@ -13,6 +13,7 @@
     ../../modules/desktop/office.nix
     ../../modules/desktop/notification.nix
     ../../modules/desktop/fonts.nix
+    ../../modules/desktop/alacritty.nix
     #../../modules/desktop/urxvt.nix
     ../../modules/desktop/rofi.nix
     ../../modules/editors/emacs.nix
@@ -20,53 +21,46 @@
     ../../modules/desktop/hyprland.nix
     ../../modules/desktop/discord.nix
     ../../modules/desktop/firefox
+    ../../modules/desktop/steam.nix
 #    ../../external-modules/nwg-look.nix
   ];
 
   home.packages = with pkgs; [
     htop
     neofetch
-    # Python
-    (python3.withPackages (ps: with ps; []))
-    # Applets
     networkmanagerapplet
+    gnumake
     # Applications
-    (libsForQt5.kdeconnect-kde.overrideAttrs (oldAttrs: {
-      buildInputs = oldAttrs.buildInputs ++ [ libsForQt5.qtconnectivity ];
-      cmakeFlags = (oldAttrs.cmakeFlags or []) ++ [ "-DBLUETOOTH_ENABLED=ON" ];
-    }))
+    #(libsForQt5.kdeconnect-kde.overrideAttrs (oldAttrs: {
+    #  buildInputs = oldAttrs.buildInputs ++ [ libsForQt5.qtconnectivity ];
+    #  cmakeFlags = (oldAttrs.cmakeFlags or []) ++ [ "-DBLUETOOTH_ENABLED=ON" ];
+    #}))
     #neomutt
     lxqt.pcmanfm-qt
     lxqt.lxqt-archiver
-    # wayland
-#    phinger-cursors
     brightnessctl
     pavucontrol
     glib
     tigervnc
-    alacritty
     libsForQt5.okular
     bitwarden
     pulseaudio
     grim
     slurp
-    #steam
-    #steam
-    #gamescope
     wl-clipboard
     wev
-    #rofi-wayland
     zip
-    zotero
     sqlite
     chromium
     swaylock
-    swaynotificationcenter
     virt-manager
     signal-desktop
     qt6.qtwayland
+    qt5.qtwayland
     mpv
     swayimg
+    amberol
+    wdisplays
   ];
 
   programs.waybar = {
@@ -78,11 +72,6 @@
       '';
     });
   };
-
-  #services.kdeconnect = {
-  #  enable = true;
-  #  indicator = true;
-  #};
 
   services.swayidle = {
     enable = true;

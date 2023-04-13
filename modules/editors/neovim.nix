@@ -8,7 +8,7 @@
         plugin = dracula-vim;
         config = ''
           syntax on
-          packadd! dracula-vim
+          "packadd! dracula-vim
           colorscheme dracula
           highlight Comment gui=italic
         '';

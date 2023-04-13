@@ -77,4 +77,8 @@
     driSupport = true;
     driSupport32Bit = true;
   };
+
+  # Logitech unifying receiver
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
 }
