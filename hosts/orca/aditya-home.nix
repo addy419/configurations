@@ -18,7 +18,6 @@
     ../../modules/desktop/rofi.nix
     ../../modules/editors/emacs.nix
     ../../modules/editors/neovim.nix
-    ../../modules/desktop/hyprland.nix
     ../../modules/desktop/discord.nix
     ../../modules/desktop/firefox
     ../../modules/desktop/steam.nix
@@ -43,6 +42,7 @@
     glib
     tigervnc
     libsForQt5.okular
+    masterpdfeditor
     bitwarden
     pulseaudio
     grim
@@ -61,6 +61,11 @@
     swayimg
     amberol
     wdisplays
+    poppler_utils
+    lutris
+    protonup-qt
+    inkscape
+    zoom-us
   ];
 
   programs.waybar = {
@@ -68,7 +73,7 @@
     package = pkgs.waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
       patchPhase = ''
-        substituteInPlace src/modules/wlr/workspace_manager.cpp --replace "zext_workspace_handle_v1_activate(workspace_handle_);" "const std::string command = \"${config.wayland.windowManager.hyprland.package}/bin/hyprctl dispatch workspace \" + name_; system(command.c_str());"
+        substituteInPlace src/modules/wlr/workspace_manager.cpp --replace "zext_workspace_handle_v1_activate(workspace_handle_);" "const std::string command = \"${pkgs.hyprland}/bin/hyprctl dispatch workspace \" + name_; system(command.c_str());"
       '';
     });
   };
@@ -77,14 +82,14 @@
     enable = true;
     systemdTarget = "hyprland-session.target";
     events = [
-      {
-        event = "before-sleep";
-        command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py suspend & ${pkgs.swaylock}/bin/swaylock";
-      }
-      {
-        event = "after-resume";
-        command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py resume";
-      }
+      #{
+      #  event = "before-sleep";
+      #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py suspend & ${pkgs.swaylock}/bin/swaylock";
+      #}
+      #{
+      #  event = "after-resume";
+      #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py resume";
+      #}
       {
         event = "lock";
         command = "${pkgs.swaylock}/bin/swaylock";

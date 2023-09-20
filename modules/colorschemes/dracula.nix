@@ -6,8 +6,8 @@ let
   dracula-gtk = pkgs.fetchFromGitHub {
     owner = "dracula";
     repo = "gtk";
-    rev = "bc098d48e966870548e798f5d6d0a38e3b48c884";
-    sha256 = "1923jyvji2s6a3nx0kzzgzjk6qlnsp6dyc0vyd370paiif3clzrb";
+    rev = "48f3e01d446d0b0a4e0b02e99689e837b6b7e339";
+    sha256 = "1b4zfzawyvjmy7cayyzfpazdqsvrzkklzp5cij5wpjivjicrzvsz";
   };
   dracula-xresources = pkgs.fetchFromGitHub {
     owner = "dracula";

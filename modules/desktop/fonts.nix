@@ -22,6 +22,8 @@ in {
 
     vistafonts
     corefonts
+    times-newer-roman
+    roboto
   ];
 
   home.file = {

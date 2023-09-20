@@ -11,6 +11,8 @@ let
     user_pref("media.ffvpx.enabled", false);
     user_pref("media.rdd-vpx.enabled", false);
     user_pref("media.navigator.mediadatadecoder_vpx_enabled", true);
+
+    user_pref("gfx.webrender.all", true);
   '';
   firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
     extraNativeMessagingHosts = [ (pkgs.callPackage ./firefox-profile-switcher-connector.nix { }) ];
@@ -21,9 +23,6 @@ let
   }) [ "override" "overrideDerivation" ];
 in {
   imports = [ inputs.nur.nixosModules.nur ];
-
-  home.packages =
-    [ inputs.mozilla-addons-to-nix.packages.${pkgs.system}.default ];
 
   programs.firefox = {
     enable = true;
