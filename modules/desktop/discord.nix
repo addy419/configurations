@@ -1,13 +1,9 @@
-{ inputs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [
-    inputs.webcord.homeManagerModules.default
+  home.packages = with pkgs; [
+    webcord
   ];
-
-  programs.webcord = {
-  enable = true;
-  };
 
   home.sessionVariables.NIXOS_OZONE_WL = "1";
 }

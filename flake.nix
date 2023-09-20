@@ -12,7 +12,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nur.url = "github:nix-community/NUR";
-    hyprland = { url = "github:hyprwm/Hyprland"; };
     mozilla-addons-to-nix = {
       url = "sourcehut:~rycee/mozilla-addons-to-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +21,6 @@
       url = "github:arkenfox/user.js";
       flake = false;
     };
-    webcord.url = "github:fufexan/webcord-flake";
   };
 
   outputs = { self, nixpkgs, devenv, ... }@inputs:
@@ -37,26 +35,38 @@
       overlays = [ ];
     in {
       # Develpment environment shells
-      devShells.${pkgs.system}.py = devenv.lib.mkShell {
-        inherit inputs pkgs;
-        modules = [{
-          languages.python.enable = true;
-          languages.python.venv.enable = true;
-          packages = with pkgs;
+      devShells.${pkgs.system} = {
+        py = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [{
+            languages.python.enable = true;
+            languages.python.venv.enable = true;
+            packages = with pkgs;
+              [
+                (python3.withPackages (ps:
+                  with ps; [
+                    wheel
+                    jupyter
+                    numpy
+                    pandas
+                    scikit-learn
+                    nltk
+                    scipy
+                    matplotlib
+                  ]))
+              ];
+          }];
+        };
+        mozilla-addons-to-nix = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [{
+            languages.rust.enable = true;
+            packages = with pkgs;
             [
-              (python3.withPackages (ps:
-                with ps; [
-                  wheel
-                  jupyter
-                  numpy
-                  pandas
-                  scikit-learn
-                  nltk
-                  scipy
-                  matplotlib
-                ]))
+              inputs.mozilla-addons-to-nix.packages.${pkgs.system}.default
             ];
-        }];
+          }];
+        };
       };
 
       # NixOS Configuration

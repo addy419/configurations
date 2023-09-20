@@ -16,11 +16,6 @@
     package = pkgs.nixUnstable;
     settings = {
       auto-optimise-store = true;
-      substituters = [ "https://hyprland.cachix.org" "https://webcord.cachix.org" ];
-      trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-        "webcord.cachix.org-1:l555jqOZGHd2C9+vS8ccdh8FhqnGe8L78QrHNn+EFEs="
-      ];
     };
     gc = {
       automatic = true;
@@ -52,7 +47,17 @@
   # Enable bluetooth support
   hardware.bluetooth = {
     enable = true;
-    package = pkgs.bluezFull;
+    settings = {
+      General = {
+        Name = "Hello";
+        ControllerMode = "dual";
+        FastConnectable = "true";
+        Experimental = "true";
+      };
+      Policy = {
+        AutoEnable = "true";
+      };
+    };
   };
   services.blueman.enable = true;
 
@@ -71,69 +76,23 @@
      useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Configure XServer
-  # services.xserver = {
-  #   enable = true;
-  #   #desktopManager.xterm.enable = true;
-  #   desktopManager.session = [{
-  #     manage = "window";
-  #     name = "Hyprland";
-  #     start = ''
-  #       Hyprland &
-  #       waitPID=$!
-  #     '';
-  #   }];
-  #   displayManager = {
-  #     defaultSession = "Hyprland";
-  #     lightdm.enable = true;
-  #   };
-  #   layout = "us";
-  #   xkbVariant = "altgr-intl";
-  #   xkbOptions = "caps:escape";
-  #   gdk-pixbuf.modulePackages = [ pkgs.librsvg ]; # tray bugfix 
-  # };
-
+  #programs.regreet.enable = true;
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.cage}/bin/cage -s -- ${pkgs.greetd.regreet}/bin/regreet";
-        #command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         user = "greeter";
-        #vt = "next";
+        vt = "next";
       };
     };
   };
-
-  environment.etc."greetd/regreet.toml".text = ''
-  #background = "/usr/share/backgrounds/greeter.jpg"
-  #background_fit = "Contain"
-  
-  [GTK]
-  # Whether to use the dark theme
-  application_prefer_dark_theme = true
-  
-  # Cursor theme name
-  cursor_theme_name = "Dracula-cursors"
-  
-  # Font name and size
-  font_name = "Noto Sans Display 16"
-  
-  # Icon theme name
-  icon_theme_name = "Papirus"
-  
-  # GTK theme name
-  theme_name = "Dracula"
-  '';
-
-  #environment.etc."greetd/environments".text = ''
-  #  Hyprland
-  #'';
-
-  systemd.tmpfiles.rules = [
-    "d /var/log/regreet 0755 greeter greeter - -"
-    "d /var/cache/regreet 0755 greeter greeter - -"
-  ];
+  programs.hyprland = {
+    enable = true;
+    xwayland = {
+      enable = true;
+    };
+  };
 
   # AMD GPU driver issue temporary workaround
   # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
@@ -173,11 +132,11 @@
   environment.systemPackages = with pkgs; [
     coreutils
     pciutils
+    usbutils
     dmidecode
     killall
     unzip
     wget
-#    tailscale
     #libsForQt5.qt5.qtgraphicaleffects
   ];
 
@@ -189,21 +148,9 @@
 
   services.dbus.enable = true;
 
-  #xdg = {
-  #  portal = {
-  #    enable = true;
-  #    extraPortals = with pkgs; [
-  #      xdg-desktop-portal-wlr
-  #      xdg-desktop-portal-gtk
-  #      xdg-desktop-portal-kde
-  #    ];
-  #    wlr.enable = true;
-  #  };
-  #};
-
   # Fonts
   fonts = {
-    enableDefaultFonts = true;
+    enableDefaultPackages = true;
     fontconfig = {
       defaultFonts = {
         serif = [ "Noto Sans Display" ];
@@ -216,11 +163,6 @@
   # VM
   programs.dconf.enable = true;
   virtualisation.libvirtd.enable = true;
-  #virtualisation = {
-    #virtualbox.host = {
-    #  enable = true;
-    #};
-  #};
 
   # Security
   services.logind.extraConfig = ''
@@ -247,11 +189,6 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
   services.fprintd.enable = true;
-  # services.tailscale.enable = true;
-  # services.zerotierone = {
-  #   enable = true;
-  #   joinNetworks = [ "abfd31bd47b97518" ];
-  # };
   
   # Steam
   programs.steam = {
@@ -278,9 +215,8 @@
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-  #  checkReversePath = "loose";
-  #  trustedInterfaces = [ "tailscale0" ];
-  #  allowedUDPPorts = [ config.services.tailscale.port ];
+  #  trustedInterfaces = [ ];
+  #  allowedUDPPorts = [ ];
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
