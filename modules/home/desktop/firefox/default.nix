@@ -15,7 +15,7 @@ let
     user_pref("gfx.webrender.all", true);
   '';
   firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    extraNativeMessagingHosts = [ (pkgs.callPackage ./firefox-profile-switcher-connector.nix { }) ];
+    nativeMessagingHosts = [ (pkgs.callPackage ./firefox-profile-switcher-connector.nix { }) ];
     extraPolicies = { ExtensionSettings = { }; };
   };
   addons = builtins.removeAttrs (pkgs.callPackage ./addons.nix {
@@ -23,6 +23,10 @@ let
   }) [ "override" "overrideDerivation" ];
 in {
   imports = [ inputs.nur.nixosModules.nur ];
+
+  home.packages = with pkgs; [
+    config.nur.repos.rycee.mozilla-addons-to-nix
+  ];
 
   programs.firefox = {
     enable = true;

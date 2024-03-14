@@ -6,14 +6,14 @@
     windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      config = ../../config/xmonad/xmonad.hs;
+      config = ../../../config/xmonad/xmonad.hs;
     };
   };
 
   home.packages = with pkgs; [
     (pkgs.writers.writeHaskellBin "xmonadctl" {
       libraries = [ haskellPackages.xmonad-contrib haskellPackages.X11 ];
-    } (builtins.readFile ../../config/xmonad/xmonadctl.hs))
+    } (builtins.readFile ../../../config/xmonad/xmonadctl.hs))
   ];
 
   services.sxhkd = {

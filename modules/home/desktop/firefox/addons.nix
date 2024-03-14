@@ -2,10 +2,10 @@
   {
     "bitwarden" = buildFirefoxXpiAddon {
       pname = "bitwarden";
-      version = "2023.8.3";
+      version = "2024.1.1";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4164440/bitwarden_password_manager-2023.8.3.xpi";
-      sha256 = "d43d7603ed04a24cd37b209a22d58b940cd71503d654d6305d6c37317fd5889c";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4225453/bitwarden_password_manager-2024.1.1.xpi";
+      sha256 = "af5aabc846eba9adeaf194dc0cacc0921df734c21f1156d705ad9b9cf57e1d73";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -24,10 +24,32 @@
           "webRequest"
           "webRequestBlocking"
           "file:///*"
-          ];
+          "https://lastpass.com/export.php"
+        ];
         platforms = platforms.all;
-        };
       };
+    };
+    "fastforwardteam" = buildFirefoxXpiAddon {
+      pname = "fastforwardteam";
+      version = "0.2334";
+      addonId = "addon@fastforward.team";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4177101/fastforwardteam-0.2334.xpi";
+      sha256 = "d790219622469f08316b41c0d01abf2b584a37fa87b45666a74bd30cffb95ed0";
+      meta = with lib;
+      {
+        homepage = "https://fastforward.team";
+        description = "Don't waste time with compliance. Use FastForward to skip annoying URL \"shorteners\".";
+        mozPermissions = [
+          "alarms"
+          "storage"
+          "webNavigation"
+          "tabs"
+          "declarativeNetRequestWithHostAccess"
+          "<all_urls>"
+        ];
+        platforms = platforms.all;
+      };
+    };
     "h264ify" = buildFirefoxXpiAddon {
       pname = "h264ify";
       version = "1.1.0";
@@ -43,26 +65,25 @@
           "*://*.youtube.com/*"
           "*://*.youtube-nocookie.com/*"
           "*://*.youtu.be/*"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
+    };
     "privacy-badger" = buildFirefoxXpiAddon {
       pname = "privacy-badger";
-      version = "2023.9.12";
+      version = "2023.12.1";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4167070/privacy_badger17-2023.9.12.xpi";
-      sha256 = "eae97d9d3df3350476901ca412505cb4a43d0e7fa79bd9516584935158f82095";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4203344/privacy_badger17-2023.12.1.xpi";
+      sha256 = "aacac794c211fc6ea7dc51529883fd3e477aff37441d29ae7f576ab0f8c737b7";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
         description = "Automatically learns to block invisible trackers.";
         license = licenses.gpl3;
         mozPermissions = [
+          "<all_urls>"
           "alarms"
           "tabs"
-          "http://*/*"
-          "https://*/*"
           "webNavigation"
           "webRequest"
           "webRequestBlocking"
@@ -457,11 +478,10 @@
           "http://www.google.co.zw/*"
           "https://www.google.cat/*"
           "http://www.google.cat/*"
-          "<all_urls>"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
+    };
     "profile-switcher" = buildFirefoxXpiAddon {
       pname = "profile-switcher";
       version = "1.3.1";
@@ -475,14 +495,14 @@
         license = licenses.gpl3;
         mozPermissions = [ "storage" "nativeMessaging" "tabs" ];
         platforms = platforms.all;
-        };
       };
+    };
     "return-youtube-dislikes" = buildFirefoxXpiAddon {
       pname = "return-youtube-dislikes";
-      version = "3.0.0.10";
+      version = "3.0.0.14";
       addonId = "{762f9885-5a13-4abd-9c77-433dcd38b8fd}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4147411/return_youtube_dislikes-3.0.0.10.xpi";
-      sha256 = "bcf4a5d271341a3dab3337bd6d5328f762c8b6b3447562316c166f902be3ad84";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4208483/return_youtube_dislikes-3.0.0.14.xpi";
+      sha256 = "a31ab23549846b7eab92a094e92df8349047b48bbd807f069d128083c3b27f61";
       meta = with lib;
       {
         description = "Returns ability to see dislike statistics on youtube";
@@ -492,10 +512,10 @@
           "*://*.youtube.com/*"
           "storage"
           "*://returnyoutubedislikeapi.com/*"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
+    };
     "tab-stash" = buildFirefoxXpiAddon {
       pname = "tab-stash";
       version = "3.0";
@@ -518,22 +538,45 @@
           "unlimitedStorage"
           "contextualIdentities"
           "cookies"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
+    };
+    "uaswitcher" = buildFirefoxXpiAddon {
+      pname = "uaswitcher";
+      version = "1.4.46";
+      addonId = "user-agent-switcher@ninetailed.ninja";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4230750/uaswitcher-1.4.46.xpi";
+      sha256 = "565c6246257fd9e17cb6a0582152d2f1dd4f4e72837f903cd6289191e10aa610";
+      meta = with lib;
+      {
+        homepage = "https://gitlab.com/ntninja/user-agent-switcher";
+        description = "Easily override the browser's User-Agent string";
+        license = licenses.gpl3;
+        mozPermissions = [
+          "storage"
+          "tabs"
+          "webNavigation"
+          "webRequest"
+          "webRequestBlocking"
+          "<all_urls>"
+        ];
+        platforms = platforms.all;
+      };
+    };
     "ublock-origin" = buildFirefoxXpiAddon {
       pname = "ublock-origin";
-      version = "1.52.0";
+      version = "1.55.0";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4164949/ublock_origin-1.52.0.xpi";
-      sha256 = "3932506ce4df306e4da7527d93d60fe0421cf15045c2f4ea73589d9a0902266b";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4216633/ublock_origin-1.55.0.xpi";
+      sha256 = "a02ca1d32737c3437f97553e5caaead6479a66ac1f8ff3b84a06cfa6bb0c7647";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
         description = "Finally, an efficient wide-spectrum content blocker. Easy on CPU and memory.";
         license = licenses.gpl3;
         mozPermissions = [
+          "alarms"
           "dns"
           "menus"
           "privacy"
@@ -554,16 +597,19 @@
           "https://github.com/*"
           "https://*.github.io/*"
           "https://*.letsblock.it/*"
-          ];
+          "https://github.com/uBlockOrigin/*"
+          "https://ublockorigin.github.io/*"
+          "https://*.reddit.com/r/uBlockOrigin/*"
+        ];
         platforms = platforms.all;
-        };
       };
+    };
     "vimium-c" = buildFirefoxXpiAddon {
       pname = "vimium-c";
-      version = "1.99.995";
+      version = "1.99.997";
       addonId = "vimium-c@gdh1995.cn";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4142362/vimium_c-1.99.995.xpi";
-      sha256 = "d813c98b4e7fbbecd82014d0ff0f163e21f68aa3dee182c61c1536a8854f0760";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4210117/vimium_c-1.99.997.xpi";
+      sha256 = "20e9217ba3d9a7bd0ec3faa88ed7f872acc3f039d1bdeb997398341631617184";
       meta = with lib;
       {
         homepage = "https://github.com/gdh1995/vimium-c";
@@ -580,8 +626,8 @@
           "tabs"
           "webNavigation"
           "<all_urls>"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
-    }
+    };
+  }

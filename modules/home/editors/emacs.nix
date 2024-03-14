@@ -15,7 +15,7 @@
   ];
 
   xdg.configFile."doom" = {
-    source = ../../config/doom.d;
+    source = ../../../config/doom.d;
   };
 
 #  xdg.configFile."doom" = {
