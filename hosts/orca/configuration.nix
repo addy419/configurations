@@ -5,12 +5,6 @@
 { inputs, current, config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../home-manager.nix
-    ];
-
   # Enable flakes
   nix = {
     package = pkgs.nixUnstable;
@@ -100,28 +94,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # PipeWire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
-  };
-
-  environment.etc = {
-  	"wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-  		bluez_monitor.properties = {
-  			["bluez5.enable-sbc-xq"] = true,
-  			["bluez5.enable-msbc"] = true,
-  			["bluez5.enable-hw-volume"] = true,
-  			["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
-  		}
-  	'';
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${current.user} = {
     extraGroups = [ "wheel" "networkmanager" "input" "video" "libvirtd" "vboxusers" ];
@@ -137,6 +109,7 @@
     killall
     unzip
     wget
+    dig
     #libsForQt5.qt5.qtgraphicaleffects
   ];
 
@@ -190,28 +163,6 @@
   services.gvfs.enable = true;
   services.fprintd.enable = true;
   
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-
-  programs.gamemode.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;

@@ -25,7 +25,7 @@ let
     in ''
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       gnome_schema=org.gnome.desktop.interface
-      config="${../../config/dracula/gtk-3.0/settings.ini}"
+      config="${../../../config/dracula/gtk-3.0/settings.ini}"
 
       gtk_theme="$(grep 'gtk-theme-name' "$config" | sed 's/.*\s*=\s*//')"
       icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
@@ -93,15 +93,15 @@ in {
       "Kvantum/kvantum.kvconfig".text = ''
         [General]
         theme=Dracula'';
-      "lxqt/lxqt.conf".source = ../../config/dracula/lxqt/lxqt.conf;
-      "lxqt/session.conf".source = ../../config/dracula/lxqt/session.conf;
-      "gtk-3.0/settings.ini".source = ../../config/dracula/gtk-3.0/settings.ini;
+      "lxqt/lxqt.conf".source = ../../../config/dracula/lxqt/lxqt.conf;
+      "lxqt/session.conf".source = ../../../config/dracula/lxqt/session.conf;
+      "gtk-3.0/settings.ini".source = ../../../config/dracula/gtk-3.0/settings.ini;
     };
   };
 
   config.home.file = {
-    ".gtkrc-2.0".source = ../../config/dracula/gtk-2.0/gtkrc-2.0;
-    ".icons".source = ../../config/dracula/icons;
-    ".Xdefaults".source = ../../config/dracula/Xdefaults;
+    ".gtkrc-2.0".source = ../../../config/dracula/gtk-2.0/gtkrc-2.0;
+    ".icons".source = ../../../config/dracula/icons;
+    ".Xdefaults".source = ../../../config/dracula/Xdefaults;
   };
 }

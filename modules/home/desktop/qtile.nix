@@ -3,7 +3,7 @@
 let colors = config.colorscheme.dracula.colors;
 
 in {
-  imports = [ ../../external-modules/qtile.nix ];
+  imports = [ ../../../external-modules/qtile.nix ];
 
   xsession = {
     enable = true;
@@ -82,7 +82,7 @@ in {
         widget_defaults = dict(font="JetBrains Mono Nerd Font",fontsize=12)
         extension_defaults = widget_defaults.copy()
 
-        wallpaper = "${../../config/look-and-feel/flamingo-unicat.png}"
+        wallpaper = "${../../../config/look-and-feel/flamingo-unicat.png}"
         wallpaper_color = "#ecbfbd"
         wallpaper_color_alt = "${colors.background}"
 

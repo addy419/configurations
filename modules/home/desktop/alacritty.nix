@@ -1,18 +1,18 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   theme = pkgs.fetchFromGitHub {
     owner = "dracula";
     repo = "alacritty";
-    rev = "77aff04b9f2651eac10e5cfa80a3d85ce43e7985";
-    sha256 = "1m9r1sj8wb9vasgzj4qkmj0kqprnzscb6jcdmk9qd243qv2ib6bq";
+    rev = "9ae0fdedd423803f0401f6e7a23cd2bb88c175b2";
+    sha256 = "sha256-MgRH5Lc8wyZ6AQZweyL1QzO5eBzVdjbOPQeRs/Mf51M=";
   };
 
 in {
   programs.alacritty = {
     enable = true;
     settings = {
-      import = [ "${theme}/dracula.yml" ];
+      import = [ "${theme}/dracula.toml" ];
       font = {
         normal = {
           family = "Courier Prime Code";

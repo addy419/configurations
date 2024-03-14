@@ -12,11 +12,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nur.url = "github:nix-community/NUR";
-    mozilla-addons-to-nix = {
-      url = "sourcehut:~rycee/mozilla-addons-to-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
     hardened-firefox = {
       url = "github:arkenfox/user.js";
       flake = false;
@@ -57,16 +52,6 @@
               ];
           }];
         };
-        mozilla-addons-to-nix = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [{
-            languages.rust.enable = true;
-            packages = with pkgs;
-            [
-              inputs.mozilla-addons-to-nix.packages.${pkgs.system}.default
-            ];
-          }];
-        };
       };
 
       # NixOS Configuration
@@ -74,7 +59,7 @@
       nixosConfigurations = lib.mapAttrs (hostName: system:
         lib.nixosSystem {
           inherit system;
-          modules = [ (./hosts/. + "/${hostName}/configuration.nix") ];
+          modules = [ ./hosts/imports.nix ];
           specialArgs = {
             inherit inputs;
             current = {

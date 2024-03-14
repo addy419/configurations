@@ -2,27 +2,7 @@
 
 {
   # Yes home.nix, your refactoring time will arrive soon
-  imports = [
-    ../../modules/essential/spell.nix
-    ../../modules/essential/shell.nix
-    ../../modules/dev/git.nix
-    ../../modules/dev/latex.nix
-    ../../modules/dev/java.nix
-    ../../modules/colorschemes/dracula.nix
-    #../../modules/desktop/qtile.nix
-    ../../modules/desktop/office.nix
-    ../../modules/desktop/notification.nix
-    ../../modules/desktop/fonts.nix
-    ../../modules/desktop/alacritty.nix
-    #../../modules/desktop/urxvt.nix
-    ../../modules/desktop/rofi.nix
-    ../../modules/editors/emacs.nix
-    ../../modules/editors/neovim.nix
-    ../../modules/desktop/discord.nix
-    ../../modules/desktop/firefox
-    ../../modules/desktop/steam.nix
-#    ../../external-modules/nwg-look.nix
-  ];
+  imports = [ ../../modules/home ];
 
   home.packages = with pkgs; [
     htop
@@ -42,8 +22,6 @@
     glib
     tigervnc
     libsForQt5.okular
-    masterpdfeditor
-    bitwarden
     pulseaudio
     grim
     slurp
@@ -58,24 +36,29 @@
     qt6.qtwayland
     qt5.qtwayland
     mpv
-    swayimg
-    amberol
+    image-roll
     wdisplays
     poppler_utils
     lutris
     protonup-qt
     inkscape
     zoom-us
+    wineWowPackages.stable
+    nextcloud-client
+    gcc
+    zotero_7
+    cosmic-term
+    swaybg
+    ethtool
+    vrrtest
+    mangohud
+    glxinfo
+    goverlay
+    gparted
   ];
 
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-      patchPhase = ''
-        substituteInPlace src/modules/wlr/workspace_manager.cpp --replace "zext_workspace_handle_v1_activate(workspace_handle_);" "const std::string command = \"${pkgs.hyprland}/bin/hyprctl dispatch workspace \" + name_; system(command.c_str());"
-      '';
-    });
   };
 
   services.swayidle = {

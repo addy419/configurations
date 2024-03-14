@@ -8,12 +8,11 @@
     [
       (modulesPath + "/installer/scan/not-detected.nix")
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3
-      #inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "hid-playstation" "hid-nintendo" ];
+  boot.kernelModules = [ "kvm-amd" "hid-playstation" "hid-nintendo" "hid-apple" ];
   boot.kernelParams = [ "amd_iommu=off" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -67,7 +66,8 @@
   # networking.interfaces.enp1s0f0.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0f3u1.useDHCP = lib.mkDefault true;
 
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # Enable unfree firmware
+  hardware.enableAllFirmware = true;
 
   # Enable firmware updates
   services.fwupd.enable = true;

@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  rofi-config = ../../config/rofi/config.rasi;
+  rofi-config = ../../../config/rofi/config.rasi;
   rofi-config-no-icons = pkgs.writeText "config.rasi" (
     builtins.readFile(rofi-config) + ''
       
