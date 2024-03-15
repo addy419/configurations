@@ -43,7 +43,7 @@
     enable = true;
     settings = {
       General = {
-        Name = "BT5.2";
+        Name = "Hello";
         ControllerMode = "dual";
         FastConnectable = "true";
         Experimental = "true";
@@ -142,25 +142,26 @@
     HandlePowerKey=suspend
   '';
   
-  #security.pam.services.swaylock.text = ''
-  #  # Account management.
-  #  account required pam_unix.so
+  security.pam.services.swaylock.text = ''
+    # Account management.
+    account required pam_unix.so
 
-  #  # Authentication management.
-  #  auth sufficient pam_unix.so   likeauth try_first_pass
-  #  auth required pam_deny.so
+    # Authentication management.
+    auth sufficient pam_unix.so   likeauth try_first_pass
+    auth required pam_deny.so
 
-  #  # Password management.
-  #  password sufficient pam_unix.so nullok sha512
+    # Password management.
+    password sufficient pam_unix.so nullok sha512
 
-  #  # Session management.
-  #  session required pam_env.so conffile=/etc/pam/environment readenv=0
-  #  session required pam_unix.so
-  #'';
+    # Session management.
+    session required pam_env.so conffile=/etc/pam/environment readenv=0
+    session required pam_unix.so
+  '';
 
   # List services that you want to enable:
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+  services.fprintd.enable = true;
   
   # Open ports in the firewall.
   networking.firewall = {
@@ -184,6 +185,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 }
 

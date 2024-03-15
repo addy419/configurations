@@ -8,10 +8,6 @@
   programs.bash = {
     enable = true;
     historyControl = [ "ignoredups" ];
-    shellAliases.wdcs =
-      "${pkgs.sshpass}/bin/sshpass -f ${config.home.homeDirectory}/.dcs-vnc ssh dcs-vnc";
-    shellAliases.scrtp =
-      "${pkgs.sshpass}/bin/sshpass -f ${config.home.homeDirectory}/.scrtp ssh scrtp";
   };
 
   programs.starship = {

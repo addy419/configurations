@@ -30,6 +30,7 @@
     zip
     sqlite
     chromium
+    swaylock
     virt-manager
     signal-desktop
     qt6.qtwayland
@@ -38,49 +39,57 @@
     image-roll
     wdisplays
     poppler_utils
+    lutris
     protonup-qt
     inkscape
+    zoom-us
+    wineWowPackages.stable
+    nextcloud-client
+    gcc
     zotero_7
+    cosmic-term
+    swaybg
     ethtool
     vrrtest
     mangohud
     glxinfo
     goverlay
+    gparted
   ];
 
   programs.waybar = {
     enable = true;
   };
 
-  #services.swayidle = {
-  #  enable = true;
-  #  systemdTarget = "hyprland-session.target";
-  #  events = [
-  #    #{
-  #    #  event = "before-sleep";
-  #    #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py suspend & ${pkgs.swaylock}/bin/swaylock";
-  #    #}
-  #    #{
-  #    #  event = "after-resume";
-  #    #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py resume";
-  #    #}
-  #    {
-  #      event = "lock";
-  #      command = "${pkgs.swaylock}/bin/swaylock";
-  #    }
-  #  ];
-  #  timeouts = [
-  #    {
-  #      timeout = 120;
-  #      command = "${pkgs.brightnessctl}/bin/brightnessctl -sc backlight set 10%";
-  #      resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl -rc backlight";
-  #    }
-  #    { 
-  #      timeout = 300;
-  #      command = "${pkgs.systemd}/bin/systemctl suspend";
-  #    }
-  #  ];
-  #};
+  services.swayidle = {
+    enable = true;
+    systemdTarget = "hyprland-session.target";
+    events = [
+      #{
+      #  event = "before-sleep";
+      #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py suspend & ${pkgs.swaylock}/bin/swaylock";
+      #}
+      #{
+      #  event = "after-resume";
+      #  command = "${pkgs.python3}/bin/python3 /opt/batterylog/batterylog.py resume";
+      #}
+      {
+        event = "lock";
+        command = "${pkgs.swaylock}/bin/swaylock";
+      }
+    ];
+    timeouts = [
+      {
+        timeout = 120;
+        command = "${pkgs.brightnessctl}/bin/brightnessctl -sc backlight set 10%";
+        resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl -rc backlight";
+      }
+      { 
+        timeout = 300;
+        command = "${pkgs.systemd}/bin/systemctl suspend";
+      }
+    ];
+  };
 
   systemd.user.services.mpris-proxy = {
     Unit.Description = "Mpris proxy";
