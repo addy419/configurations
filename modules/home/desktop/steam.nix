@@ -3,7 +3,6 @@
 {
   home.packages = with pkgs; [
     steamtinkerlaunch
-    gamescope
     unixtools.xxd
     xorg.xwininfo
     xdotool
