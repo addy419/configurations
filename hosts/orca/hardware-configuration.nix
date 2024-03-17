@@ -9,10 +9,9 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" "hid-playstation" "hid-nintendo" "hid-apple" ];
-  boot.kernelParams = [ ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback
@@ -20,44 +19,44 @@
 
   boot.initrd.luks.devices = {
       enc = {
-          device = "/dev/disk/by-uuid/7300f617-789d-41e6-bc8e-56fe11354a66";
+          device = "/dev/disk/by-uuid/51767fb9-c9eb-4725-8dda-6bffaeb0ef72";
           preLVM = true;
           allowDiscards = true;
       };
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/01cbfa3a-5c2a-4470-99b9-e9868abfc98b";
+    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
       fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" ];
+      options = [ "subvol=root" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/01cbfa3a-5c2a-4470-99b9-e9868abfc98b";
+    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
       fsType = "btrfs";
       options = [ "subvol=home" "compress=zstd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/01cbfa3a-5c2a-4470-99b9-e9868abfc98b";
+    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home/${current.user}/.local/share/steam" =
-    { device = "/dev/disk/by-uuid/01cbfa3a-5c2a-4470-99b9-e9868abfc98b";
+    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
       fsType = "btrfs";
-      options = [ "subvol=steam" "noatime" ];
+      options = [ "subvol=steam" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/swap" =
-    { device = "/dev/disk/by-uuid/01cbfa3a-5c2a-4470-99b9-e9868abfc98b";
+    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
       fsType = "btrfs";
       options = [ "subvol=swap" "noatime" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/06D7-806F";
+    { device = "/dev/disk/by-uuid/2787-FA68";
       fsType = "vfat";
     };
 
@@ -71,8 +70,11 @@
   # networking.interfaces.enp1s0f0.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0f3u1.useDHCP = lib.mkDefault true;
 
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   # Enable unfree firmware
   hardware.enableAllFirmware = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Enable firmware updates
   services.fwupd.enable = true;
@@ -85,6 +87,6 @@
   };
 
   # Logitech unifying receiver
-  hardware.logitech.wireless.enable = true;
-  hardware.logitech.wireless.enableGraphical = true;
+  # hardware.logitech.wireless.enable = true;
+  # hardware.logitech.wireless.enableGraphical = true;
 }
