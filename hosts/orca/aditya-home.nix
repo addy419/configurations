@@ -22,7 +22,7 @@
     glib
     tigervnc
     libsForQt5.okular
-    pulseaudio
+    #pulseaudio
     grim
     slurp
     wl-clipboard
@@ -46,6 +46,8 @@
     mangohud
     glxinfo
     goverlay
+    geekbench
+    gdb
   ];
 
   programs.waybar = {

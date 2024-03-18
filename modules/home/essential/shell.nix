@@ -3,6 +3,8 @@
 {
   home.packages = with pkgs; [
     tealdeer
+    shfmt
+    shellcheck
   ];
 
   programs.bash = {

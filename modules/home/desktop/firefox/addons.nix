@@ -2,16 +2,17 @@
   {
     "bitwarden" = buildFirefoxXpiAddon {
       pname = "bitwarden";
-      version = "2024.1.1";
+      version = "2024.2.1";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4225453/bitwarden_password_manager-2024.1.1.xpi";
-      sha256 = "af5aabc846eba9adeaf194dc0cacc0921df734c21f1156d705ad9b9cf57e1d73";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4246600/bitwarden_password_manager-2024.2.1.xpi";
+      sha256 = "f2db399e5a0915e4fd7e4906c32c72eac4a2b7bb4b4acacd892fff18e73085d4";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
-        description = "A secure and free password manager for all of your devices.";
+        description = "At home, at work, or on the go, Bitwarden easily secures all your passwords, passkeys, and sensitive information.";
         license = licenses.gpl3;
         mozPermissions = [
+          "<all_urls>"
           "tabs"
           "contextMenus"
           "storage"
@@ -71,10 +72,10 @@
     };
     "privacy-badger" = buildFirefoxXpiAddon {
       pname = "privacy-badger";
-      version = "2023.12.1";
+      version = "2024.2.6";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4203344/privacy_badger17-2023.12.1.xpi";
-      sha256 = "aacac794c211fc6ea7dc51529883fd3e477aff37441d29ae7f576ab0f8c737b7";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4232703/privacy_badger17-2024.2.6.xpi";
+      sha256 = "81d80bff29b6209aa444713bc548a3d06fd5bde208c9c3c596dba81cc97add02";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
@@ -544,10 +545,10 @@
     };
     "uaswitcher" = buildFirefoxXpiAddon {
       pname = "uaswitcher";
-      version = "1.4.46";
+      version = "1.4.51";
       addonId = "user-agent-switcher@ninetailed.ninja";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4230750/uaswitcher-1.4.46.xpi";
-      sha256 = "565c6246257fd9e17cb6a0582152d2f1dd4f4e72837f903cd6289191e10aa610";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4247810/uaswitcher-1.4.51.xpi";
+      sha256 = "bf1ed7bdd61016b00861a7f4a95a18c9258d14b4c557eee646c0d9c123075d27";
       meta = with lib;
       {
         homepage = "https://gitlab.com/ntninja/user-agent-switcher";
@@ -566,10 +567,10 @@
     };
     "ublock-origin" = buildFirefoxXpiAddon {
       pname = "ublock-origin";
-      version = "1.55.0";
+      version = "1.56.0";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4216633/ublock_origin-1.55.0.xpi";
-      sha256 = "a02ca1d32737c3437f97553e5caaead6479a66ac1f8ff3b84a06cfa6bb0c7647";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4237670/ublock_origin-1.56.0.xpi";
+      sha256 = "f5fbeeac511ca4e10a74723413727fda8e6f9236c726d16eb54ade1fbe7be5be";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
