@@ -7,5 +7,6 @@
       (./. + "/${current.hostName}/configuration.nix")
       ./home-manager.nix
       ../modules/system
+      ../modules/hardware
     ];
 }

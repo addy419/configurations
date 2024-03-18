@@ -7,7 +7,7 @@
     ./dev/java.nix
     ./colorschemes/dracula.nix
     ./desktop/office.nix
-    ./desktop/notification.nix
+    #./desktop/notification.nix
     ./desktop/fonts.nix
     ./desktop/alacritty.nix
     ./desktop/rofi.nix

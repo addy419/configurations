@@ -10,7 +10,6 @@
     fd
     imagemagick
     zstd
-    emacs-all-the-icons-fonts
     nixfmt
   ];
 

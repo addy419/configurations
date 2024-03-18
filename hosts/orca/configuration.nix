@@ -10,6 +10,8 @@
     package = pkgs.nixUnstable;
     settings = {
       auto-optimise-store = true;
+      substituters = [ "https://cosmic.cachix.org/" ];
+      trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
     };
     gc = {
       automatic = true;
@@ -32,28 +34,18 @@
     efi.canTouchEfiVariables = true;
   };
 
+  services = {
+    asusd = {
+      enable = true;
+      enableUserService = true;
+    };
+  };
+
   # Set host name
   networking.hostName = current.hostName;
   
   # Enables wireless support
   networking.networkmanager.enable = true;
-
-  # Enable bluetooth support
-  hardware.bluetooth = {
-    enable = true;
-    settings = {
-      General = {
-        Name = "BT5.2";
-        ControllerMode = "dual";
-        FastConnectable = "true";
-        Experimental = "true";
-      };
-      Policy = {
-        AutoEnable = "true";
-      };
-    };
-  };
-  services.blueman.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/London";
@@ -71,22 +63,22 @@
   };
 
   #programs.regreet.enable = true;
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-        user = "greeter";
-        vt = "next";
-      };
-    };
-  };
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-    };
-  };
+  #services.greetd = {
+  #  enable = true;
+  #  settings = {
+  #    default_session = {
+  #      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+  #      user = "greeter";
+  #      vt = "next";
+  #    };
+  #  };
+  #};
+  #programs.hyprland = {
+  #  enable = true;
+  #  xwayland = {
+  #    enable = true;
+  #  };
+  #};
 
   # AMD GPU driver issue temporary workaround
   # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
@@ -110,6 +102,8 @@
     unzip
     wget
     dig
+    hwinfo
+    gparted
     #libsForQt5.qt5.qtgraphicaleffects
   ];
 
@@ -118,8 +112,6 @@
     enable = true;
     platformTheme = "lxqt";
   };
-
-  services.dbus.enable = true;
 
   # Fonts
   fonts = {
@@ -161,6 +153,7 @@
   # List services that you want to enable:
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+  services.dbus.enable = true;
   
   # Open ports in the firewall.
   networking.firewall = {

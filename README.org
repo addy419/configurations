@@ -3,7 +3,103 @@
 ** For NixOS
 This is an experimental repo to transition towards NixOS. This will be updated on a regular basis with more and more configs.
 
+** Initial Setup
+*** Prepare your disk
+This whole workflow can be moved to Disko, but I'm too occupied to look at it rn
+#+begin_src bash
+# Your Disk
+DISK=/dev/nvme0n1
+
+# Format the EFI partition nvme0n1p1
+# Don't forget to set up boot and efi flags for this disk (use gparted if needed)
+mkfs.vfat -n BOOT "$DISK"p1
+
+# Set up LuKS on nvme0n1p2
+cryptsetup --verify-passphrase -v luksFormat "$DISK"p2
+cryptsetup open "$DISK"p2 enc
+
+# Mount the encrypted partition
+mount -t btrfs /dev/mapper/enc /mnt
+
+# Create BTRFS subvolumes
+btrfs subvolume create /mnt/root
+btrfs subvolume create /mnt/home
+btrfs subvolume create /mnt/nix
+btrfs subvolume create /mnt/steam
+btrfs subvolume create /mnt/swap
+
+umount /mnt
+
+# For now, nixos-generate-config is unable to detect btrfs options
+# But I am still keeping them here
+mount -o subvol=root,compress=zstd,noatime /dev/mapper/enc /mnt
+
+mkdir -p /mnt/home
+mount -o subvol=home,compress=zstd /dev/mapper/enc /mnt/home
+
+mkdir -p /mnt/nix
+mount -o subvol=nix,compress=zstd,noatime /dev/mapper/enc /mnt/nix
+
+mkdir -p /mnt/swap
+mount -o subvol=swap,noatime /dev/mapper/enc /mnt/swap
+
+# To keep steam library out of the home backup
+mkdir -p /mnt/home/$USER/.local/share/steam
+mount -o subvol=steam,compress=zstd,noatime /dev/mapper/enc /mnt/home/$USER/.local/share/steam
+
+mkdir /mnt/boot
+mount "$DISK"p1 /mnt/boot
+
+# Generate config - use it to change values in hosts/{hostname}/hardware-configuration.nix
+nixos-generate-config --root /mnt
+#+end_src
+
 ** To Install
 1. set $USER to create user.
-2. home manager does not work with nixos-install for now, you have to comment it out and then uncomment it after installation finishes.
-3. host specific configs {your machine name like yourname@hostname} are present in hosts/{hostname}. configuration.nix and $USER-home.nix are expected here.
+2. host specific configs {your machine name like yourname@hostname} are present in hosts/{hostname}. configuration.nix and $USER-home.nix are expected here.
+
+#+begin_src bash
+# Modify the names of folders and files in hosts/yourhostname before proceeding
+USER=youruser sudo nixos-install --flake .#yourhostname
+#+end_src
+
+** Common issues
+1. Setting up user password
+
+   #+begin_src bash
+nixos-enter --root /mnt -c 'passwd yourusername'
+   #+end_src
+
+2. Home manager service does not work/crashes
+   Home manager needs some folder structure to run. This is probably not created because .local is owned by root after creating steam directory
+
+   #+begin_src bash
+chown youruser -R ~/.local
+mkdir -p ~/.local/state/home-manager/profiles
+   #+end_src
+
+** Enable secureboot
+#+begin_src bash
+# Create keys
+sudo sbctl create-keys
+# Check if they are signed now. bzImage.efi are not signed (expected)
+sudo sbctl verify
+
+## NOW ENABLE SECURE BOOT IN BIOS AND ENTER SETUP MODE
+sudo sbctl status # should show secure boot disabled and setup enabled
+
+# Enroll keys
+# If immutable errors are shown, use chattr -i on each file listed
+sudo sbctl enroll-keys --microsoft
+
+# finally reboot and check status again with sbctl status
+#+end_src
+
+** Enable TPM
+Add file (already added, but you can remove it if you don't want TPM) modules/system/tpm.nix
+
+#+begin_src bash
+systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p2 # or other encrypted drive
+#+end_src
+
+Enjoy auto unlocking of LUKS partition

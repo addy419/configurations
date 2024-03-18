@@ -56,13 +56,7 @@
     (save-some-buffers 1)))
 
 ;; Disable evil access to system clipboard
-(setq select-enable-clipboard nil)
-
-;; Insert mode ctrl-v
-(define-key evil-insert-state-map (kbd "C-v")
-  (lambda ()
-    (interactive)
-    (call-interactively 'evil-paste-from-register)))
+;; (setq select-enable-clipboard nil)
 
 ;; Basic config
 (setq display-time-format "%I:%M")

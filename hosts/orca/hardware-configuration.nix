@@ -11,12 +11,14 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "hid-playstation" "hid-nintendo" "hid-apple" ];
+  boot.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
+#  boot.extraModulePackages = with config.boot.kernelPackages; [
+#    v4l2loopback
+#  ];
 
+  
+  # LUKS Encryption
   boot.initrd.luks.devices = {
       enc = {
           device = "/dev/disk/by-uuid/51767fb9-c9eb-4725-8dda-6bffaeb0ef72";
@@ -67,26 +69,10 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp1s0f0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0f3u1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  # Enable unfree firmware
-  hardware.enableAllFirmware = true;
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
   # Enable firmware updates
+  hardware.enableAllFirmware = true;
   services.fwupd.enable = true;
-
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # Logitech unifying receiver
-  # hardware.logitech.wireless.enable = true;
-  # hardware.logitech.wireless.enableGraphical = true;
 }
