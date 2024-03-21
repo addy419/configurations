@@ -127,7 +127,15 @@
 
   # VM
   programs.dconf.enable = true;
-  virtualisation.libvirtd.enable = true;
+  virtualisation = {
+    libvirtd.enable = true;
+#    virtualbox = {
+#      host.enable = true;
+#      host.enableExtensionPack = true;
+#    };
+  };
+
+#  users.extraGroups.vboxusers.members = [ "${current.user}" ];
 
   # Security
   services.logind.extraConfig = ''

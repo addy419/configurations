@@ -13,6 +13,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = [ "ntfs" ];
 #  boot.extraModulePackages = with config.boot.kernelPackages; [
 #    v4l2loopback
 #  ];

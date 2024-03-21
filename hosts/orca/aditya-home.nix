@@ -48,6 +48,7 @@
     goverlay
     geekbench
     gdb
+    ventoy-full
   ];
 
   programs.waybar = {
