@@ -103,7 +103,7 @@
     wget
     dig
     hwinfo
-    gparted
+    e2fsprogs
     #libsForQt5.qt5.qtgraphicaleffects
   ];
 
