@@ -22,44 +22,50 @@
   # LUKS Encryption
   boot.initrd.luks.devices = {
       enc = {
-          device = "/dev/disk/by-uuid/51767fb9-c9eb-4725-8dda-6bffaeb0ef72";
+          device = "/dev/disk/by-uuid/8d24cbb7-ba15-49cf-a6ff-e58a7a3ee4e0";
           preLVM = true;
           allowDiscards = true;
       };
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=root" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=home" "compress=zstd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home/${current.user}/.local/share/steam" =
-    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=steam" "compress=zstd" "noatime" ];
     };
 
+  fileSystems."/home/${current.user}/.local/virt" =
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
+      fsType = "btrfs";
+      options = [ "subvol=virt" "compress=zstd" "noatime" ];
+    };
+
   fileSystems."/swap" =
-    { device = "/dev/disk/by-uuid/b3bbf535-f6ea-4a46-bd46-813a542993af";
+    { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=swap" "noatime" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/2787-FA68";
+    { device = "/dev/disk/by-uuid/EB00-8E11";
       fsType = "vfat";
     };
 
