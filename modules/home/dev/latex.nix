@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    texlive.combined.scheme-small
+    texlive.combined.scheme-full
     texlab
   ];
 }

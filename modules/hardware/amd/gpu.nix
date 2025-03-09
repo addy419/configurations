@@ -2,14 +2,34 @@
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      rocmPackages.clr.icd
-      clinfo # To check if OpenCL is installed correctly
-    ];
+
+  hardware.amdgpu = {
+    opencl.enable = true;
+    initrd.enable = true;
   };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  # OpenCL
+  hardware.graphics.extraPackages = with pkgs; [ rocmPackages.clr.icd ];
+
+  # HIP
+  systemd.tmpfiles.rules =
+  let rocmEnv = pkgs.symlinkJoin {
+      name = "rocm-combined";
+      paths = with pkgs.rocmPackages; [
+        clr
+      ];
+    };
+      in [
+    "L+    /opt/rocm/hip   -    -    -     -    ${rocmEnv}"
+  ];
+
+
+  environment.systemPackages = with pkgs; [
+    clinfo
+  ];
 }

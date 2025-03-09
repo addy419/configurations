@@ -2,10 +2,10 @@
   {
     "bitwarden" = buildFirefoxXpiAddon {
       pname = "bitwarden";
-      version = "2024.2.1";
+      version = "2024.12.4";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4246600/bitwarden_password_manager-2024.2.1.xpi";
-      sha256 = "f2db399e5a0915e4fd7e4906c32c72eac4a2b7bb4b4acacd892fff18e73085d4";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4410896/bitwarden_password_manager-2024.12.4.xpi";
+      sha256 = "fad085bb5aadc852088b2d2da666ed182575e74e47848d40180e25b89ec70cb3";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -13,15 +13,16 @@
         license = licenses.gpl3;
         mozPermissions = [
           "<all_urls>"
-          "tabs"
-          "contextMenus"
-          "storage"
-          "unlimitedStorage"
+          "*://*/*"
+          "alarms"
           "clipboardRead"
           "clipboardWrite"
+          "contextMenus"
           "idle"
-          "http://*/*"
-          "https://*/*"
+          "storage"
+          "tabs"
+          "unlimitedStorage"
+          "webNavigation"
           "webRequest"
           "webRequestBlocking"
           "file:///*"
@@ -32,10 +33,10 @@
     };
     "fastforwardteam" = buildFirefoxXpiAddon {
       pname = "fastforwardteam";
-      version = "0.2334";
+      version = "0.2383";
       addonId = "addon@fastforward.team";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4177101/fastforwardteam-0.2334.xpi";
-      sha256 = "d790219622469f08316b41c0d01abf2b584a37fa87b45666a74bd30cffb95ed0";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4258067/fastforwardteam-0.2383.xpi";
+      sha256 = "eec6328df3df1afe2cb6a331f6907669d804235551ea766d48655f8f831caf28";
       meta = with lib;
       {
         homepage = "https://fastforward.team";
@@ -72,10 +73,10 @@
     };
     "privacy-badger" = buildFirefoxXpiAddon {
       pname = "privacy-badger";
-      version = "2024.2.6";
+      version = "2025.1.29";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4232703/privacy_badger17-2024.2.6.xpi";
-      sha256 = "81d80bff29b6209aa444713bc548a3d06fd5bde208c9c3c596dba81cc97add02";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4427769/privacy_badger17-2025.1.29.xpi";
+      sha256 = "90fa36acb983b2bb5420d5edc13c6e494c645eba9f7b910e901eaa2dc6d2d860";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
@@ -500,10 +501,10 @@
     };
     "return-youtube-dislikes" = buildFirefoxXpiAddon {
       pname = "return-youtube-dislikes";
-      version = "3.0.0.14";
+      version = "3.0.0.18";
       addonId = "{762f9885-5a13-4abd-9c77-433dcd38b8fd}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4208483/return_youtube_dislikes-3.0.0.14.xpi";
-      sha256 = "a31ab23549846b7eab92a094e92df8349047b48bbd807f069d128083c3b27f61";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4371820/return_youtube_dislikes-3.0.0.18.xpi";
+      sha256 = "2d33977ce93276537543161f8e05c3612f71556840ae1eb98239284b8f8ba19e";
       meta = with lib;
       {
         description = "Returns ability to see dislike statistics on youtube";
@@ -517,12 +518,33 @@
         platforms = platforms.all;
       };
     };
+    "sponsorblock" = buildFirefoxXpiAddon {
+      pname = "sponsorblock";
+      version = "5.11.5";
+      addonId = "sponsorBlocker@ajay.app";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4424639/sponsorblock-5.11.5.xpi";
+      sha256 = "4cb3a7061dbeb9869477fb2f991d39ccaf650941f83abe1e0c65511e971cb555";
+      meta = with lib;
+      {
+        homepage = "https://sponsor.ajay.app";
+        description = "Easily skip YouTube video sponsors. When you visit a YouTube video, the extension will check the database for reported sponsors and automatically skip known sponsors. You can also report sponsors in videos. Other browsers: https://sponsor.ajay.app";
+        license = licenses.lgpl3;
+        mozPermissions = [
+          "storage"
+          "scripting"
+          "https://sponsor.ajay.app/*"
+          "https://*.youtube.com/*"
+          "https://www.youtube-nocookie.com/embed/*"
+        ];
+        platforms = platforms.all;
+      };
+    };
     "tab-stash" = buildFirefoxXpiAddon {
       pname = "tab-stash";
-      version = "3.0";
+      version = "3.2";
       addonId = "tab-stash@condordes.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4165318/tab_stash-3.0.xpi";
-      sha256 = "592d7cf51085b60095ade9128d8d948bc549c1dfe52b92cd980f6452a3339ff2";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4433697/tab_stash-3.2.xpi";
+      sha256 = "6f40c735df4edf3ed6dbaf6647c29c3a19277f14e7a7614359d095aab68a5bbd";
       meta = with lib;
       {
         homepage = "https://josh-berry.github.io/tab-stash/";
@@ -545,10 +567,10 @@
     };
     "uaswitcher" = buildFirefoxXpiAddon {
       pname = "uaswitcher";
-      version = "1.4.51";
+      version = "1.4.85";
       addonId = "user-agent-switcher@ninetailed.ninja";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4247810/uaswitcher-1.4.51.xpi";
-      sha256 = "bf1ed7bdd61016b00861a7f4a95a18c9258d14b4c557eee646c0d9c123075d27";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4421499/uaswitcher-1.4.85.xpi";
+      sha256 = "862ffa076b51923b2e20a313db83202fa1cc4a1ba22d73c91e664d82591ae4ef";
       meta = with lib;
       {
         homepage = "https://gitlab.com/ntninja/user-agent-switcher";
@@ -567,10 +589,10 @@
     };
     "ublock-origin" = buildFirefoxXpiAddon {
       pname = "ublock-origin";
-      version = "1.56.0";
+      version = "1.62.0";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4237670/ublock_origin-1.56.0.xpi";
-      sha256 = "f5fbeeac511ca4e10a74723413727fda8e6f9236c726d16eb54ade1fbe7be5be";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4412673/ublock_origin-1.62.0.xpi";
+      sha256 = "8a9e02aa838c302fb14e2b5bc88a6036d36358aadd6f95168a145af2018ef1a3";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
@@ -597,7 +619,6 @@
           "https://forums.lanik.us/*"
           "https://github.com/*"
           "https://*.github.io/*"
-          "https://*.letsblock.it/*"
           "https://github.com/uBlockOrigin/*"
           "https://ublockorigin.github.io/*"
           "https://*.reddit.com/r/uBlockOrigin/*"

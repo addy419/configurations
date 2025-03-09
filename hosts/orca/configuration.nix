@@ -7,7 +7,7 @@
 {
   # Enable flakes
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings = {
       auto-optimise-store = true;
       substituters = [ "https://cosmic.cachix.org/" ];
@@ -34,13 +34,6 @@
     efi.canTouchEfiVariables = true;
   };
 
-  services = {
-    asusd = {
-      enable = true;
-      enableUserService = true;
-    };
-  };
-
   # Set host name
   networking.hostName = current.hostName;
   
@@ -57,61 +50,30 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {
-  # font = "Lat2-Terminus16";
-  # keyMap = "us";
-     useXkbConfig = true; # use xkbOptions in tty.
+    # font = "Lat2-Terminus16";
+    # keyMap = "us";
+    useXkbConfig = true; # use xkbOptions in tty.
   };
-
-  #programs.regreet.enable = true;
-  #services.greetd = {
-  #  enable = true;
-  #  settings = {
-  #    default_session = {
-  #      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-  #      user = "greeter";
-  #      vt = "next";
-  #    };
-  #  };
-  #};
-  #programs.hyprland = {
-  #  enable = true;
-  #  xwayland = {
-  #    enable = true;
-  #  };
-  #};
-
-  # AMD GPU driver issue temporary workaround
-  # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${current.user} = {
-    extraGroups = [ "wheel" "networkmanager" "input" "video" "libvirtd" "vboxusers" ];
+    extraGroups = [ "wheel" "networkmanager" "input" "video" "libvirtd" "vboxusers" "corectrl" ];
     isNormalUser = true;
   };
 
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     coreutils
+    wget
     pciutils
     usbutils
-    dmidecode
-    killall
-    unzip
-    wget
-    dig
-    hwinfo
     e2fsprogs
-    #libsForQt5.qt5.qtgraphicaleffects
+    unzip
+    unrar
   ];
-
-  # Wayland
-  qt = {
-    enable = true;
-    platformTheme = "lxqt";
-  };
 
   # Fonts
   fonts = {
@@ -125,49 +87,25 @@
     };
   };
 
-  # VM
-  programs.dconf.enable = true;
-  virtualisation = {
-    libvirtd.enable = true;
-#    virtualbox = {
-#      host.enable = true;
-#      host.enableExtensionPack = true;
-#    };
-  };
-
-#  users.extraGroups.vboxusers.members = [ "${current.user}" ];
+  #users.extraGroups.vboxusers.members = [ "${current.user}" ];
 
   # Security
-  services.logind.extraConfig = ''
-    HandlePowerKey=suspend
-  '';
-  
-  #security.pam.services.swaylock.text = ''
-  #  # Account management.
-  #  account required pam_unix.so
-
-  #  # Authentication management.
-  #  auth sufficient pam_unix.so   likeauth try_first_pass
-  #  auth required pam_deny.so
-
-  #  # Password management.
-  #  password sufficient pam_unix.so nullok sha512
-
-  #  # Session management.
-  #  session required pam_env.so conffile=/etc/pam/environment readenv=0
-  #  session required pam_unix.so
+  #services.logind.extraConfig = ''
+  #  HandlePowerKey=suspend
   #'';
 
+  programs.seahorse.enable = true;
+  
   # List services that you want to enable:
   services.udisks2.enable = true;
   services.gvfs.enable = true;
   services.dbus.enable = true;
-  
+
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-  #  trustedInterfaces = [ ];
-  #  allowedUDPPorts = [ ];
+    #trustedInterfaces = [ ];
+    #allowedUDPPorts = [ ];
   };
 
   # Copy the NixOS configuration file and link it from the resulting system

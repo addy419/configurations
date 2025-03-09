@@ -3,9 +3,9 @@
     "The work of a arch lunatic *scratch that* chronic distro hopper";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-24.11";
     homeManager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
@@ -73,6 +73,7 @@
             current = {
               inherit hostName;
               inherit user;
+              inherit system;
               inherit overlays;
             };
           };

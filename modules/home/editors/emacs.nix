@@ -3,14 +3,13 @@
 {
   home.packages = with pkgs; [
     binutils
-    git
-    emacs-gtk
+    emacs29-pgtk
     (ripgrep.override {withPCRE2 = true;})
     gnutls
     fd
     imagemagick
     zstd
-    nixfmt
+    nixfmt-rfc-style
   ];
 
   xdg.configFile."doom" = {
@@ -19,10 +18,10 @@
 
   home.sessionPath = [ "${config.home.homeDirectory}/.config/emacs/bin" ];
 
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs-gtk;
-  };
+  # services.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs29-pgtk;
+  # };
 
   services.sxhkd = {
     keybindings = {

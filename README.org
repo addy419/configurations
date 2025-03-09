@@ -45,7 +45,7 @@ mount -o subvol=swap,noatime /dev/mapper/enc /mnt/swap
 
 # To keep steam library out of the home backup
 mkdir -p /mnt/home/$USER/.local/share/steam
-mount -o subvol=steam,compress=zstd,noatime /dev/mapper/enc /mnt/home/$USER/.local/share/steam
+mount -o subvol=steam,compress=zstd,noatime /dev/mapper/enc /mnt/home/$USER/.local/share/Steam
 
 mkdir /mnt/boot
 mount "$DISK"p1 /mnt/boot

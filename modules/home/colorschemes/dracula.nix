@@ -15,29 +15,29 @@ let
     rev = "8de11976678054f19a9e0ec49a48ea8f9e881a05";
     sha256 = "12wmjynk0ryxgwb0hg4kvhhf886yvjzkp96a5bi9j0ryf3pc9kx7";
   };
-  configure-gtk = pkgs.writeTextFile {
-    name = "configure-gtk";
-    destination = "/bin/configure-gtk";
-    executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      config="${../../../config/dracula/gtk-3.0/settings.ini}"
+  # configure-gtk = pkgs.writeTextFile {
+  #   name = "configure-gtk";
+  #   destination = "/bin/configure-gtk";
+  #   executable = true;
+  #   text = let
+  #     schema = pkgs.gsettings-desktop-schemas;
+  #     datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+  #   in ''
+  #     export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+  #     gnome_schema=org.gnome.desktop.interface
+  #     config="${../../../config/dracula/gtk-3.0/settings.ini}"
 
-      gtk_theme="$(grep 'gtk-theme-name' "$config" | sed 's/.*\s*=\s*//')"
-      icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
-      cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | sed 's/.*\s*=\s*//')"
-      font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
-      
-      gsettings set "$gnome_schema" gtk-theme "$gtk_theme"
-      gsettings set "$gnome_schema" icon-theme "$icon_theme"
-      gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
-      gsettings set "$gnome_schema" font-name "$font_name"
-    '';
-  };
+  #     gtk_theme="$(grep 'gtk-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+  #     icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+  #     cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+  #     font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
+  #     
+  #     gsettings set "$gnome_schema" gtk-theme "$gtk_theme"
+  #     gsettings set "$gnome_schema" icon-theme "$icon_theme"
+  #     gsettings set "$gnome_schema" cursor-theme "$cursor_theme"
+  #     gsettings set "$gnome_schema" font-name "$font_name"
+  #   '';
+  # };
 
 in {
   options.colorscheme.dracula = {
@@ -65,20 +65,20 @@ in {
   config.home.packages = with pkgs; [
     lxqt.lxqt-qtplugin
     libsForQt5.qtstyleplugin-kvantum
-    papirus-icon-theme
+    # papirus-icon-theme
     (dracula-theme.overrideAttrs (oldAttrs: {
       src = dracula-gtk;
     }))
 
     # for wayland
-    configure-gtk
+    # configure-gtk
     # for theme modification
     lxqt.lxqt-config
     xsettingsd
   ];
 
-  config.xresources.extraConfig =
-    builtins.readFile ("${dracula-xresources}/Xresources");
+  # config.xresources.extraConfig =
+  #   builtins.readFile ("${dracula-xresources}/Xresources");
 
   config.xdg = {
     #dataFile = {
@@ -95,13 +95,13 @@ in {
         theme=Dracula'';
       "lxqt/lxqt.conf".source = ../../../config/dracula/lxqt/lxqt.conf;
       "lxqt/session.conf".source = ../../../config/dracula/lxqt/session.conf;
-      "gtk-3.0/settings.ini".source = ../../../config/dracula/gtk-3.0/settings.ini;
+      #"gtk-3.0/settings.ini".source = ../../../config/dracula/gtk-3.0/settings.ini;
     };
   };
 
-  config.home.file = {
-    ".gtkrc-2.0".source = ../../../config/dracula/gtk-2.0/gtkrc-2.0;
-    ".icons".source = ../../../config/dracula/icons;
-    ".Xdefaults".source = ../../../config/dracula/Xdefaults;
-  };
+  # config.home.file = {
+  #   ".gtkrc-2.0".source = ../../../config/dracula/gtk-2.0/gtkrc-2.0;
+  #   ".icons".source = ../../../config/dracula/icons;
+  #   ".Xdefaults".source = ../../../config/dracula/Xdefaults;
+  # };
 }
