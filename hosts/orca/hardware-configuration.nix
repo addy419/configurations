@@ -12,12 +12,8 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.supportedFilesystems = [ "ntfs" ];
-#  boot.extraModulePackages = with config.boot.kernelPackages; [
-#    v4l2loopback
-#  ];
-
   
   # LUKS Encryption
   boot.initrd.luks.devices = {
@@ -46,10 +42,16 @@
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
-  fileSystems."/home/${current.user}/.local/share/steam" =
+  fileSystems."/home/${current.user}/.local/share/Steam" =
     { device = "/dev/disk/by-uuid/1328a0a5-759d-4e57-9f77-679bb5f92bd8";
       fsType = "btrfs";
       options = [ "subvol=steam" "compress=zstd" "noatime" ];
+    };
+
+  fileSystems."/home/${current.user}/.local/share/Steam-Extra" =
+    { device = "/dev/disk/by-uuid/7bbff062-83e0-494b-b95f-027e8b005ed5";
+      fsType = "ext4";
+      options = [ "noatime" ];
     };
 
   fileSystems."/home/${current.user}/.local/virt" =
@@ -77,9 +79,8 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
   # Enable firmware updates
   hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
 }

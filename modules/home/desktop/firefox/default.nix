@@ -1,7 +1,8 @@
-{ inputs, config, pkgs, lib, buildFirefoxXpiAddon, ... }:
+{ inputs, current, pkgs, lib, buildFirefoxXpiAddon, ... }:
 
 let
   myconfig = ''
+    user_pref("general.autoScroll", true);
     user_pref("keyword.enabled", true);
     user_pref("privacy.clearOnShutdown.cookies", false);
     user_pref("privacy.clearOnShutdown.history", false);
@@ -19,13 +20,11 @@ let
     extraPolicies = { ExtensionSettings = { }; };
   };
   addons = builtins.removeAttrs (pkgs.callPackage ./addons.nix {
-    inherit (config.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+    inherit (inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons) buildFirefoxXpiAddon;
   }) [ "override" "overrideDerivation" ];
 in {
-  imports = [ inputs.nur.nixosModules.nur ];
-
   home.packages = with pkgs; [
-    config.nur.repos.rycee.mozilla-addons-to-nix
+    inputs.nur.legacyPackages."${current.system}".repos.rycee.mozilla-addons-to-nix
   ];
 
   programs.firefox = {
@@ -38,7 +37,9 @@ in {
           default = "DuckDuckGo";
           force = true;
         };
-        extensions = builtins.attrValues addons;
+        extensions = with inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons; [
+         # bypass-paywalls-clean
+        ] ++ (builtins.attrValues addons);
         extraConfig = builtins.readFile "${inputs.hardened-firefox}/user.js"
           + myconfig;
       };

@@ -5,15 +5,16 @@
     ./dev/git.nix
     ./dev/latex.nix
     ./dev/java.nix
-    ./colorschemes/dracula.nix
+    #./colorschemes/dracula.nix
     ./desktop/office.nix
     #./desktop/notification.nix
     ./desktop/fonts.nix
-    ./desktop/alacritty.nix
-    ./desktop/rofi.nix
+    #./desktop/alacritty.nix
+    #./desktop/rofi.nix
     ./editors/emacs.nix
     ./editors/neovim.nix
     ./desktop/discord.nix
+    ./desktop/obs.nix
     ./desktop/firefox
     ./desktop/steam.nix
     ./desktop/email.nix

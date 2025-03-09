@@ -56,7 +56,7 @@
     (save-some-buffers 1)))
 
 ;; Disable evil access to system clipboard
-;; (setq select-enable-clipboard nil)
+(setq select-enable-clipboard nil)
 
 ;; Basic config
 (setq display-time-format "%I:%M")
