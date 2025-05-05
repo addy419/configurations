@@ -2,8 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    binutils
-    emacs29-pgtk
+    emacs-pgtk
     (ripgrep.override {withPCRE2 = true;})
     gnutls
     fd

@@ -12,6 +12,11 @@
     historyControl = [ "ignoredups" ];
   };
 
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   programs.starship = {
     enable = true;
     enableBashIntegration = true;

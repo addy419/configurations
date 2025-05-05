@@ -2,10 +2,10 @@
   {
     "bitwarden" = buildFirefoxXpiAddon {
       pname = "bitwarden";
-      version = "2024.12.4";
+      version = "2025.3.2";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4410896/bitwarden_password_manager-2024.12.4.xpi";
-      sha256 = "fad085bb5aadc852088b2d2da666ed182575e74e47848d40180e25b89ec70cb3";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4467426/bitwarden_password_manager-2025.3.2.xpi";
+      sha256 = "30f9384a46f6ef2ba6c9d273fc7c77a9afeef120dc4b3cbc5c28f171f4e8aeab";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -26,7 +26,6 @@
           "webRequest"
           "webRequestBlocking"
           "file:///*"
-          "https://lastpass.com/export.php"
         ];
         platforms = platforms.all;
       };
@@ -73,10 +72,10 @@
     };
     "privacy-badger" = buildFirefoxXpiAddon {
       pname = "privacy-badger";
-      version = "2025.1.29";
+      version = "2025.3.27";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4427769/privacy_badger17-2025.1.29.xpi";
-      sha256 = "90fa36acb983b2bb5420d5edc13c6e494c645eba9f7b910e901eaa2dc6d2d860";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4463652/privacy_badger17-2025.3.27.xpi";
+      sha256 = "45976baab7476792dcad07f4386be618fd49b27eeb000c5e6b4b6f3611bf865e";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
@@ -85,12 +84,12 @@
         mozPermissions = [
           "<all_urls>"
           "alarms"
+          "privacy"
+          "storage"
           "tabs"
           "webNavigation"
           "webRequest"
           "webRequestBlocking"
-          "storage"
-          "privacy"
           "https://*.facebook.com/*"
           "http://*.facebook.com/*"
           "https://*.messenger.com/*"
@@ -520,10 +519,10 @@
     };
     "sponsorblock" = buildFirefoxXpiAddon {
       pname = "sponsorblock";
-      version = "5.11.5";
+      version = "5.11.10";
       addonId = "sponsorBlocker@ajay.app";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4424639/sponsorblock-5.11.5.xpi";
-      sha256 = "4cb3a7061dbeb9869477fb2f991d39ccaf650941f83abe1e0c65511e971cb555";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4465727/sponsorblock-5.11.10.xpi";
+      sha256 = "07e8f50f01a7be1d7b35233a26f599d1471a5b601acd8dfa07dc023c86cac83d";
       meta = with lib;
       {
         homepage = "https://sponsor.ajay.app";
@@ -567,10 +566,10 @@
     };
     "uaswitcher" = buildFirefoxXpiAddon {
       pname = "uaswitcher";
-      version = "1.4.85";
+      version = "1.4.89";
       addonId = "user-agent-switcher@ninetailed.ninja";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4421499/uaswitcher-1.4.85.xpi";
-      sha256 = "862ffa076b51923b2e20a313db83202fa1cc4a1ba22d73c91e664d82591ae4ef";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4449854/uaswitcher-1.4.89.xpi";
+      sha256 = "ad488274976139ce84517a3e12de6b729edfb8daded18c7184ffc64b90591a0a";
       meta = with lib;
       {
         homepage = "https://gitlab.com/ntninja/user-agent-switcher";
@@ -589,10 +588,10 @@
     };
     "ublock-origin" = buildFirefoxXpiAddon {
       pname = "ublock-origin";
-      version = "1.62.0";
+      version = "1.63.2";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4412673/ublock_origin-1.62.0.xpi";
-      sha256 = "8a9e02aa838c302fb14e2b5bc88a6036d36358aadd6f95168a145af2018ef1a3";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4458450/ublock_origin-1.63.2.xpi";
+      sha256 = "d93176cef4dc042e41ba500aa2a90e5d57b5be77449cbd522111585e3a0cd158";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
@@ -628,21 +627,21 @@
     };
     "vimium-c" = buildFirefoxXpiAddon {
       pname = "vimium-c";
-      version = "1.99.997";
+      version = "2.12.3";
       addonId = "vimium-c@gdh1995.cn";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4210117/vimium_c-1.99.997.xpi";
-      sha256 = "20e9217ba3d9a7bd0ec3faa88ed7f872acc3f039d1bdeb997398341631617184";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4474326/vimium_c-2.12.3.xpi";
+      sha256 = "e1a4f8cc13791dfb985c2a78d33df1e8a40f23bd6eca9217165cb748009df540";
       meta = with lib;
       {
         homepage = "https://github.com/gdh1995/vimium-c";
         description = "A keyboard shortcut tool for keyboard-based page navigation and browser tab operations with an advanced omnibar and global shortcuts";
         license = licenses.mit;
         mozPermissions = [
-          "bookmarks"
           "clipboardRead"
           "clipboardWrite"
           "history"
           "notifications"
+          "search"
           "sessions"
           "storage"
           "tabs"

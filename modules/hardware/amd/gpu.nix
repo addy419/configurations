@@ -22,6 +22,7 @@
       name = "rocm-combined";
       paths = with pkgs.rocmPackages; [
         clr
+        hipfort
       ];
     };
       in [
