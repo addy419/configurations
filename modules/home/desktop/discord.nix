@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    webcord
+    discord-ptb
   ];
 
   home.sessionVariables.NIXOS_OZONE_WL = "1";

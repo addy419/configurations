@@ -4,8 +4,12 @@ let
   myconfig = ''
     user_pref("general.autoScroll", true);
     user_pref("keyword.enabled", true);
+    user_pref("browser.startup.page", 3);
+    user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", false);
+    user_pref("privacy.clearOnShutdown_v2.browsingHistoryAndDownloads", false);
     user_pref("privacy.clearOnShutdown.cookies", false);
     user_pref("privacy.clearOnShutdown.history", false);
+    user_pref("privacy.resistFingerprinting.letterboxing", false);
     user_pref("webgl.disabled", false);
 
     user_pref("media.ffmpeg.vaapi.enabled", true);
@@ -34,10 +38,10 @@ in {
       hardened = {
         isDefault = true;
         search = {
-          default = "DuckDuckGo";
+          default = "ddg";
           force = true;
         };
-        extensions = with inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons; [
+        extensions.packages = with inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons; [
          # bypass-paywalls-clean
         ] ++ (builtins.attrValues addons);
         extraConfig = builtins.readFile "${inputs.hardened-firefox}/user.js"
@@ -47,10 +51,10 @@ in {
         id = 1;
         isDefault = false;
         search = {
-          default = "DuckDuckGo";
+          default = "ddg";
           force = true;
         };
-        extensions = builtins.attrValues addons;
+        extensions.packages = builtins.attrValues addons;
       };
     };
   };

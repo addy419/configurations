@@ -10,7 +10,6 @@ let
 in {
   home.packages = with pkgs; [
     font-awesome
-    #(nerdfonts.override { fonts = [ "Iosevka" "JetBrainsMono" ]; })
     noto-fonts
     fantasque-sans-mono
 
@@ -22,7 +21,6 @@ in {
 
   home.file = {
     ".local/share/fonts/courier-prime-code".source = "${courier-prime-code}/ttf";
-   # ".local/share/fonts/poppins".source = poppins;
   };
 
   fonts.fontconfig.enable = true;

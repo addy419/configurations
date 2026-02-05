@@ -1,0 +1,3 @@
+{
+  programs.usbtop.enable = true;
+}

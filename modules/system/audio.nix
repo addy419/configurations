@@ -38,15 +38,15 @@
       context.modules = [
         { name = libpipewire-module-filter-chain
             args = {
-                node.description = "DeepFilter Noise Canceling Source"
-                media.name       = "DeepFilter Noise Canceling Source"
+                node.description = "DeepFilter Noise Canceling Sink"
+                media.name       = "DeepFilter Noise Canceling Sink"
                 filter.graph = {
                     nodes = [
                         {
                             type   = ladspa
-                            name   = "DeepFilter Mono"
+                            name   = "DeepFilter Stereo"
                             plugin = /home/aditya/.ladspa/libdeep_filter_ladspa-0.5.6-x86_64-unknown-linux-gnu.so
-                            label  = deep_filter_mono
+                            label  = deep_filter_stereo
                             control = {
                                 "Attenuation Limit (dB)" 50
                             }
@@ -54,12 +54,15 @@
                     ]
                 }
                 audio.rate = 48000
-                audio.position = [FL]
+                audio.channels = 2
+                audio.position = [FL FR]
                 capture.props = {
-                    node.passive = true
+                    node.name = "deep_filter_stereo_input"
+                    media.class = Audio/Source
                 }
                 playback.props = {
-                    media.class = Audio/Source
+                    node.name = "deep_filter_stereo_output"
+                    node.passive = true
                 }
             }
         }
@@ -100,5 +103,5 @@
 
   
   # Disable PulseAudio
-  hardware.pulseaudio.enable = false;
+  # hardware.pulseaudio.enable = false;
 }

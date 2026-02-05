@@ -14,8 +14,9 @@
       ./notifications.nix
       ./rgb.nix
       ./virt-manager.nix
-      ./docker.nix
+      #./docker.nix
       ./cosmic.nix
+      ./usb.nix
     ];
 }
 

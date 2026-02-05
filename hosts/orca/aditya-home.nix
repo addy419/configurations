@@ -8,16 +8,11 @@
   home.packages = with pkgs; [
     htop
     fastfetch
-    #(libsForQt5.kdeconnect-kde.overrideAttrs (oldAttrs: {
-    #  buildInputs = oldAttrs.buildInputs ++ [ libsForQt5.qtconnectivity ];
-    #  cmakeFlags = (oldAttrs.cmakeFlags or []) ++ [ "-DBLUETOOTH_ENABLED=ON" ];
-    #}))
     pavucontrol
     xournalpp
     wl-clipboard
     wev
     zip
-    sqlite
     chromium
     signal-desktop
     qt6.qtwayland
@@ -27,9 +22,10 @@
     image-roll
     poppler_utils
     nextcloud-client
+    lrcget
     zotero_7
     audacity
-    ethtool
+    #ethtool
     qpwgraph
     # vrrtest
     gnumake
@@ -38,6 +34,11 @@
     foliate
     guvcview
     evince
+    syncplay
+    yt-dlp
+    authenticator
+    door-knocker
+    supersonic-wayland
   ];
 
   systemd.user.services.mpris-proxy = {
@@ -47,9 +48,9 @@
     Install.WantedBy = [ "default.target" ];
   };
 
-  services.kdeconnect = {
-    enable = true;
-    package = pkgs.kdePackages.kdeconnect-kde;
-    indicator = true;
-  };
+  #services.kdeconnect = {
+  #  enable = true;
+  #  package = pkgs.kdePackages.kdeconnect-kde;
+  #  indicator = true;
+  #};
 }

@@ -3,19 +3,19 @@
     "The work of a arch lunatic *scratch that* chronic distro hopper";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
     homeManager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.3.0";
+      url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+ #   nixos-cosmic = {
+ #     url = "github:lilyinstarlight/nixos-cosmic";
+ #     inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
+ #   };
     devenv.url = "github:cachix/devenv";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -44,8 +44,11 @@
           modules = [{
             languages.python.enable = true;
             languages.python.venv.enable = true;
+            languages.javascript.enable = true;
+            languages.javascript.npm.enable = true;
             packages = with pkgs;
-              [
+            [
+                hidapi
                 (python3.withPackages (ps:
                   with ps; [
                     wheel
@@ -56,6 +59,7 @@
                     nltk
                     scipy
                     matplotlib
+                    hid
                   ]))
               ];
           }];

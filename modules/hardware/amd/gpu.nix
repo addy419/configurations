@@ -33,4 +33,7 @@
   environment.systemPackages = with pkgs; [
     clinfo
   ];
+
+  # AMD issue with direct scanout on COSMIC
+  environment.sessionVariables.COSMIC_DISABLE_DIRECT_SCANOUT = 1;
 }

@@ -2,10 +2,10 @@
   {
     "bitwarden" = buildFirefoxXpiAddon {
       pname = "bitwarden";
-      version = "2025.3.2";
+      version = "2025.8.1";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4467426/bitwarden_password_manager-2025.3.2.xpi";
-      sha256 = "30f9384a46f6ef2ba6c9d273fc7c77a9afeef120dc4b3cbc5c28f171f4e8aeab";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4562769/bitwarden_password_manager-2025.8.1.xpi";
+      sha256 = "840e07f5d1946496276e44ee0a8986f46d7476d22f769389d0d389402a9d49fe";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -25,6 +25,7 @@
           "webNavigation"
           "webRequest"
           "webRequestBlocking"
+          "notifications"
           "file:///*"
         ];
         platforms = platforms.all;
@@ -72,14 +73,14 @@
     };
     "privacy-badger" = buildFirefoxXpiAddon {
       pname = "privacy-badger";
-      version = "2025.3.27";
+      version = "2025.5.30";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4463652/privacy_badger17-2025.3.27.xpi";
-      sha256 = "45976baab7476792dcad07f4386be618fd49b27eeb000c5e6b4b6f3611bf865e";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4504218/privacy_badger17-2025.5.30.xpi";
+      sha256 = "d8cc7a2c1f5afa53b32f56be33167acafe45561ad7acc50c4aadb5ce35fe2389";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
-        description = "Automatically learns to block invisible trackers.";
+        description = "Automatically learns to block hidden trackers. Made by the leading digital rights nonprofit EFF to stop companies from spying on you.";
         license = licenses.gpl3;
         mozPermissions = [
           "<all_urls>"
@@ -498,6 +499,33 @@
         platforms = platforms.all;
       };
     };
+    "proton-vpn-firefox-extension" = buildFirefoxXpiAddon {
+      pname = "proton-vpn-firefox-extension";
+      version = "1.2.9";
+      addonId = "vpn@proton.ch";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4539502/proton_vpn_firefox_extension-1.2.9.xpi";
+      sha256 = "ca67f67e6b654ff809ee659accbd9597014e37d70b29963c391c2e470cf96a02";
+      meta = with lib;
+      {
+        homepage = "https://protonvpn.com/";
+        description = "Secure your internet and protect your online privacy in one click.";
+        license = licenses.gpl3;
+        mozPermissions = [
+          "idle"
+          "notifications"
+          "privacy"
+          "scripting"
+          "storage"
+          "tabs"
+          "webRequest"
+          "activeTab"
+          "webRequestBlocking"
+          "https://account.protonvpn.com/*"
+          "https://account.proton.me/*"
+        ];
+        platforms = platforms.all;
+      };
+    };
     "return-youtube-dislikes" = buildFirefoxXpiAddon {
       pname = "return-youtube-dislikes";
       version = "3.0.0.18";
@@ -519,10 +547,10 @@
     };
     "sponsorblock" = buildFirefoxXpiAddon {
       pname = "sponsorblock";
-      version = "5.11.10";
+      version = "5.14";
       addonId = "sponsorBlocker@ajay.app";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4465727/sponsorblock-5.11.10.xpi";
-      sha256 = "07e8f50f01a7be1d7b35233a26f599d1471a5b601acd8dfa07dc023c86cac83d";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4541835/sponsorblock-5.14.xpi";
+      sha256 = "5732b0ab168a9f1065b94051b68118aad293b114c338cfa86cb1797187352429";
       meta = with lib;
       {
         homepage = "https://sponsor.ajay.app";
@@ -540,10 +568,10 @@
     };
     "tab-stash" = buildFirefoxXpiAddon {
       pname = "tab-stash";
-      version = "3.2";
+      version = "3.3";
       addonId = "tab-stash@condordes.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4433697/tab_stash-3.2.xpi";
-      sha256 = "6f40c735df4edf3ed6dbaf6647c29c3a19277f14e7a7614359d095aab68a5bbd";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4481624/tab_stash-3.3.xpi";
+      sha256 = "57ffe879f571d28b9a5b22cbe0fc7587fe820b936c2bbd7990c5d5a4cd6d3730";
       meta = with lib;
       {
         homepage = "https://josh-berry.github.io/tab-stash/";
@@ -588,10 +616,10 @@
     };
     "ublock-origin" = buildFirefoxXpiAddon {
       pname = "ublock-origin";
-      version = "1.63.2";
+      version = "1.65.0";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4458450/ublock_origin-1.63.2.xpi";
-      sha256 = "d93176cef4dc042e41ba500aa2a90e5d57b5be77449cbd522111585e3a0cd158";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4531307/ublock_origin-1.65.0.xpi";
+      sha256 = "3e73c96a29a933866065f0756fe032984bf5b254af8dd1afd7a7f7e0668a33cf";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";

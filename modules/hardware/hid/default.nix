@@ -2,7 +2,8 @@
   imports = [
     ./monitor.nix
     ./keychron.nix
-    ./logitech.nix
+    ./razer.nix
+    #./logitech.nix
     ./controllers.nix
   ];
 }
