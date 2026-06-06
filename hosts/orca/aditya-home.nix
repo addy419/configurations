@@ -20,7 +20,7 @@
     mpv
     ffmpeg
     image-roll
-    poppler_utils
+    poppler-utils
     nextcloud-client
     lrcget
     zotero_7

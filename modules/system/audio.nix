@@ -58,50 +58,16 @@
                 audio.position = [FL FR]
                 capture.props = {
                     node.name = "deep_filter_stereo_input"
-                    media.class = Audio/Source
+                    node.passive = true
+                    node.target = "alsa_input.usb-Audio_Technica_Crop_ATR2100x-USB_Microphone_12345678ABCD-00.analog-stereo"
                 }
                 playback.props = {
                     node.name = "deep_filter_stereo_output"
-                    node.passive = true
+                    media.class = Audio/Source
                 }
             }
         }
     ]
     '')
   ];
-
-#    "context.modules" = [
-#        {   name = "libpipewire-module-filter-chain";
-#            args = {
-#                node.description = "DeepFilter Noise Canceling Source";
-#                media.name       = "DeepFilter Noise Canceling Source";
-#                filter.graph = {
-#                    nodes = [
-#                        {
-#                            type   = ladspa;
-#                            name   = "DeepFilter Mono";
-#                            plugin = /home/aditya/.ladspa/libdeep_filter_ladspa-0.5.6-x86_64-unknown-linux-gnu.so;
-#                            label  = deep_filter_mono;
-#                            control = {
-#                                "Attenuation Limit (dB)" = 100;
-#                            };
-#                        }
-#                    ];
-#                };
-#                audio.rate = 48000;
-#                audio.position = [FL];
-#                capture.props = {
-#                    node.passive = true;
-#                };
-#                playback.props = {
-#                    media.class = Audio/Source;
-#                };
-#            };
-#      }
-#    ];
- # };
-
-  
-  # Disable PulseAudio
-  # hardware.pulseaudio.enable = false;
 }

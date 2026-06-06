@@ -13,7 +13,7 @@ in {
     noto-fonts
     fantasque-sans-mono
 
-    vistafonts
+    vista-fonts
     corefonts
     times-newer-roman
     roboto

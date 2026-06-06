@@ -3,19 +3,15 @@
     "The work of a arch lunatic *scratch that* chronic distro hopper";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.05";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     homeManager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
- #   nixos-cosmic = {
- #     url = "github:lilyinstarlight/nixos-cosmic";
- #     inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
- #   };
     devenv.url = "github:cachix/devenv";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";

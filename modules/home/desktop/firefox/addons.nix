@@ -1,11 +1,11 @@
-{ buildFirefoxXpiAddon, fetchurl, lib, stdenv }:
+{ buildMozillaXpiAddon, fetchurl, lib, stdenv }:
   {
-    "bitwarden" = buildFirefoxXpiAddon {
+    "bitwarden" = buildMozillaXpiAddon {
       pname = "bitwarden";
-      version = "2025.8.1";
+      version = "2026.4.0";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4562769/bitwarden_password_manager-2025.8.1.xpi";
-      sha256 = "840e07f5d1946496276e44ee0a8986f46d7476d22f769389d0d389402a9d49fe";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4796063/bitwarden_password_manager-2026.4.0.xpi";
+      sha256 = "ccbdf6c3a11c8655d4fe9bdfcf5f16c4c9ff2d8732fadbb85396a2123274ae10";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -31,7 +31,7 @@
         platforms = platforms.all;
       };
     };
-    "fastforwardteam" = buildFirefoxXpiAddon {
+    "fastforwardteam" = buildMozillaXpiAddon {
       pname = "fastforwardteam";
       version = "0.2383";
       addonId = "addon@fastforward.team";
@@ -52,7 +52,7 @@
         platforms = platforms.all;
       };
     };
-    "h264ify" = buildFirefoxXpiAddon {
+    "h264ify" = buildMozillaXpiAddon {
       pname = "h264ify";
       version = "1.1.0";
       addonId = "jid1-TSgSxBhncsPBWQ@jetpack";
@@ -71,12 +71,12 @@
         platforms = platforms.all;
       };
     };
-    "privacy-badger" = buildFirefoxXpiAddon {
+    "privacy-badger" = buildMozillaXpiAddon {
       pname = "privacy-badger";
-      version = "2025.5.30";
+      version = "2026.2.20";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4504218/privacy_badger17-2025.5.30.xpi";
-      sha256 = "d8cc7a2c1f5afa53b32f56be33167acafe45561ad7acc50c4aadb5ce35fe2389";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4700632/privacy_badger17-2026.2.20.xpi";
+      sha256 = "eea49f1461de5eb00eb17b22b2864b55b54acb577b0360687460fe982633fbd6";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
@@ -484,27 +484,12 @@
         platforms = platforms.all;
       };
     };
-    "profile-switcher" = buildFirefoxXpiAddon {
-      pname = "profile-switcher";
-      version = "1.3.1";
-      addonId = "profile-switcher-ff@nd.ax";
-      url = "https://addons.mozilla.org/firefox/downloads/file/3945999/profile_switcher-1.3.1.xpi";
-      sha256 = "80ca410ad883a0a2a2dc50cb1f74474dd829223ce106a5911120461c30e4e64f";
-      meta = with lib;
-      {
-        homepage = "https://github.com/null-dev/firefox-profile-switcher";
-        description = "Create, manage and switch between browser profiles seamlessly.";
-        license = licenses.gpl3;
-        mozPermissions = [ "storage" "nativeMessaging" "tabs" ];
-        platforms = platforms.all;
-      };
-    };
-    "proton-vpn-firefox-extension" = buildFirefoxXpiAddon {
+    "proton-vpn-firefox-extension" = buildMozillaXpiAddon {
       pname = "proton-vpn-firefox-extension";
-      version = "1.2.9";
+      version = "1.3.0";
       addonId = "vpn@proton.ch";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4539502/proton_vpn_firefox_extension-1.2.9.xpi";
-      sha256 = "ca67f67e6b654ff809ee659accbd9597014e37d70b29963c391c2e470cf96a02";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4773777/proton_vpn_firefox_extension-1.3.0.xpi";
+      sha256 = "f50f60178d77bfbaa6c9e4a2d7ec77b4cfa5ae984df9514f6f94c9a3dd4ca703";
       meta = with lib;
       {
         homepage = "https://protonvpn.com/";
@@ -526,7 +511,7 @@
         platforms = platforms.all;
       };
     };
-    "return-youtube-dislikes" = buildFirefoxXpiAddon {
+    "return-youtube-dislikes" = buildMozillaXpiAddon {
       pname = "return-youtube-dislikes";
       version = "3.0.0.18";
       addonId = "{762f9885-5a13-4abd-9c77-433dcd38b8fd}";
@@ -545,12 +530,12 @@
         platforms = platforms.all;
       };
     };
-    "sponsorblock" = buildFirefoxXpiAddon {
+    "sponsorblock" = buildMozillaXpiAddon {
       pname = "sponsorblock";
-      version = "5.14";
+      version = "6.1.5";
       addonId = "sponsorBlocker@ajay.app";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4541835/sponsorblock-5.14.xpi";
-      sha256 = "5732b0ab168a9f1065b94051b68118aad293b114c338cfa86cb1797187352429";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4773757/sponsorblock-6.1.5.xpi";
+      sha256 = "d8ec229aecb0b78e307a86d436496891b755f874c24c0f7324551c7ffd1b2e14";
       meta = with lib;
       {
         homepage = "https://sponsor.ajay.app";
@@ -559,6 +544,7 @@
         mozPermissions = [
           "storage"
           "scripting"
+          "unlimitedStorage"
           "https://sponsor.ajay.app/*"
           "https://*.youtube.com/*"
           "https://www.youtube-nocookie.com/embed/*"
@@ -566,12 +552,12 @@
         platforms = platforms.all;
       };
     };
-    "tab-stash" = buildFirefoxXpiAddon {
+    "tab-stash" = buildMozillaXpiAddon {
       pname = "tab-stash";
-      version = "3.3";
+      version = "3.4";
       addonId = "tab-stash@condordes.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4481624/tab_stash-3.3.xpi";
-      sha256 = "57ffe879f571d28b9a5b22cbe0fc7587fe820b936c2bbd7990c5d5a4cd6d3730";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4640621/tab_stash-3.4_H1fOxyH.xpi";
+      sha256 = "fd484d47f7195ae8ae99a9790524d88be568ac4bc0f39e0b5e9382d3783791c9";
       meta = with lib;
       {
         homepage = "https://josh-berry.github.io/tab-stash/";
@@ -592,12 +578,12 @@
         platforms = platforms.all;
       };
     };
-    "uaswitcher" = buildFirefoxXpiAddon {
+    "uaswitcher" = buildMozillaXpiAddon {
       pname = "uaswitcher";
-      version = "1.4.89";
+      version = "1.4.102";
       addonId = "user-agent-switcher@ninetailed.ninja";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4449854/uaswitcher-1.4.89.xpi";
-      sha256 = "ad488274976139ce84517a3e12de6b729edfb8daded18c7184ffc64b90591a0a";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4772478/uaswitcher-1.4.102.xpi";
+      sha256 = "b83c36fe95d44ecd5dd8611b4af87390aa7b8c653d637b3bb287c152e63da8c8";
       meta = with lib;
       {
         homepage = "https://gitlab.com/ntninja/user-agent-switcher";
@@ -614,12 +600,12 @@
         platforms = platforms.all;
       };
     };
-    "ublock-origin" = buildFirefoxXpiAddon {
+    "ublock-origin" = buildMozillaXpiAddon {
       pname = "ublock-origin";
-      version = "1.65.0";
+      version = "1.71.0";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4531307/ublock_origin-1.65.0.xpi";
-      sha256 = "3e73c96a29a933866065f0756fe032984bf5b254af8dd1afd7a7f7e0668a33cf";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4814095/ublock_origin-1.71.0.xpi";
+      sha256 = "47f788a1fc2c014830b30bb0ef9588615701b98c5265fb19b8cf4ba779849feb";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
@@ -653,7 +639,7 @@
         platforms = platforms.all;
       };
     };
-    "vimium-c" = buildFirefoxXpiAddon {
+    "vimium-c" = buildMozillaXpiAddon {
       pname = "vimium-c";
       version = "2.12.3";
       addonId = "vimium-c@gdh1995.cn";

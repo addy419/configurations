@@ -3,9 +3,9 @@
 {
   programs.git = {
     enable = true;
-    userName = "Aditya Sadawarte";
-    userEmail = "adityasadawarte01@gmail.com";
-    extraConfig = {
+    settings = {
+      user.name = "Aditya Sadawarte";
+      user.email = "adityasadawarte01@gmail.com";
       merge.tool = "meld";
     };
   };

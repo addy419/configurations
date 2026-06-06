@@ -32,6 +32,8 @@
 
   environment.systemPackages = with pkgs; [
     clinfo
+    rocmPackages.rocminfo
+    rocmPackages.rocm-smi
   ];
 
   # AMD issue with direct scanout on COSMIC

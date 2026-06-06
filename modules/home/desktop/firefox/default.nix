@@ -24,7 +24,8 @@ let
     extraPolicies = { ExtensionSettings = { }; };
   };
   addons = builtins.removeAttrs (pkgs.callPackage ./addons.nix {
-    inherit (inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+    #inherit (inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+    buildMozillaXpiAddon = inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons.buildFirefoxXpiAddon;
   }) [ "override" "overrideDerivation" ];
 in {
   home.packages = with pkgs; [

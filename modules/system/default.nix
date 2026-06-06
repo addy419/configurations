@@ -17,6 +17,7 @@
       #./docker.nix
       ./cosmic.nix
       ./usb.nix
+      ./llms.nix
     ];
 }
 

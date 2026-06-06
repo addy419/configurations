@@ -6,6 +6,7 @@
     mangohud
     protontricks
     winetricks
+    xdg-utils
   ];
 
   programs.steam = {
@@ -21,7 +22,7 @@
         "-H 1440"
         "-w 2560"
         "-h 1440"
-        "-r 120"
+        "-r 144"
         "--adaptive-sync"
         "--mangoapp"
       ];
