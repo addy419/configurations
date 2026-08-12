@@ -9,7 +9,7 @@
     htop
     fastfetch
     pavucontrol
-    xournalpp
+    #xournalpp
     wl-clipboard
     wev
     zip
@@ -23,9 +23,9 @@
     poppler-utils
     nextcloud-client
     lrcget
-    zotero_7
+    zotero
     audacity
-    #ethtool
+    ethtool
     qpwgraph
     # vrrtest
     gnumake
@@ -33,12 +33,14 @@
     amdgpu_top
     foliate
     guvcview
-    evince
+    #evince
     syncplay
     yt-dlp
     authenticator
     door-knocker
     supersonic-wayland
+    ydotool
+    stress-ng
   ];
 
   systemd.user.services.mpris-proxy = {

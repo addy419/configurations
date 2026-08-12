@@ -33,6 +33,10 @@
     };
   };
 
+  services.pipewire.extraLadspaPackages = [
+    (import ./deep-filter-plugin.nix { inherit pkgs; })
+  ];
+
   services.pipewire.configPackages = [
     (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/filter-chain.conf" ''
       context.modules = [
@@ -45,7 +49,7 @@
                         {
                             type   = ladspa
                             name   = "DeepFilter Stereo"
-                            plugin = /home/aditya/.ladspa/libdeep_filter_ladspa-0.5.6-x86_64-unknown-linux-gnu.so
+                            plugin = "libdeep_filter_ladspa-0.5.6-x86_64-unknown-linux-gnu"
                             label  = deep_filter_stereo
                             control = {
                                 "Attenuation Limit (dB)" 50

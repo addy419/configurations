@@ -8,7 +8,7 @@
     fd
     imagemagick
     zstd
-    nixfmt-rfc-style
+    nixfmt
   ];
 
   xdg.configFile."doom" = {

@@ -1,4 +1,4 @@
-{ inputs, current, pkgs, lib, buildFirefoxXpiAddon, ... }:
+{ inputs, current, pkgs, lib, buildFirefoxXpiAddon, config, ... }:
 
 let
   myconfig = ''
@@ -19,10 +19,6 @@ let
 
     user_pref("gfx.webrender.all", true);
   '';
-  firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    nativeMessagingHosts = [ (pkgs.callPackage ./firefox-profile-switcher-connector.nix { }) ];
-    extraPolicies = { ExtensionSettings = { }; };
-  };
   addons = builtins.removeAttrs (pkgs.callPackage ./addons.nix {
     #inherit (inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons) buildFirefoxXpiAddon;
     buildMozillaXpiAddon = inputs.nur.legacyPackages."${current.system}".repos.rycee.firefox-addons.buildFirefoxXpiAddon;
@@ -34,7 +30,8 @@ in {
 
   programs.firefox = {
     enable = true;
-    package = firefox-package;
+    package = pkgs.firefox;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     profiles = {
       hardened = {
         isDefault = true;
@@ -58,12 +55,6 @@ in {
         extensions.packages = builtins.attrValues addons;
       };
     };
-  };
-
-  xdg.configFile = {
-    "firefoxprofileswitcher/config.json".text = ''
-      {"browser_binary": "${firefox-package}/bin/firefox"}
-    '';
   };
 
   home.sessionVariables = {

@@ -12,6 +12,7 @@
     #cosmic-ext-applet-emoji-selector
     cosmic-ext-tweaks
     cosmic-ext-applet-external-monitor-brightness
+    cosmic-ext-applet-weather
   ];
 
   environment.sessionVariables.COSMIC_DATA_CONTROL_ENABLED = 1;

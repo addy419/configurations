@@ -6,12 +6,12 @@
     protonup-qt
     # Stardew Mods
     unixtools.xxd
-    xorg.xwininfo
+    xwininfo
     xdotool
-    xorg.xprop
+    xprop
     jq
     p7zip
-    xorg.xrandr
+    xrandr
     yad
   ];
 

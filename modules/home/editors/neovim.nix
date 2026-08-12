@@ -4,9 +4,12 @@
   programs.neovim = {
     enable = true;
     vimAlias = true;
+    withRuby = false;
+    withPython3 = true;
     plugins = with pkgs.vimPlugins; [
       {
         plugin = dracula-vim;
+        type = "viml";
         config = ''
           syntax on
           "packadd! dracula-vim
@@ -16,6 +19,7 @@
       }
       {
         plugin = lightline-vim;
+        type = "viml";
         config = ''
           set noshowmode
           let g:lightline = { 'colorscheme': 'dracula' }
@@ -24,6 +28,7 @@
       vim-polyglot
       {
         plugin = ranger-vim;
+        type = "viml";
         config = ''
           let g:ranger_map_keys = 0
           let g:ranger_replace_netrw = 1

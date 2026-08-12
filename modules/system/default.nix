@@ -7,7 +7,7 @@
       ./ssh.nix
       ./power.nix
       ./disks.nix
-      ./audio.nix
+      ./audio
       ./obs.nix
       ./bluetooth.nix
       ./steam.nix

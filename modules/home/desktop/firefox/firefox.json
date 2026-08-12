@@ -11,9 +11,6 @@
     "pname": "bitwarden"
   },
   {
-    "slug": "vimium-c"
-  },
-  {
     "slug": "tab-stash"
   },
   {
@@ -21,9 +18,6 @@
   },
   {
     "slug": "return-youtube-dislikes"
-  },
-  {
-    "slug": "profile-switcher"
   },
   {
     "slug": "fastforwardteam"
@@ -36,5 +30,8 @@
   },
   {
     "slug": "proton-vpn-firefox-extension"
+  },
+  {
+    "slug": "darkreader"
   }
 ] 

@@ -2,10 +2,10 @@
   {
     "bitwarden" = buildMozillaXpiAddon {
       pname = "bitwarden";
-      version = "2026.4.0";
+      version = "2026.6.1";
       addonId = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4796063/bitwarden_password_manager-2026.4.0.xpi";
-      sha256 = "ccbdf6c3a11c8655d4fe9bdfcf5f16c4c9ff2d8732fadbb85396a2123274ae10";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4875950/bitwarden_password_manager-2026.6.1.xpi";
+      sha256 = "7ba16c3d422ab287db17b014a4683bace36341e471e4d4fd58ac2b616c6ac17d";
       meta = with lib;
       {
         homepage = "https://bitwarden.com";
@@ -27,6 +27,28 @@
           "webRequestBlocking"
           "notifications"
           "file:///*"
+        ];
+        platforms = platforms.all;
+      };
+    };
+    "darkreader" = buildMozillaXpiAddon {
+      pname = "darkreader";
+      version = "4.9.128";
+      addonId = "addon@darkreader.org";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4859299/darkreader-4.9.128.xpi";
+      sha256 = "31be69e5e783e30dc255ee357f2a7233486f801cba061560f1a44deb9603296f";
+      meta = with lib;
+      {
+        homepage = "https://darkreader.org/";
+        description = "Dark mode for every website. Take care of your eyes, use dark theme for night and daily browsing.";
+        license = licenses.mit;
+        mozPermissions = [
+          "alarms"
+          "contextMenus"
+          "storage"
+          "tabs"
+          "theme"
+          "<all_urls>"
         ];
         platforms = platforms.all;
       };
@@ -73,10 +95,10 @@
     };
     "privacy-badger" = buildMozillaXpiAddon {
       pname = "privacy-badger";
-      version = "2026.2.20";
+      version = "2026.6.16";
       addonId = "jid1-MnnxcxisBPnSXQ@jetpack";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4700632/privacy_badger17-2026.2.20.xpi";
-      sha256 = "eea49f1461de5eb00eb17b22b2864b55b54acb577b0360687460fe982633fbd6";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4854040/privacy_badger17-2026.6.16.xpi";
+      sha256 = "060860a601993fd7c505de9873c5f47adb3e568af1894dc2460b071aa5a32308";
       meta = with lib;
       {
         homepage = "https://privacybadger.org/";
@@ -486,10 +508,10 @@
     };
     "proton-vpn-firefox-extension" = buildMozillaXpiAddon {
       pname = "proton-vpn-firefox-extension";
-      version = "1.3.0";
+      version = "1.3.5";
       addonId = "vpn@proton.ch";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4773777/proton_vpn_firefox_extension-1.3.0.xpi";
-      sha256 = "f50f60178d77bfbaa6c9e4a2d7ec77b4cfa5ae984df9514f6f94c9a3dd4ca703";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4851750/proton_vpn_firefox_extension-1.3.5.xpi";
+      sha256 = "91eca389f57fba18a8d12d2a24f610f3602eedbf8468ccaa5f7fc280409a64ab";
       meta = with lib;
       {
         homepage = "https://protonvpn.com/";
@@ -532,10 +554,10 @@
     };
     "sponsorblock" = buildMozillaXpiAddon {
       pname = "sponsorblock";
-      version = "6.1.5";
+      version = "6.1.6";
       addonId = "sponsorBlocker@ajay.app";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4773757/sponsorblock-6.1.5.xpi";
-      sha256 = "d8ec229aecb0b78e307a86d436496891b755f874c24c0f7324551c7ffd1b2e14";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4870235/sponsorblock-6.1.6.xpi";
+      sha256 = "ab8e4cc26e68070c3c6f379b253330b95677e2d25b52149580daa879cf9ba954";
       meta = with lib;
       {
         homepage = "https://sponsor.ajay.app";
@@ -602,10 +624,10 @@
     };
     "ublock-origin" = buildMozillaXpiAddon {
       pname = "ublock-origin";
-      version = "1.71.0";
+      version = "1.72.2";
       addonId = "uBlock0@raymondhill.net";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4814095/ublock_origin-1.71.0.xpi";
-      sha256 = "47f788a1fc2c014830b30bb0ef9588615701b98c5265fb19b8cf4ba779849feb";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4888680/ublock_origin-1.72.2.xpi";
+      sha256 = "40c315b0da7871868155ecfae7a50a58dfa0920aebd865e008214986f1b7c578";
       meta = with lib;
       {
         homepage = "https://github.com/gorhill/uBlock#ublock-origin";
@@ -635,32 +657,6 @@
           "https://github.com/uBlockOrigin/*"
           "https://ublockorigin.github.io/*"
           "https://*.reddit.com/r/uBlockOrigin/*"
-        ];
-        platforms = platforms.all;
-      };
-    };
-    "vimium-c" = buildMozillaXpiAddon {
-      pname = "vimium-c";
-      version = "2.12.3";
-      addonId = "vimium-c@gdh1995.cn";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4474326/vimium_c-2.12.3.xpi";
-      sha256 = "e1a4f8cc13791dfb985c2a78d33df1e8a40f23bd6eca9217165cb748009df540";
-      meta = with lib;
-      {
-        homepage = "https://github.com/gdh1995/vimium-c";
-        description = "A keyboard shortcut tool for keyboard-based page navigation and browser tab operations with an advanced omnibar and global shortcuts";
-        license = licenses.mit;
-        mozPermissions = [
-          "clipboardRead"
-          "clipboardWrite"
-          "history"
-          "notifications"
-          "search"
-          "sessions"
-          "storage"
-          "tabs"
-          "webNavigation"
-          "<all_urls>"
         ];
         platforms = platforms.all;
       };
